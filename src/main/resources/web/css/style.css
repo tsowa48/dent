@@ -1,0 +1,222 @@
+html {
+    width: 100vw;
+    height: 100vh;
+}
+
+* {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    margin: 0px;
+    color: rgb(68, 68, 68);
+}
+
+.container {
+    background-color: rgb(243, 243, 243);
+    margin-right: auto;
+    margin-left: auto;
+}
+
+@media (min-width: 768px) {
+    .container {
+        width: 750px;
+    }
+}
+@media (min-width: 992px) {
+    .container {
+        width: 970px;
+    }
+}
+@media (min-width: 1200px) {
+    .container {
+        width: 1170px;
+    }
+}
+
+.center {
+    align-items: center;
+    text-align: center;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.box {
+    cursor: default;
+    display: block;
+    border-radius: 2px;
+    border: 1px solid;
+    line-height: 16px;
+    margin-bottom: 5px;
+    padding: 5px;
+    background-color: rgb(255, 255, 255);
+    border-color: rgb(230, 230, 230);
+}
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    text-align: center;
+    font-weight: bold;
+    border: 1px solid;
+    line-height: 22px;
+    padding: 0px 5px 0px 5px;
+    border-radius: 2px;
+    cursor: pointer;
+    outline-style: none;
+    border-color: rgb(230, 230, 230);
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.button:hover {
+    /*color: rgb(243, 243, 243);*/
+    background-color: rgb(230, 230, 230);
+}
+
+.pink {
+    background-color: rgb(242, 222, 222);
+    border-color: rgb(244, 177, 176);
+}
+
+.info {
+    color: rgb(35, 106, 151);
+    border-color: rgb(35, 106, 151);
+}
+
+.button.info:hover {
+    color: rgb(243, 243, 243);
+    background-color: rgb(35, 106, 151);
+}
+
+.danger {
+    color: rgb(212, 51, 63);
+    border-color: rgb(212, 51, 63);
+}
+
+.button.danger:hover {
+    color: rgb(243, 243, 243);
+    background-color: rgb(212, 51, 63);
+}
+
+.success {
+    color: rgb(0, 170, 0);
+    border-color: rgb(0, 170, 0);
+}
+
+.button.success:hover {
+    color: rgb(243, 243, 243);
+    background-color: rgb(0, 170, 0);
+}
+
+.disabled, *:disabled, *:hover:disabled {
+    background-color: rgb(235, 235, 235);
+    border-color: rgb(221, 221, 221);
+    color: rgb(187, 187, 187);
+    cursor: not-allowed;
+}
+
+a, .link {
+    display: inline-flex;
+    border: none;
+    border-bottom: 1px solid;
+    color: rgb(35, 106, 151);
+    border-color: rgb(202, 227, 242);
+    background-color: rgba(0, 0, 0, 0);
+    line-height: 13px;
+    padding: 0px;
+    margin: 5px;
+    cursor: pointer;
+    outline-style: none;
+}
+
+a:hover, .link:hover {
+    color: rgb(75, 159, 213);
+}
+
+input[type='text'], .text {
+    height: 21px;
+    padding: 0px 5px 1px 5px;
+    box-shadow: none;
+    outline: 0;
+    display: inline-block;
+    background-color: rgb(255, 255, 255);
+    border-color: rgb(205, 205, 205);
+    color: rgb(68, 68, 68);
+    border: 1px solid;
+    border-radius: 2px;
+    cursor: text;
+}
+
+input[type='text']:active, input[type='text']:focus, .text:active, .text:focus {
+    box-shadow: none;
+    outline: 0;
+    border-color: rgb(75, 159, 213);
+}
+.list-item {
+    display: block;
+    border: 1px solid transparent;
+    text-align: left;
+    cursor: pointer;
+    line-height: 22px;
+    padding: 0px 5px 0px 5px;
+}
+
+.list-item:hover {
+    border-color: rgb(75, 159, 213);
+}
+.list-item:active, .list-item:focus {
+    border-color: rgb(75, 159, 213);
+    background-color: #cae3f2;
+}
+
+.table {
+    display: inline-table;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+header, .header {
+    top: 0;
+    cursor: default;
+    display: block;
+    border: 1px solid;
+    border-top: 0;
+    border-radius: 2px;
+    line-height: 16px;
+    margin-bottom: 5px;
+    padding: 5px;
+    background-color: rgb(255, 255, 255);
+    border-color: rgb(230, 230, 230);
+}
+
+.table-list {
+    border: 0;
+    padding: 0;
+}
+
+.table-list * {
+    border: 0;
+    line-height: 22px;
+    padding: 0px 5px 0px 5px;
+}
+
+.table-list tr:hover *:not(th) {
+    background-color: #cae3f2;
+    cursor: pointer;
+}
+
+
+
+
+
+footer, .footer {
+    bottom: 0;
+    cursor: default;
+    display: block;
+    border: 1px solid;
+    border-bottom: 0;
+    border-radius: 2px;
+    line-height: 16px;
+    margin-bottom: 5px;
+    padding: 5px;
+    background-color: rgb(255, 255, 255);
+    border-color: rgb(230, 230, 230);
+}

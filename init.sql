@@ -244,3 +244,37 @@ comment on column act_service.aid is 'Акт';
 
 comment on column act_service.amount is 'Количество';
 
+create table slot
+(
+	id bigserial not null,
+	enabled boolean not null,
+	date date not null,
+	time int not null,
+	cid bigint
+		constraint slot_client_id_fk
+			references client
+);
+
+comment on table slot is 'Слот записи';
+
+comment on column slot.enabled is 'Доступность слота';
+
+comment on column slot.date is 'Дата';
+
+comment on column slot.time is 'Время слота';
+
+comment on column slot.cid is 'Клиент';
+
+create unique index slot_id_uindex
+	on slot (id);
+
+alter table slot
+	add constraint slot_pk
+		primary key (id);
+
+alter table slot
+	add size int not null;
+
+comment on column slot.size is 'Размер слота';
+
+
