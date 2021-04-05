@@ -1,7 +1,7 @@
 package gcg.dent.entity;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Time;
 
 @Entity
 @Table(name = "schedule", schema = "public")
@@ -13,10 +13,10 @@ public class Schedule {
     private Long id;
 
     @Column(name = "start", nullable = false)
-    private Date start;
+    private Time start;
 
     @Column(name = "end", nullable = false)
-    private Date end;
+    private Time end;
 
     public Long getId() {
         return id;
@@ -26,19 +26,19 @@ public class Schedule {
         this.id = id;
     }
 
-    public Date getStart() {
+    public Time getStart() {
         return start;
     }
 
-    public void setStart(Date start) {
+    public void setStart(Time start) {
         this.start = start;
     }
 
-    public Date getEnd() {
+    public Time getEnd() {
         return end;
     }
 
-    public void setEnd(Date end) {
+    public void setEnd(Time end) {
         this.end = end;
     }
 }

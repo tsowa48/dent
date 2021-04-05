@@ -280,8 +280,8 @@ comment on column slot.size is 'Размер слота';
 create table schedule
 (
 	id bigserial not null,
-	start timestamp not null,
-	"end" timestamp not null
+	start time not null,
+	"end" time not null
 );
 
 comment on table schedule is 'График работы';

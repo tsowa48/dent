@@ -15,8 +15,7 @@ main {
     flex-direction: column;
 }
 .calendar {
-    top: 50px;
-    overflow: auto;
+    overflow-y: scroll;
     display: flex;
     flex-direction: row;
     justify-content: stretch;
@@ -25,8 +24,8 @@ main {
     display: flex;
     flex-direction: row;
     justify-content: stretch;
-    padding-left: 30px;
-    /*width: calc((100% - 30px) / 7);*/
+    padding-left: 35px;
+    padding-right: 15px;/*scrollbar width*/
     border-bottom: 1px solid darkgrey;
     height: 50px;
 }
@@ -35,21 +34,19 @@ main {
     flex-direction: column;
     justify-content: center;
     text-align: center;
-    width: calc((100% - 30px) / 7);
+    width: calc(100% / 7);
     border: 1px solid transparent;
     border-left: 1px solid darkgrey;
-    font-size:14px;
+    font-size: 14px;
 }
 .day {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: calc((100% - 30px) / 7);
-    height: calc(50px * 24);
+    width: calc((100% - 35px) / 7);
 }
 .times {
-    height: calc(50px * 24);
-    width: 30px;
+    width: 35px;
     display: flex;
     flex-direction: column;
     justify-content: start;
@@ -73,9 +70,14 @@ main {
 }
 .box {
     cursor: pointer;
-    margin-bottom: 0;
-    height: 100%;
+    margin: 0;
+    /*height: 100%;*/
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+.slot.disabled {
+    cursor: not-allowed;
+    background-color: rgb(244, 177, 176);
 }
