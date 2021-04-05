@@ -1,4 +1,4 @@
-package gcg.dent.controller;
+package gcg.dent.controller.api;
 
 import gcg.dent.entity.Client;
 import gcg.dent.repository.ClientRepository;

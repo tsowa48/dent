@@ -277,4 +277,29 @@ alter table slot
 
 comment on column slot.size is 'Размер слота';
 
+create table schedule
+(
+	id bigserial not null,
+	start timestamp not null,
+	"end" timestamp not null
+);
+
+comment on table schedule is 'График работы';
+
+comment on column schedule.start is 'Начало';
+
+comment on column schedule."end" is 'Окончание';
+
+create unique index schedule_id_uindex
+	on schedule (id);
+
+alter table schedule
+	add constraint schedule_pk
+		primary key (id);
+
+alter table client alter column address drop not null;
+
+alter table client alter column birth drop not null;
+
+alter table client alter column sex drop not null;
 

@@ -7,6 +7,8 @@ import java.util.Date;
 @Table(name = "slot", schema = "public")
 public class Slot {
     @Id
+    @SequenceGenerator(name = "slot_id_seq", sequenceName = "public.slot_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "slot_id_seq")
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
@@ -23,7 +25,7 @@ public class Slot {
     private Integer size;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "client")
+    @JoinColumn(name = "cid")
     private Client client;
 
 

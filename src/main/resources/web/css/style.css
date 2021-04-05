@@ -51,7 +51,7 @@ html {
     border-color: rgb(230, 230, 230);
 }
 
-.button {
+button, .button {
     display: inline-flex;
     align-items: center;
     text-align: center;
@@ -66,7 +66,7 @@ html {
     background-color: rgba(0, 0, 0, 0);
 }
 
-.button:hover {
+button:hover, .button:hover {
     /*color: rgb(243, 243, 243);*/
     background-color: rgb(230, 230, 230);
 }
@@ -81,7 +81,7 @@ html {
     border-color: rgb(35, 106, 151);
 }
 
-.button.info:hover {
+button.info:hover, .button.info:hover {
     color: rgb(243, 243, 243);
     background-color: rgb(35, 106, 151);
 }
@@ -91,7 +91,7 @@ html {
     border-color: rgb(212, 51, 63);
 }
 
-.button.danger:hover {
+button.danger:hover, .button.danger:hover {
     color: rgb(243, 243, 243);
     background-color: rgb(212, 51, 63);
 }
@@ -101,7 +101,7 @@ html {
     border-color: rgb(0, 170, 0);
 }
 
-.button.success:hover {
+button.success:hover, .button.success:hover {
     color: rgb(243, 243, 243);
     background-color: rgb(0, 170, 0);
 }

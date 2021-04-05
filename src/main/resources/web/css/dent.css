@@ -1,0 +1,81 @@
+body {
+    display: flex;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+main {
+    background-color: rgb(243, 243, 243);
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.calendar {
+    top: 50px;
+    overflow: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+}
+.dates {
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    padding-left: 30px;
+    /*width: calc((100% - 30px) / 7);*/
+    border-bottom: 1px solid darkgrey;
+    height: 50px;
+}
+.date {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    width: calc((100% - 30px) / 7);
+    border: 1px solid transparent;
+    border-left: 1px solid darkgrey;
+    font-size:14px;
+}
+.day {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: calc((100% - 30px) / 7);
+    height: calc(50px * 24);
+}
+.times {
+    height: calc(50px * 24);
+    width: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
+.time {
+    font-size: 10px;
+    color: #70757a;
+    height: 50px;
+    border-bottom: 1px solid darkgrey;
+    padding: 2px;
+}
+.slot {
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 50px;
+    border-bottom: 1px solid darkgrey;
+    border-left: 1px solid darkgrey;
+    cursor: pointer;
+}
+.box {
+    cursor: pointer;
+    margin-bottom: 0;
+    height: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

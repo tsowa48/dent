@@ -1,0 +1,62 @@
+<html>
+    <head>
+        <title>Расписание</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/style.css?"/>
+        <link rel="stylesheet" href="css/dent.css?"/>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </head>
+    <body>
+        <nav>
+            <button id="prev" onclick="load_prev();">Previous period</button>
+            <button id="next" onclick="load_next();">Next period</button>
+            Month calendar
+        </nav>
+        <main>
+            <div class="dates" id="dates">
+                {{#each dates}}
+                    {{{this}}}
+                {{/each}}
+            </div>
+            <div class="calendar" id="calendar">
+                <div id="times" class="times">
+                    <div class="time">00:00</div>
+                    <div class="time">01:00</div>
+                    <div class="time">02:00</div>
+                    <div class="time">03:00</div>
+                    <div class="time">04:00</div>
+                    <div class="time">05:00</div>
+                    <div class="time">06:00</div>
+                    <div class="time">07:00</div>
+                    <div class="time">08:00</div>
+                    <div class="time">09:00</div>
+                    <div class="time">10:00</div>
+                    <div class="time">11:00</div>
+                    <div class="time">12:00</div>
+                    <div class="time">13:00</div>
+                    <div class="time">14:00</div>
+                    <div class="time">15:00</div>
+                    <div class="time">16:00</div>
+                    <div class="time">17:00</div>
+                    <div class="time">18:00</div>
+                    <div class="time">19:00</div>
+                    <div class="time">20:00</div>
+                    <div class="time">21:00</div>
+                    <div class="time">22:00</div>
+                    <div class="time">23:00</div>
+                </div>
+                {{{slots}}}
+            </div>
+        </main>
+    </body>
+    <script type="text/javascript">
+        function load_prev() {
+
+        }
+
+        function load_next() {
+
+        }
+    </script>
+</html>

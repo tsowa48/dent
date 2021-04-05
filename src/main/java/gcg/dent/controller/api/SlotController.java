@@ -1,4 +1,4 @@
-package gcg.dent.controller;
+package gcg.dent.controller.api;
 
 import gcg.dent.entity.Client;
 import gcg.dent.entity.Slot;
@@ -10,11 +10,13 @@ import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 
-@Controller("/schedule")
-public class ScheduleController {
+@Controller("/slot")
+public class SlotController {
 
     @Inject
     SlotRepository slotRepository;
@@ -22,11 +24,15 @@ public class ScheduleController {
     @Inject
     ClientRepository clientRepository;
 
+    @Inject
+    EntityManager entityManager;
+
     @Get(uri="/{id}", produces = MediaType.APPLICATION_JSON)
     public Slot get(Long id) {
         return slotRepository.findById(id);
     }
 
+    @Transactional
     @Post(uri = "/add", produces = MediaType.APPLICATION_JSON)
     public Slot add(String fio, String phone, Date date, Integer time, Integer size) {
         List<Client> clients = clientRepository.findByFIO(fio);
@@ -36,6 +42,7 @@ public class ScheduleController {
                 .orElse(clientRepository.makeClient(fio, phone));
         Slot slot = slotRepository.makeSlot(date, time, size);
         slot.setClient(client);
+        entityManager.merge(slot);
         return slot;
     }
 
