@@ -10,6 +10,9 @@ micronaut:
       css:
         paths: classpath:/web/css
         mapping: /css/**
+      js:
+        paths: classpath:/web/js
+        mapping: /js/**
       swagger:
         paths: classpath:META-INF/swagger
         mapping: /gcg/swagger/**

@@ -3,10 +3,10 @@ package gcg.dent.util;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Converter {
+public class ObjectUtils {
     private static final String[] weekDays = new String[] {"", "вс", "пн", "вт", "ср", "чт", "пт", "сб"};
 
-    private Converter() {}
+    private ObjectUtils() {}
 
     public static int dow(Date date) {
         Calendar calendar = Calendar.getInstance();
@@ -34,5 +34,12 @@ public class Converter {
             f[i] = f[i].substring(0, 1) + ".";
         }
         return String.join(" ", f);
+    }
+
+    public static boolean compareDates(Date date1, Date date2) {
+        boolean isEqual = date1.getDate() == date2.getDate();
+        isEqual &= date1.getMonth() == date2.getMonth();
+        isEqual &= date1.getYear() == date2.getYear();
+        return isEqual;
     }
 }

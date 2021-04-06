@@ -3,9 +3,11 @@
         <title>Расписание</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="css/style.css?"/>
-        <link rel="stylesheet" href="css/dent.css?"/>
+        <link rel="stylesheet" href="/css/style.css?"/>
+        <link rel="stylesheet" href="/css/dent.css?"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
         <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script type="text/javascript" src="/js/script.js"></script>
         <style>
             .day, .times {
                 height: calc(50px * {{times_size}});
@@ -14,8 +16,12 @@
     </head>
     <body>
         <nav>
-            <button id="prev" onclick="load_prev();">Previous period</button>
-            <button id="next" onclick="load_next();">Next period</button>
+            <div class="group">
+                <a class="button" id="prev" href="{{prev}}" style="font-size: 14px"><i class="bi bi-chevron-left"></i></a>
+                <a class="button" id="prev" href="0" style="font-size: 14px"><i class="bi bi-calendar-event"></i></a>
+                <a class="button" id="next" href="{{next}}" style="font-size: 14px"><i class="bi bi-chevron-right"></i></a>
+            </div>
+            <br>
             Month calendar
         </nav>
         <main>
@@ -33,14 +39,17 @@
                 {{{slots}}}
             </div>
         </main>
+
+        <div class="box modal" id="new_record">
+            <input type="text" class="text" name="fio" placeholder="ФИО"/>
+            <br>
+            <input type="tel" class="text" name="phone" placeholder="Телефон"/>
+            <br>
+            <button class="success" onclick="alert('OK');hide_modal('#new_record');">Записать</button>
+            <button class="danger" onclick="hide_modal('#new_record');">Отмена</button>
+        </div>
     </body>
     <script type="text/javascript">
-        function load_prev() {
 
-        }
-
-        function load_next() {
-
-        }
     </script>
 </html>
