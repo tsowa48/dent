@@ -1,5 +1,7 @@
 package gcg.dent.controller;
 
+import gcg.dent.entity.Employee;
+import gcg.dent.repository.EmployeeRepository;
 import gcg.dent.service.CalendarService;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Controller;
@@ -7,16 +9,18 @@ import io.micronaut.http.annotation.Get;
 import io.micronaut.views.View;
 
 import javax.inject.Inject;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Optional;
+import java.util.*;
 
 @Controller("/calendar")
 public class CalendarController {
 
+    final int DOCTOR = 2;
+
     @Inject
     CalendarService calendarService;
+
+    @Inject
+    EmployeeRepository employeeRepository;
 
     @View("calendar")
     @Get(uri = "/{week}")
@@ -26,6 +30,9 @@ public class CalendarController {
         calendar.add(Calendar.DATE, week.orElse(0) * 7);
 
         HashMap<String, Object> params = calendarService.get(calendar.getTime());
+
+        List<Employee> employee = employeeRepository.getByType(DOCTOR);
+        params.put("doctors", employee);
 
         params.put("prev", week.orElse(0) - 1);
         params.put("next", week.orElse(0) + 1);

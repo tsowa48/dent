@@ -42,8 +42,8 @@ public class CalendarService {
 
         List<String> dates = new ArrayList<>();
         finish.add(Calendar.DAY_OF_WEEK, 1);
-        for(Calendar c = start; c.before(finish); c.add(Calendar.DAY_OF_WEEK, 1)) {
-            String format = dateFormat.format(c.getTime());
+        for(Calendar c = (Calendar)start.clone(); c.before(finish); c.add(Calendar.DAY_OF_WEEK, 1)) {
+            String format = dateFormat.format(c.getTime()).toLowerCase();
             dates.add("<div class=\"date\" " +
                     (ObjectUtils.compareDates(c.getTime(), new Date()) ? "style='background: rgb(202, 227, 242);'" : "")+
                     ">" + ObjectUtils.dow2str(c.getTime()) +
@@ -77,14 +77,15 @@ public class CalendarService {
                 Optional<Slot> timeSlot = daySlots.stream()
                         .filter(s -> s.getTime() == finalT)
                         .findFirst();
+                Calendar temp = (Calendar)start.clone();
+                temp.add(Calendar.DATE, dow);
+                String slotDate = String.format("%d-%02d-%02d", temp.get(Calendar.YEAR), temp.get(Calendar.MONTH) + 1, temp.get(Calendar.DATE));
                 if(timeSlot.isPresent()) {
                     Client c = timeSlot.get().getClient();
-                    htmlSlots.append("<div class='slot'><div class='box pink'><b>" +
+                    htmlSlots.append("<div class='slot' date='" + slotDate + "' time='" + finalT + "' size='1'><div class='box pink'><b>" +
                             ObjectUtils.fio(c.getFio()) + "</b><br><span>" + c.getPhone() + "</span></div></div>");
                 } else {
-                    //empty slot
-                    String onClick = "show_modal(this, '#new_record');";
-                    htmlSlots.append("<div class='slot' onclick=\"" + onClick + "\">" + "</div>");
+                    htmlSlots.append("<div class='slot' date='" + slotDate + "' time='" + finalT + "' size='1' onclick=\"show_modal(this, '#new_record');\">" + "</div>");
                 }
             }
             htmlSlots.append("</div>");

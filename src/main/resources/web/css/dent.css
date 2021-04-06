@@ -134,3 +134,11 @@ main {
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
 }
+
+.list-item.selected {
+    background-color: #cae3f2;
+}
+
+.list-item {
+    white-space: nowrap;
+}

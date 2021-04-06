@@ -28,6 +28,10 @@ public class Slot {
     @JoinColumn(name = "cid")
     private Client client;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "doc", nullable = false)
+    private Employee doctor;
+
 
     public Long getId() {
         return id;
@@ -75,5 +79,13 @@ public class Slot {
 
     public void setSize(Integer size) {
         this.size = size;
+    }
+
+    public Employee getDoctor() {
+        return doctor;
+    }
+
+    public void setDoctor(Employee doctor) {
+        this.doctor = doctor;
     }
 }

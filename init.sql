@@ -303,3 +303,17 @@ alter table client alter column birth drop not null;
 
 alter table client alter column sex drop not null;
 
+alter table schedule
+	add dow int not null;
+
+comment on column schedule.dow is 'День недели';
+
+alter table slot
+	add doc bigint not null;
+
+comment on column slot.doc is 'Врач';
+
+alter table slot
+	add constraint slot_employee_id_fk
+		foreign key (doc) references employee;
+

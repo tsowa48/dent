@@ -16,14 +16,12 @@ public class SlotRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Transactional
     public Slot makeSlot(Date date, Integer time, Integer size) {
         Slot slot = new Slot();
         slot.setDate(date);
         slot.setTime(time);
         slot.setSize(size);
         slot.setEnabled(true);
-        entityManager.persist(slot);
         return slot;
     }
 
