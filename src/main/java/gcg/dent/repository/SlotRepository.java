@@ -40,4 +40,11 @@ public class SlotRepository {
                 .setParameter("dateEnd", end)
                 .getResultList();
     }
+
+    @Transactional
+    public void removeById(Long id) {
+        entityManager.createQuery("delete from Slot S where S.id = :id")
+        .setParameter("id", id)
+        .executeUpdate();
+    }
 }

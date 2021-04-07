@@ -14,7 +14,7 @@
             }
         </style>
     </head>
-    <body>
+    <body onmousemove="mouse_position(event)" oncontextmenu="return false;" onclick="$('.context-menu').css('display', 'none');">
         <nav>
             <div class="group">
                 <a title="Предыдущая неделя" class="button" id="prev" href="{{prev}}" style="font-size: 14px"><i class="bi bi-chevron-left"></i></a>
@@ -49,12 +49,19 @@
         </main>
 
         <div class="box modal" id="new_record">
+            <div class="header">Новая запись<i class="bi bi-x button danger" style="float:right;padding:0" title="Закрыть" onclick="hide_modal('#new_record');"></i></div>
             <input type="text" class="text" name="fio" placeholder="ФИО" autofocus/>
             <br>
             <input type="tel" class="text" name="phone" placeholder="Телефон"/>
-            <br>
-            <button class="success" onclick="register();">Записать</button>
-            <button class="danger" onclick="hide_modal('#new_record');">Отмена</button>
+            <div class="footer">
+                <button class="success" onclick="register();">Записать</button>
+                <button class="danger" onclick="hide_modal('#new_record');">Отмена</button>
+            </div>
+        </div>
+        <div class="box context-menu">
+            <div class="list-item"><i class="bi bi-person-square"></i>&nbsp;Открыть клиента</div>
+            <div class="list-item"><i class="bi bi-pencil-square"></i>&nbsp;Изменить запись</div>
+            <div class="list-item"><i class="bi bi-trash"></i>&nbsp;Отменить запись</div>
         </div>
     </body>
     <script type="text/javascript">

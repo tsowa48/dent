@@ -145,3 +145,33 @@ main {
 .list-item {
     white-space: nowrap;
 }
+
+.context-menu {
+    display: none;
+    padding: 0;
+    position: fixed;/*absolute*/
+    z-index: 9999;
+    cursor: default;
+    height: auto;
+}
+
+.modal .header {
+    font-weight: bold;
+    text-align: center;
+    padding: 5px;
+    margin-top: -5px;
+    margin-left: -5px;
+    margin-right: -5px;
+    margin-bottom: 5px;
+    background-color: rgb(230, 230, 230);
+}
+
+.modal .footer {
+    background-color: rgb(230, 230, 230);
+    padding: 2px;
+    margin-top: 5px;
+    margin-bottom: -5px;
+    margin-left: -5px;
+    margin-right: -5px;
+    text-align: right;
+}

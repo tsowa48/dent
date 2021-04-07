@@ -6,8 +6,10 @@ import gcg.dent.entity.Slot;
 import gcg.dent.repository.ClientRepository;
 import gcg.dent.repository.EmployeeRepository;
 import gcg.dent.repository.SlotRepository;
+import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
+import io.micronaut.http.annotation.Delete;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
 
@@ -51,6 +53,12 @@ public class SlotController {
         slot.setDoctor(doctor);
         entityManager.persist(slot);
         return slot;
+    }
+
+    @Delete(uri="/{id}", produces = MediaType.APPLICATION_JSON)
+    public HttpResponse remove(Long id) {
+        slotRepository.removeById(id);
+        return HttpResponse.ok();
     }
 
 }

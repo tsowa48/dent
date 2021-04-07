@@ -64,7 +64,22 @@ function register() {
         dataType: "json",
         data: JSON.stringify(json)
     }).done(function() {
-        $('.selected_slot').html("<div class='box pink' doc='" + doc + "'><b>" + trim_fio(fio) + "</b><br><span>" + phone + "</span></div>");
+        $('.selected_slot').html("<div class='box pink' onclick='event.stopPropagation();' oncontextmenu='show_menu(this);return false;' doc='" +
+            doc + "'><b>" + trim_fio(fio) + "</b><br><span>" + phone + "</span></div>");
         hide_modal('#new_record');
     });
+}
+
+function show_menu(obj) {
+    $('.context-menu').css("display", "block");
+    $('.context-menu').css("left", mouseX);
+    $('.context-menu').css("top", mouseY);
+}
+
+var mouseX;
+var mouseY;
+
+function mouse_position(e) {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
 }
