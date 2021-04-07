@@ -2,7 +2,6 @@ package gcg.dent.service;
 
 import gcg.dent.entity.Client;
 import gcg.dent.entity.Slot;
-import gcg.dent.repository.ScheduleRepository;
 import gcg.dent.repository.SlotRepository;
 import gcg.dent.util.ObjectUtils;
 
@@ -10,6 +9,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -17,11 +17,13 @@ import java.util.stream.Collectors;
 public class CalendarService {
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("d LLL");
 
+    private static final int SLOT_SIZE = 30;//minutes
+
     @Inject
     SlotRepository slotRepository;
 
     @Inject
-    ScheduleRepository scheduleRepository;
+    ScheduleService scheduleService;
 
     public HashMap<String, Object> get(Date date) {
         HashMap<String, Object> params = new HashMap<>();
@@ -52,38 +54,43 @@ public class CalendarService {
         }
         params.put("dates", dates);
 
-        Time[] schedule = scheduleRepository.findFirstAndLast();
+        Time[] globalSchedule = scheduleService.findFirstAndLast();
         List<String> times = new ArrayList<>();
-        for (int t = schedule[0].getHours(); t < schedule[1].getHours(); t++) {
-            times.add("<div class=\"time\"><b>" + String.format("%02d", t) + "</b>:00</div>");
+        for (LocalTime t = globalSchedule[0].toLocalTime(); t.isBefore(globalSchedule[1].toLocalTime()); t = t.plusMinutes(SLOT_SIZE)) {
+            times.add("<div class=\"time\">" + String.format("%02d", t.getHour()) + ":" +
+                    String.format("%02d", t.getMinute()) + "</div>");
         }
         params.put("times", times);
         params.put("times_size", times.size());
 
         StringBuilder htmlSlots = new StringBuilder();
         for (int dow = 0; dow < 7; dow++) {//day of week
-            htmlSlots.append("<div id=\"slot." + dow + "\" class=\"day\">");
+//Time[] schedule = scheduleService.findFirstAndLast(dow);
+            htmlSlots.append("<div id=\"dow_" + dow + "\" class=\"day\">");
             final int finalDow = dow;
             List<Slot> daySlots = slots.stream()
                     .filter(s -> ObjectUtils.dow(s.getDate()) == finalDow)
                     .collect(Collectors.toList());
-            for (int t = schedule[0].getHours(); t < schedule[1].getHours(); t++) {
-                final int finalT = t;
-                boolean isWork = scheduleRepository.isWork(new Time(finalT, 0, 0));
+            for (LocalTime t = globalSchedule[0].toLocalTime(); t.isBefore(globalSchedule[1].toLocalTime()); t = t.plusMinutes(SLOT_SIZE)) {
+                final LocalTime finalT = t;
+                boolean isWork = scheduleService.isWork(Time.valueOf(finalT), finalDow);
                 if (!isWork) {
                     htmlSlots.append("<div class='slot disabled'>" + "</div>");
                     continue;
                 }
+//htmlSlots.append("<div class='slot'>temp_slot at " + finalT.toString() + "</div>");
                 List<Slot> timeSlots = daySlots.stream()
-                        .filter(s -> s.getTime() == finalT)
+                        .filter(s -> s.getTime().toLocalTime().compareTo(finalT) == 0)
                         .collect(Collectors.toList());
                 Calendar temp = (Calendar) start.clone();
                 temp.add(Calendar.DATE, dow);
                 String slotDate = String.format("%d-%02d-%02d", temp.get(Calendar.YEAR), temp.get(Calendar.MONTH) + 1, temp.get(Calendar.DATE));
-                htmlSlots.append("<div class='slot' date='" + slotDate + "' time='" + finalT + "' size='1' onclick=\"show_modal(this, '#new_record');\">");
+                htmlSlots.append("<div class='slot' date='" + slotDate + "' time='" + finalT.toString() + "' size='" + SLOT_SIZE + "' onclick=\"show_modal(this, '#new_record');\">");
                 timeSlots.forEach(ts -> {
                     Client c = ts.getClient();
-                    htmlSlots.append("<div class='box pink' onclick='event.stopPropagation();' oncontextmenu='show_menu(this);return false;' sid='" + ts.getId() + "' cid='" + c.getId() + "' doc='" + ts.getDoctor().getId() + "'><b>" + ObjectUtils.fio(c.getFio()) + "</b><br><span>" + c.getPhone() + "</span></div>");
+                    htmlSlots.append("<div class='box pink' onclick='event.stopPropagation();' oncontextmenu='show_menu(this);return false;' sid='" + ts.getId() +
+                            "' cid='" + c.getId() + "' doc='" + ts.getDoctor().getId() +
+                            "'><b>" + ObjectUtils.fio(c.getFio()) + "</b><br><span>" + c.getPhone() + "</span></div>");
                 });
                 htmlSlots.append("</div>");
             }
@@ -91,6 +98,7 @@ public class CalendarService {
         }
 
         params.put("slots", htmlSlots);
+        params.put("slot_size", SLOT_SIZE);
         return params;
     }
 }

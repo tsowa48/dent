@@ -18,6 +18,9 @@ public class Schedule {
     @Column(name = "end", nullable = false)
     private Time end;
 
+    @Column(name = "dow", nullable = false)
+    private int dow;
+
     public Long getId() {
         return id;
     }
@@ -40,5 +43,13 @@ public class Schedule {
 
     public void setEnd(Time end) {
         this.end = end;
+    }
+
+    public int getDow() {
+        return dow;
+    }
+
+    public void setDow(int dow) {
+        this.dow = dow;
     }
 }

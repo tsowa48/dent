@@ -1,6 +1,7 @@
 package gcg.dent.entity;
 
 import javax.persistence.*;
+import java.sql.Time;
 import java.util.Date;
 
 @Entity
@@ -19,10 +20,10 @@ public class Slot {
     private Date date;
 
     @Column(name = "time", nullable = false)
-    private Integer time;
+    private Time time;
 
     @Column(name = "size", nullable = false)
-    private Integer size;
+    private Time size;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cid")
@@ -49,11 +50,11 @@ public class Slot {
         this.enabled = enabled;
     }
 
-    public Integer getTime() {
+    public Time getTime() {
         return time;
     }
 
-    public void setTime(Integer time) {
+    public void setTime(Time time) {
         this.time = time;
     }
 
@@ -73,11 +74,11 @@ public class Slot {
         this.date = date;
     }
 
-    public Integer getSize() {
+    public Time getSize() {
         return size;
     }
 
-    public void setSize(Integer size) {
+    public void setSize(Time size) {
         this.size = size;
     }
 

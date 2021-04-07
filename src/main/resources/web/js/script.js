@@ -53,7 +53,7 @@ function register() {
     var phone = $("#new_record input[name='phone']").val();
     var doc = Number($("#doctors .selected").attr('doc'));
     var date = $('.selected_slot').attr('date');
-    var time = Number($('.selected_slot').attr('time'));
+    var time = $('.selected_slot').attr('time');
     var size = Number($('.selected_slot').attr('size'));
 
     var json = { fio: fio, phone: phone, doc: doc, date: date, time: time, size: size};
@@ -66,7 +66,7 @@ function register() {
         data: JSON.stringify(json)
     }).done(function(slot) {
         $('.selected_slot').html("<div class='box pink' onclick='event.stopPropagation();' oncontextmenu='show_menu(this);return false;' sid='" + slot.id +
-            "' doc='" + doc + "'><b>" + trim_fio(fio) + "</b><br><span>" + phone + "</span></div>");
+            "' doc='" + slot.doctor.id + "'><b>" + trim_fio(slot.client.fio) + "</b><br><span>" + slot.client.phone + "</span></div>");
         hide_modal('#new_record');
     });
 }

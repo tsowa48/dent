@@ -17,6 +17,7 @@ import io.micronaut.http.annotation.Post;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import java.sql.Time;
 import java.util.Date;
 import java.util.List;
 
@@ -42,14 +43,15 @@ public class SlotController {
 
     @Transactional
     @Post(uri = "/add", produces = MediaType.APPLICATION_JSON)
-    public Slot add(String fio, String phone, Long doc, Date date, Integer time, Integer size) {
+    public Slot add(String fio, String phone, Long doc, Date date, String time, Integer size) {
         List<Client> clients = clientRepository.findByFIO(fio);
         Client client = clients.stream()
                 .filter(c -> ObjectUtils.comparePhones(phone, c.getPhone()))
                 .findFirst()
                 .orElse(clientRepository.makeClient(fio, phone));
         Employee doctor = employeeRepository.getById(doc);
-        Slot slot = slotRepository.makeSlot(date, time, size);
+        String sizeTime = String.format("%02d:%02d:00", (size / 60), size % 60);
+        Slot slot = slotRepository.makeSlot(date, Time.valueOf(time + ":00"), Time.valueOf(sizeTime));
         slot.setClient(client);
         slot.setDoctor(doctor);
         entityManager.persist(slot);

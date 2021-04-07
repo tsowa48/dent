@@ -65,6 +65,7 @@
         </div>
     </body>
     <script type="text/javascript">
+        var SLOT_SIZE = {{slot_size}};
         if(!sessionStorage.getItem("currentDoc")) {
             var doc = $('#doctors:first-child').attr('doc');
             sessionStorage.setItem("currentDoc", doc);
