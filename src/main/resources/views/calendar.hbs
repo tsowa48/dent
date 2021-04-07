@@ -58,6 +58,8 @@
         </div>
     </body>
     <script type="text/javascript">
-
+        var doc = $('#doctors > .selected').attr('doc');
+        $(".slot > .box[doc!='" + doc + "']").css("display", "none");
+        $(".slot > .box[doc='" + doc + "']").css("display", "block");
     </script>
 </html>

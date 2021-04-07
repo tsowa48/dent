@@ -33,6 +33,10 @@ function select_doc(d) {
     $('#doctors > .list-item').css('background-color', '');
     $('#doctors > .selected').removeClass('selected');
     $(d).addClass('selected');
+
+    var doc = $(d).attr('doc');
+    $(".slot > .box[doc!='" + doc + "']").css("display", "none");
+    $(".slot > .box[doc='" + doc + "']").css("display", "block");
 }
 
 function trim_fio(fio) {
@@ -60,8 +64,7 @@ function register() {
         dataType: "json",
         data: JSON.stringify(json)
     }).done(function() {
-        $('.selected_slot').html("<div class='box pink'><b>" + trim_fio(fio) + "</b><br><span>" + phone + "</span></div>");
-        $('.selected_slot').removeAttr("onclick");
+        $('.selected_slot').html("<div class='box pink' doc='" + doc + "'><b>" + trim_fio(fio) + "</b><br><span>" + phone + "</span></div>");
         hide_modal('#new_record');
     });
 }

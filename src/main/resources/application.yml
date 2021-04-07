@@ -7,12 +7,9 @@ micronaut:
     port: 8090
   router:
     static-resources:
-      css:
-        paths: classpath:/web/css
-        mapping: /css/**
-      js:
-        paths: classpath:/web/js
-        mapping: /js/**
+      static:
+        paths: classpath:/web
+        mapping: /**
       swagger:
         paths: classpath:META-INF/swagger
         mapping: /gcg/swagger/**

@@ -317,3 +317,25 @@ alter table slot
 	add constraint slot_employee_id_fk
 		foreign key (doc) references employee;
 
+create table manipulation
+(
+	id bigserial not null,
+	name text not null,
+	sid bigint not null
+		constraint manipulation_service_id_fk
+			references service
+);
+
+comment on table manipulation is 'Манипуляции';
+
+comment on column manipulation.name is 'Название';
+
+comment on column manipulation.sid is 'Услуга';
+
+create unique index manipulation_id_uindex
+	on manipulation (id);
+
+alter table manipulation
+	add constraint manipulation_pk
+		primary key (id);
+
