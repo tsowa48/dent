@@ -6,6 +6,7 @@ import gcg.dent.entity.Slot;
 import gcg.dent.repository.ClientRepository;
 import gcg.dent.repository.EmployeeRepository;
 import gcg.dent.repository.SlotRepository;
+import gcg.dent.util.ObjectUtils;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
@@ -44,7 +45,7 @@ public class SlotController {
     public Slot add(String fio, String phone, Long doc, Date date, Integer time, Integer size) {
         List<Client> clients = clientRepository.findByFIO(fio);
         Client client = clients.stream()
-                .filter(c -> phone.equals(c.getPhone()))
+                .filter(c -> ObjectUtils.comparePhones(phone, c.getPhone()))
                 .findFirst()
                 .orElse(clientRepository.makeClient(fio, phone));
         Employee doctor = employeeRepository.getById(doc);

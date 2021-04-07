@@ -42,4 +42,10 @@ public class ObjectUtils {
         isEqual &= date1.getYear() == date2.getYear();
         return isEqual;
     }
+
+    public static boolean comparePhones(String phone1, String phone2) {
+        String tmpPhone1 = phone1.replaceAll("[()\\- ]", "");
+        String tmpPhone2 = phone2.replaceAll("[()\\- ]", "");
+        return tmpPhone1.equals(tmpPhone2);
+    }
 }

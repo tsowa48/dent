@@ -37,6 +37,7 @@ function select_doc(d) {
     var doc = $(d).attr('doc');
     $(".slot > .box[doc!='" + doc + "']").css("display", "none");
     $(".slot > .box[doc='" + doc + "']").css("display", "block");
+    sessionStorage.setItem("currentDoc", doc);
 }
 
 function trim_fio(fio) {
@@ -63,17 +64,21 @@ function register() {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         data: JSON.stringify(json)
-    }).done(function() {
-        $('.selected_slot').html("<div class='box pink' onclick='event.stopPropagation();' oncontextmenu='show_menu(this);return false;' doc='" +
-            doc + "'><b>" + trim_fio(fio) + "</b><br><span>" + phone + "</span></div>");
+    }).done(function(slot) {
+        $('.selected_slot').html("<div class='box pink' onclick='event.stopPropagation();' oncontextmenu='show_menu(this);return false;' sid='" + slot.id +
+            "' doc='" + doc + "'><b>" + trim_fio(fio) + "</b><br><span>" + phone + "</span></div>");
         hide_modal('#new_record');
     });
 }
+
+var currentSlot;
 
 function show_menu(obj) {
     $('.context-menu').css("display", "block");
     $('.context-menu').css("left", mouseX);
     $('.context-menu').css("top", mouseY);
+    var slot = $(obj).attr('sid');
+    currentSlot = slot;
 }
 
 var mouseX;
@@ -82,4 +87,13 @@ var mouseY;
 function mouse_position(e) {
     mouseX = e.clientX;
     mouseY = e.clientY;
+}
+
+function remove_slot() {
+    $.ajax({
+        url: "/slot/" + currentSlot,
+        method: "DELETE",
+    }).done(function() {
+        $(".slot > .box[sid='" + currentSlot + "']").remove();
+    });
 }

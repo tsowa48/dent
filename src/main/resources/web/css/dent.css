@@ -175,3 +175,7 @@ main {
     margin-right: -5px;
     text-align: right;
 }
+
+.list-item.disabled {
+    cursor: not-allowed;
+}

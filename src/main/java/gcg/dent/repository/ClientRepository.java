@@ -19,17 +19,15 @@ public class ClientRepository {
     @ReadOnly
     public List<Client> findByFIO(String fio) {
         return entityManager
-                .createQuery("select C from Client C where C.fio = :fio")
-                .setParameter("fio", fio)
+                .createQuery("select C from Client C where lower(C.fio) = :fio")
+                .setParameter("fio", fio.toLowerCase())
                 .getResultList();
     }
 
-    @Transactional
     public Client makeClient(String fio, String phone) {
         Client client = new Client();
         client.setFio(fio);
         client.setPhone(phone);
-        entityManager.persist(client);
         return client;
     }
 

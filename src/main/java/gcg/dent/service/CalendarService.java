@@ -83,7 +83,7 @@ public class CalendarService {
                 htmlSlots.append("<div class='slot' date='" + slotDate + "' time='" + finalT + "' size='1' onclick=\"show_modal(this, '#new_record');\">");
                 timeSlots.forEach(ts -> {
                     Client c = ts.getClient();
-                    htmlSlots.append("<div class='box pink' onclick='event.stopPropagation();' oncontextmenu='show_menu(this);return false;' cid='" + c.getId() + "' doc='" + ts.getDoctor().getId() + "'><b>" + ObjectUtils.fio(c.getFio()) + "</b><br><span>" + c.getPhone() + "</span></div>");
+                    htmlSlots.append("<div class='box pink' onclick='event.stopPropagation();' oncontextmenu='show_menu(this);return false;' sid='" + ts.getId() + "' cid='" + c.getId() + "' doc='" + ts.getDoctor().getId() + "'><b>" + ObjectUtils.fio(c.getFio()) + "</b><br><span>" + c.getPhone() + "</span></div>");
                 });
                 htmlSlots.append("</div>");
             }

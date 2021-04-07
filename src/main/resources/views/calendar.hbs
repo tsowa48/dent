@@ -28,7 +28,7 @@
             <br>
             <div id="doctors">
                 {{#each doctors}}
-                    <div class="list-item {{#if @first}}selected{{/if}}" onclick="select_doc(this);" doc="{{this.id}}">{{this.fio}}</div>
+                    <div class="list-item" onclick="select_doc(this);" doc="{{this.id}}">{{this.fio}}</div>
                 {{/each}}
             </div>
         </nav>
@@ -59,14 +59,18 @@
             </div>
         </div>
         <div class="box context-menu">
-            <div class="list-item"><i class="bi bi-person-square"></i>&nbsp;Открыть клиента</div>
-            <div class="list-item"><i class="bi bi-pencil-square"></i>&nbsp;Изменить запись</div>
-            <div class="list-item"><i class="bi bi-trash"></i>&nbsp;Отменить запись</div>
+            <div class="list-item disabled"><i class="bi bi-person-square"></i>&nbsp;Открыть клиента</div>
+            <div class="list-item disabled"><i class="bi bi-pencil-square"></i>&nbsp;Изменить запись</div>
+            <div class="list-item" onclick="remove_slot();"><i class="bi bi-trash"></i>&nbsp;Отменить запись</div>
         </div>
     </body>
     <script type="text/javascript">
-        var doc = $('#doctors > .selected').attr('doc');
-        $(".slot > .box[doc!='" + doc + "']").css("display", "none");
-        $(".slot > .box[doc='" + doc + "']").css("display", "block");
+        if(!sessionStorage.getItem("currentDoc")) {
+            var doc = $('#doctors:first-child').attr('doc');
+            sessionStorage.setItem("currentDoc", doc);
+        }
+        $("#doctors > .list-item[doc='" + sessionStorage.getItem("currentDoc") + "'").addClass('selected');
+        $(".slot > .box[doc!='" + sessionStorage.getItem("currentDoc") + "']").css("display", "none");
+        $(".slot > .box[doc='" + sessionStorage.getItem("currentDoc") + "']").css("display", "block");
     </script>
 </html>
