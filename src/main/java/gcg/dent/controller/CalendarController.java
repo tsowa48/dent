@@ -31,7 +31,7 @@ public class CalendarController {
     public HttpResponse<HashMap<String, Object>> calendar(Integer week) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
-        calendar.add(Calendar.DATE, week     * 7);
+        calendar.add(Calendar.DATE, week * 7);
 
         HashMap<String, Object> params = calendarService.get(calendar.getTime());
 

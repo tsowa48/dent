@@ -19,7 +19,7 @@ import javax.transaction.Transactional;
 import java.sql.Time;
 import java.util.Date;
 
-@Controller("/slot")
+@Controller("/api/slot")
 public class SlotController {
 
     @Inject

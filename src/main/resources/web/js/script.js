@@ -59,7 +59,7 @@ function register() {
     var json = { fio: fio, phone: phone, doc: doc, date: date, time: time, size: size};
 
     $.ajax({
-        url: "/slot/add",
+        url: "/api/slot/add",
         method: "POST",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -91,7 +91,7 @@ function mouse_position(e) {
 
 function remove_slot() {
     $.ajax({
-        url: "/slot/" + currentSlot,
+        url: "/api/slot/" + currentSlot,
         method: "DELETE",
     }).done(function() {
         $(".slot > .box[sid='" + currentSlot + "']").remove();

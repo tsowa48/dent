@@ -6,13 +6,58 @@
     <link rel="stylesheet" href="/css/style.css?"/>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
-<body class="container">
+<body class="container" style="display: flex;flex-direction: row;">
     <nav>
-        <div class="list-item">Организация</div>
-        <div class="list-item">Сотрудники</div>
+        <div class="list-item" onclick="show_company();">Организация</div>
+        <div class="list-item" onclick="show_employee();">Сотрудники</div>
     </nav>
-    <main class="container">
+    <main>
+        <div id="company" style="display:none;">
 
+        </div>
     </main>
+
+    <div id="modal_company" class="box modal">
+        <div class="header"><span id="header_text"></span><i class="bi bi-x button danger" style="float:right;padding:0" title="Закрыть" onclick="hide_modal('#modal_company');"></i></div>
+        <input type="text" class="text" name="fio" placeholder="ФИО" autofocus/>
+        <br>
+        <input type="tel" class="text" name="phone" placeholder="Телефон"/>
+        <div class="footer">
+            <button class="success" onclick="register();">Записать</button>
+            <button class="danger" onclick="hide_modal('#modal_company');">Отмена</button>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        function show_company() {
+            $("main *").css("display", "none");
+            $("#company").css("display", "block");
+            $.ajax({
+                url: "/api/company",
+                method: "GET",
+            }).done(function(data) {
+                $("#company").empty();
+                data.forEach((c) => {
+                    $("#company").append("<div class='list-item' cid='" + c.id +
+                        "' onclick='company_modal(this, \"#modal_company\")'>" +
+                        c.name + "</div>");
+                });
+            });
+        }
+
+        function show_employee() {
+
+        }
+
+        function company_modal(e, m) {
+            $(id).css("display", "block");
+            $('#modal_company .header #header_text').val($(e).val());
+            //$('.selected_slot').removeClass('selected_slot');
+            //$(e).addClass('selected_slot');
+            $(id).center();
+            var cover = $("<div class='cover' onclick=\"hide_modal('.modal');\"></div>");
+            $(id).before(cover);
+        }
+    </script>
 </body>
 </html>
