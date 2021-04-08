@@ -5,12 +5,13 @@ import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.views.View;
 
-@Controller
-public class IndexController {
+@Controller("/reference")
+public class ReferenceController {
 
-    @View("index")
+    @View("reference")
     @Get
     public HttpResponse get() {
         return HttpResponse.ok();
     }
+
 }

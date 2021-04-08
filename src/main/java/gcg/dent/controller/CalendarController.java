@@ -11,7 +11,7 @@ import io.micronaut.views.View;
 import javax.inject.Inject;
 import java.util.*;
 
-@Controller("/calendar")
+@Controller
 public class CalendarController {
 
     @Inject
@@ -21,19 +21,25 @@ public class CalendarController {
     EmployeeRepository employeeRepository;
 
     @View("calendar")
+    @Get
+    public HttpResponse<HashMap<String, Object>> calendar() {
+        return calendar(0);
+    }
+
+    @View("calendar")
     @Get(uri = "/{week}")
-    public HttpResponse<HashMap<String, Object>> calendar(Optional<Integer> week) {
+    public HttpResponse<HashMap<String, Object>> calendar(Integer week) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
-        calendar.add(Calendar.DATE, week.orElse(0) * 7);
+        calendar.add(Calendar.DATE, week     * 7);
 
         HashMap<String, Object> params = calendarService.get(calendar.getTime());
 
         List<Employee> employee = employeeRepository.getScheduled();
         params.put("doctors", employee);
 
-        params.put("prev", week.orElse(0) - 1);
-        params.put("next", week.orElse(0) + 1);
+        params.put("prev", week - 1);
+        params.put("next", week + 1);
         return HttpResponse.ok(params);
     }
 }
