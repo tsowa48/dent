@@ -67,7 +67,7 @@
     <script type="text/javascript">
         var SLOT_SIZE = {{slot_size}};
         if(!sessionStorage.getItem("currentDoc")) {
-            var doc = $('#doctors:first-child').attr('doc');
+            var doc = $('#doctors .list-item:first-child').attr('doc');
             sessionStorage.setItem("currentDoc", doc);
         }
         $("#doctors > .list-item[doc='" + sessionStorage.getItem("currentDoc") + "'").addClass('selected');

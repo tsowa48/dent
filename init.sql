@@ -249,7 +249,7 @@ create table slot
 	id bigserial not null,
 	enabled boolean not null,
 	date date not null,
-	time int not null,
+	time time not null,
 	cid bigint
 		constraint slot_client_id_fk
 			references client
@@ -273,7 +273,7 @@ alter table slot
 		primary key (id);
 
 alter table slot
-	add size int not null;
+	add size time not null;
 
 comment on column slot.size is 'Размер слота';
 
