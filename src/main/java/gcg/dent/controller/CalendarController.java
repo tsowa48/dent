@@ -14,8 +14,6 @@ import java.util.*;
 @Controller("/calendar")
 public class CalendarController {
 
-    final int DOCTOR = 2;
-
     @Inject
     CalendarService calendarService;
 
@@ -31,7 +29,7 @@ public class CalendarController {
 
         HashMap<String, Object> params = calendarService.get(calendar.getTime());
 
-        List<Employee> employee = employeeRepository.getByType(DOCTOR);
+        List<Employee> employee = employeeRepository.getScheduled();
         params.put("doctors", employee);
 
         params.put("prev", week.orElse(0) - 1);

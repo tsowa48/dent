@@ -6,7 +6,6 @@ import gcg.dent.entity.Slot;
 import gcg.dent.repository.ClientRepository;
 import gcg.dent.repository.EmployeeRepository;
 import gcg.dent.repository.SlotRepository;
-import gcg.dent.util.ObjectUtils;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
@@ -19,7 +18,6 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.sql.Time;
 import java.util.Date;
-import java.util.List;
 
 @Controller("/slot")
 public class SlotController {
@@ -44,11 +42,7 @@ public class SlotController {
     @Transactional
     @Post(uri = "/add", produces = MediaType.APPLICATION_JSON)
     public Slot add(String fio, String phone, Long doc, Date date, String time, Integer size) {
-        List<Client> clients = clientRepository.findByFIO(fio);
-        Client client = clients.stream()
-                .filter(c -> ObjectUtils.comparePhones(phone, c.getPhone()))
-                .findFirst()
-                .orElse(clientRepository.makeClient(fio, phone));
+        Client client = clientRepository.find(fio, phone);
         Employee doctor = employeeRepository.getById(doc);
         String sizeTime = String.format("%02d:%02d:00", (size / 60), size % 60);
         Slot slot = slotRepository.makeSlot(date, Time.valueOf(time + ":00"), Time.valueOf(sizeTime));

@@ -14,8 +14,12 @@ public class Employee {
     @Column(name = "fio", nullable = false)
     private String fio;
 
-    @Column(name = "type", nullable = false)
-    private int type;
+    @Column(name = "post", nullable = false)
+    private String post;
+
+    @Column(name = "is_scheduled", nullable = false)
+    private boolean isScheduled;
+
 
     public Long getId() {
         return id;
@@ -33,11 +37,19 @@ public class Employee {
         this.fio = fio;
     }
 
-    public int getType() {
-        return type;
+    public String getPost() {
+        return post;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setPost(String post) {
+        this.post = post;
+    }
+
+    public boolean isScheduled() {
+        return isScheduled;
+    }
+
+    public void setScheduled(boolean scheduled) {
+        isScheduled = scheduled;
     }
 }

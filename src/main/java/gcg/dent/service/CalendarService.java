@@ -65,7 +65,6 @@ public class CalendarService {
 
         StringBuilder htmlSlots = new StringBuilder();
         for (int dow = 0; dow < 7; dow++) {//day of week
-//Time[] schedule = scheduleService.findFirstAndLast(dow);
             htmlSlots.append("<div id=\"dow_" + dow + "\" class=\"day\">");
             final int finalDow = dow;
             List<Slot> daySlots = slots.stream()
@@ -78,7 +77,6 @@ public class CalendarService {
                     htmlSlots.append("<div class='slot disabled'>" + "</div>");
                     continue;
                 }
-//htmlSlots.append("<div class='slot'>temp_slot at " + finalT.toString() + "</div>");
                 List<Slot> timeSlots = daySlots.stream()
                         .filter(s -> s.getTime().toLocalTime().compareTo(finalT) == 0)
                         .collect(Collectors.toList());

@@ -7,7 +7,6 @@ import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
-import java.util.List;
 
 @Singleton
 public class ClientRepository {
@@ -16,29 +15,31 @@ public class ClientRepository {
     private EntityManager entityManager;
 
     @Transactional
-    @ReadOnly
-    public List<Client> findByFIO(String fio) {
-        return entityManager
-                .createQuery("select C from Client C where lower(C.fio) = :fio")
-                .setParameter("fio", fio.toLowerCase())
-                .getResultList();
-    }
-
     public Client makeClient(String fio, String phone) {
         Client client = new Client();
         client.setFio(fio);
         client.setPhone(phone);
+        entityManager.persist(client);
         return client;
     }
 
     @Transactional
     @ReadOnly
-    public List<Client> findBySubFIO(String subFio) {
-        String subFioLike = "%" + subFio.replace(" ", "% %") + "%";
-        return entityManager
-                .createNativeQuery("select C.* from client C where C.fio like :subFio", Client.class)
-                .setParameter("subFio", subFioLike)
-                .getResultList();
+    public Client findById(Long id) {
+        return entityManager.find(Client.class, id);
     }
 
+    @Transactional
+    public Client find(String fio, String phone) {
+        try {
+            String normalizedPhone = phone.replaceAll("[^0-9]", "");
+            return (Client)entityManager
+                    .createNativeQuery("select * from client where lower(fio) ~* (:fio) and regexp_replace(phone, '[^0-9]', '', 'g') = (:phone)", Client.class)
+                    .setParameter("fio", fio.toLowerCase())
+                    .setParameter("phone", normalizedPhone)
+                    .getSingleResult();
+        } catch(Exception ex) {
+            return makeClient(fio, phone);
+        }
+    }
 }

@@ -17,10 +17,9 @@ public class EmployeeRepository {
 
     @Transactional
     @ReadOnly
-    public List<Employee> getByType(int type) {
+    public List<Employee> getScheduled() {
         return entityManager
-                .createQuery("select E from Employee E where E.type = :type order by E.fio", Employee.class)
-                .setParameter("type", type)
+                .createQuery("select E from Employee E where E.isScheduled = true order by E.fio", Employee.class)
                 .getResultList();
     }
 
