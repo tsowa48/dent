@@ -27,9 +27,9 @@ public class Patient {
     @Column(name = "sex", nullable = false)
     private Boolean isMale;
 
-    //@ManyToOne(fetch = FetchType.LAZY)
-    //@JoinColumn(name = "fid")
-    //private FindOut findOut;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fid")
+    private FindOut findOut;
 
 
     public Long getId() {
@@ -78,5 +78,13 @@ public class Patient {
 
     public void setMale(Boolean male) {
         isMale = male;
+    }
+
+    public FindOut getFindOut() {
+        return findOut;
+    }
+
+    public void setFindOut(FindOut findOut) {
+        this.findOut = findOut;
     }
 }

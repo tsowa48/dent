@@ -15,7 +15,7 @@ public class Service {
     private String name;
 
     @Column(name = "price", nullable = false)
-    private Integer price;
+    private Double price;
 
     public void setId(Long id) {
         this.id = id;
@@ -33,11 +33,11 @@ public class Service {
         return name;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
-    public Integer getPrice() {
+    public Double getPrice() {
         return price;
     }
 }

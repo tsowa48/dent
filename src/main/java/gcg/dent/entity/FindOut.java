@@ -6,8 +6,8 @@ import javax.persistence.*;
 @Table(name = "find_out", schema = "public")
 public class FindOut {
     @Id
-    @SequenceGenerator(name = "findOut_id_seq", sequenceName = "public.findOut_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "findOut_id_seq")
+    @SequenceGenerator(name = "find_out_id_seq", sequenceName = "public.find_out_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "find_out_id_seq")
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 

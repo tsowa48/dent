@@ -7,8 +7,8 @@ import java.util.Date;
 @Table(name = "contract", schema = "public")
 public class Contract {
     @Id
-    @SequenceGenerator(name = "contact_id_seq", sequenceName = "public.contact_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "contact_id_seq")
+    @SequenceGenerator(name = "contract_id_seq", sequenceName = "public.contract_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "contract_id_seq")
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
@@ -22,20 +22,20 @@ public class Contract {
     private String warranty;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cid")
+    @JoinColumn(name = "cid", nullable = false)
     private Company company;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name ="doc")
-    private Employee employee;
+    @JoinColumn(name ="doc", nullable = false)
+    private Employee doctor;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pid")
-    private Client client;
+    private Patient patient;
 
-    /*@ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tech")
-    private */
+    private Employee tech;
 
 
     public void setId(Long id) {
@@ -78,19 +78,27 @@ public class Contract {
         return company;
     }
 
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
+    public Employee getDoctor() {
+        return doctor;
     }
 
-    public Employee getEmployee() {
-        return employee;
+    public void setDoctor(Employee doctor) {
+        this.doctor = doctor;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public Patient getPatient() {
+        return patient;
     }
 
-    public Client getClient() {
-        return client;
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
+
+    public Employee getTech() {
+        return tech;
+    }
+
+    public void setTech(Employee tech) {
+        this.tech = tech;
     }
 }

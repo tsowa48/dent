@@ -7,6 +7,8 @@ import java.util.Date;
 @Table(name = "act", schema = "public")
 public class Act {
     @Id
+    @SequenceGenerator(name = "act_id_seq", sequenceName = "public.act_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "act_id_seq")
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 

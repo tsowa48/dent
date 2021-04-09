@@ -25,6 +25,14 @@ public class EmployeeRepository {
 
     @Transactional
     @ReadOnly
+    public List<Employee> getAll() {
+        return entityManager
+                .createQuery("select E from Employee order by E.fio")
+                .getResultList();
+    }
+
+    @Transactional
+    @ReadOnly
     public Employee getById(Long id) {
         return entityManager.find(Employee.class, id);
     }

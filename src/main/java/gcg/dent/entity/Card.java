@@ -19,7 +19,7 @@ public class Card {
     private Date date;
 
     @Column(name = "diagnosis", nullable = false)
-    private String diagnostic;
+    private String diagnosis;
 
     @Column(name = "complaints", nullable = false)
     private String complaints;
@@ -33,7 +33,7 @@ public class Card {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pid")
-    private Client client;
+    private Patient patient;
 
     public void setId(Long id) {
         this.id = id;
@@ -43,12 +43,12 @@ public class Card {
         return id;
     }
 
-    public void setDiagnostic(String diagnostic) {
-        this.diagnostic = diagnostic;
+    public void setDiagnosis(String diagnosis) {
+        this.diagnosis = diagnosis;
     }
 
-    public String getDiagnostic() {
-        return diagnostic;
+    public String getDiagnosis() {
+        return diagnosis;
     }
 
     public void setComplaints(String complaints) {
@@ -91,11 +91,11 @@ public class Card {
         this.doc = doc;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 
-    public Client getClient() {
-        return client;
+    public Patient getPatient() {
+        return patient;
     }
 }
