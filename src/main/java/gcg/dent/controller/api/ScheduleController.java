@@ -25,7 +25,7 @@ public class ScheduleController {
         return scheduleRepository.findAll();
     }
 
-    @Get(uri = "/{dow}", produces = MediaType.APPLICATION_JSON)
+    @Get(uri = "/dow/{dow}", produces = MediaType.APPLICATION_JSON)
     public List<Schedule> getByDow(Integer dow)
     {
         return scheduleRepository.getByDow(dow);

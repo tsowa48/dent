@@ -45,7 +45,7 @@ public class ScheduleRepository {
     public Schedule findById(Long id) {
         return entityManager.find(Schedule.class, id);
     }
-//region cud
+
     @Transactional
     public Schedule addRecord(Schedule schedule)
     {
@@ -53,17 +53,18 @@ public class ScheduleRepository {
         entityManager.persist(schedule);
         return schedule;
     }
-@Transactional
+
+    @Transactional
     public Schedule update(Schedule schedule)
     {
         entityManager.merge(schedule);
         return schedule;
     }
-@Transactional
+
+    @Transactional
     public void removeById(Long id){
         entityManager.createQuery("delete from Schedule S where S.id = :id")
                 .setParameter("id", id)
                 .executeUpdate();
     }
-    //endregion
 }
