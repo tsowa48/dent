@@ -99,23 +99,53 @@ function remove_slot() {
     });
 }
 
-function show_company() {
+function show_reference(id) {
     $(".reference").css("display", "none");
-    $(".reference#company").css("display", "block");
+    $(".reference#" + id).css("display", "block");
 }
 
 function company_modal(e, id) {
     $(id).css("display", "block");
-    $('#modal_company .header #header_text').text($(e).text());
+    $(id + " .header #header_text").text($(e).text());
     if(Number($(e).attr('cid')) > 0) {
-        $("#modal_company input[name='cid']").val($(e).attr('cid'));
-        $("#modal_company input[name='name']").val($(e).text());
-        $("#modal_company input[name='address']").val($(e).attr('address'));
-        $("#modal_company input[name='director']").val($(e).attr('director'));
-        $("#modal_company .footer .danger").css("display", "inline-flex");
+        $(id + " input[name='cid']").val($(e).attr('cid'));
+        $(id + " input[name='name']").val($(e).text());
+        $(id + " input[name='address']").val($(e).attr('address'));
+        $(id + " input[name='director']").val($(e).attr('director'));
+        $(id + " .footer .danger").css("display", "inline-flex");
     } else {
-        $("#modal_company .footer .danger").css("display", "none");
+        $(id + " .footer .danger").css("display", "none");
     }
+    $(id + " input:first").focus();
+    $(id).center();
+    var cover = $("<div class='cover' onclick=\"hide_modal('.modal');\"></div>");
+    $(id).before(cover);
+}
+
+function employee_modal(e, id) {
+    $(id).css("display", "block");
+    $(id + " .header #header_text").text($(e).text());
+
+    $(id + " select[name='cid']").empty();
+    $(id + " input[name='schedule']").removeAttr("checked");
+    $("#company.reference .list-item[cid!='0']").each(function() {
+        $(id + " select[name='cid']").append("<option value='" + $(this).attr('cid') + "'>" + $(this).text() + "</option>");
+    });
+
+    if(Number($(e).attr('eid')) > 0) {
+        $(id + " input[name='eid']").val($(e).attr('eid'));
+        $(id + " input[name='fio']").val($(e).text());
+        $(id + " input[name='post']").val($(e).attr('post'));
+        $(id + " select[name='cid']").val($(e).attr('cid')).change();
+        if($(e).attr('scheduled') == 'true') {
+            $(id + " input[name='schedule']").attr("checked", "checked");
+        }
+        $(id + " .footer .danger").css("display", "inline-flex");
+    } else {
+        $(id + " select[name='cid']:first-child").change();
+        $(id + " .footer .danger").css("display", "none");
+    }
+    $("#employee_schedule").css("width", $(id + " input[name='fio']").css("width"));
     $(id + " input:first").focus();
     $(id).center();
     var cover = $("<div class='cover' onclick=\"hide_modal('.modal');\"></div>");
@@ -130,6 +160,17 @@ function remove_company() {
     }).done(function() {
         $("#company .list-item[cid='" + id + "']").remove();
         hide_modal('#modal_company');
+    });
+}
+
+function remove_employee() {
+    var id = $("#modal_employee input[name='eid']").val();
+    $.ajax({
+        url: "/api/employee/" + id,
+        method: "DELETE"
+    }).done(function() {
+        $("#employee .list-item[eid='" + id + "']").remove();
+        hide_modal('#modal_employee');
     });
 }
 
@@ -155,5 +196,33 @@ function save_company() {
         $("#company .list-item[cid='" + company.id + "']").attr("address", company.address);
         $("#company .list-item[cid='" + company.id + "']").attr("director", company.director);
         hide_modal('#modal_company');
+    });
+}
+
+function save_employee() {
+    var eid = Number($("#modal_employee input[name='eid']").val());
+    var cid = Number($("#modal_employee select[name='cid']").val());
+    var fio = $("#modal_employee input[name='fio']").val();
+    var post = $("#modal_employee input[name='post']").val();
+    var scheduled = $("#modal_employee input[name='schedule']").prop('checked') !== false;
+
+    var json = { id: eid, company: {id: cid}, fio: fio, post: post, scheduled: scheduled};
+
+    var method = (eid > 0 ? "PUT" : "POST");
+    $.ajax({
+        url: "/api/employee/",
+        method: method,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        data: JSON.stringify(json)
+    }).done(function(employee) {
+        if(method === "POST") {
+            $('#employee').append("<div class='list-item' eid='" + employee.id + "' onclick='employee_modal(this, \"#modal_employee\")'></div>");
+        }
+        $("#employee .list-item[eid='" + employee.id + "']").text(employee.fio);
+        $("#employee .list-item[eid='" + employee.id + "']").attr("cid", employee.company.id);
+        $("#employee .list-item[eid='" + employee.id + "']").attr("post", employee.post);
+        $("#employee .list-item[eid='" + employee.id + "']").attr("scheduled", employee.scheduled);
+        hide_modal('#modal_employee');
     });
 }

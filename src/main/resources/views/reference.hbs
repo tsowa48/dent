@@ -11,16 +11,23 @@
 </head>
 <body class="container">
     <nav>
-        <div class="list-item" onclick="show_company();">Организации</div>
-        <div class="list-item disabled" onclick="show_employee();">Сотрудники</div>
-        <div class="list-item disabled" onclick="show_manipulation();">Манипуляции</div>
-        <div class="list-item disabled" onclick="show_service();">Услуги</div>
+        <div class="list-item" onclick="show_reference('company');">Организации</div>
+        <div class="list-item disabled" onclick="show_reference('schedule');">График работы</div>
+        <div class="list-item" onclick="show_reference('employee');">Сотрудники</div>
+        <div class="list-item disabled" onclick="show_reference('service');">Услуги</div>
+        <div class="list-item disabled" onclick="show_reference('manipulation');">Манипуляции</div>
     </nav>
     <main id="main">
         <div id="company" style="display:none;" class="reference">
-            <div class="list-item success" cid="0" style="font-weight: bold;" onclick='company_modal(this, "#modal_company")'>Добавить новую организацию</div>
+            <div class="list-item success" cid="0" style="font-weight: bold;" onclick='company_modal(this, "#modal_company")'>Добавить организацию</div>
             {{#each company}}
                 <div class='list-item' cid='{{this.id}}' address='{{this.address}}' director='{{this.director}}' onclick='company_modal(this, "#modal_company")'>{{this.name}}</div>
+            {{/each}}
+        </div>
+        <div id="employee" style="display:none;" class="reference">
+            <div class="list-item success" eid="0" style="font-weight: bold;" onclick='employee_modal(this, "#modal_employee")'>Добавить сотрудника</div>
+            {{#each employee}}
+                <div class='list-item' eid='{{this.id}}' cid='{{this.company.id}}' post='{{this.post}}' scheduled='{{this.scheduled}}' onclick='employee_modal(this, "#modal_employee")'>{{this.fio}}</div>
             {{/each}}
         </div>
     </main>
@@ -37,6 +44,25 @@
         <div class="footer">
             <button class="success" onclick="save_company();">Сохранить</button>
             <button class="danger" onclick="remove_company();">Удалить</button>
+        </div>
+    </div>
+    <div id="modal_employee" class="box modal">
+        <div class="header"><span id="header_text"></span><i class="bi bi-x button danger" style="float:right;padding:0" title="Закрыть" onclick="hide_modal('#modal_employee');"></i></div>
+        <input type="hidden" name="eid"/>
+        <select name="cid" class="text" style="width:100%;cursor:pointer;">
+        </select>
+        <br>
+        <input type="text" class="text" name="fio" placeholder="ФИО"/>
+        <br>
+        <input type="text" class="text" name="post" placeholder="Должность"/>
+        <br>
+        <div class="text" id="employee_schedule" style="cursor:pointer;">
+            <input type="checkbox" name="schedule" style="margin:0;margin-top:3px;min-width:15px;width:15px;min-height:15px;"/>
+            <div style="display:inline-block;margin-top:-3px;vertical-align: text-top;">Принимает пациентов</div>
+        </div>
+        <div class="footer">
+            <button class="success" onclick="save_employee();">Сохранить</button>
+            <button class="danger" onclick="remove_employee();">Удалить</button>
         </div>
     </div>
 
