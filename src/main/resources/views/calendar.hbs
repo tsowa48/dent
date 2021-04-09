@@ -23,10 +23,11 @@
             </div>
             <hr-->
             <div class="group">
-                <a title="Предыдущая неделя" class="button" id="prev" href="{{prev}}" style="font-size: 14px"><i class="bi bi-chevron-left"></i></a>
-                <a title="Текущая неделя" class="button" id="prev" href="0" style="font-size: 14px"><i class="bi bi-calendar-event"></i></a>
-                <a title="Следущая неделя" class="button" id="next" href="{{next}}" style="font-size: 14px"><i class="bi bi-chevron-right"></i></a>
+                <a title="Предыдущая неделя" class="button" id="prev" href="/week/{{prev}}" style="font-size: 14px"><i class="bi bi-chevron-left"></i></a>
+                <a title="Текущая неделя" class="button" id="prev" href="/week/0" style="font-size: 14px"><i class="bi bi-calendar-event"></i></a>
+                <a title="Следущая неделя" class="button" id="next" href="/week/{{next}}" style="font-size: 14px"><i class="bi bi-chevron-right"></i></a>
             </div>
+            <a title="Справочники" class="button" href="/reference/" style="font-size: 14px"><i class="bi bi-card-list">Справочники</i></a>
             <!--br>
             <div class="month">
 
@@ -56,7 +57,7 @@
 
         <div class="box modal" id="new_record">
             <div class="header">Новая запись<i class="bi bi-x button danger" style="float:right;padding:0" title="Закрыть" onclick="hide_modal('#new_record');"></i></div>
-            <input type="text" class="text" name="fio" placeholder="ФИО" autofocus/>
+            <input type="text" class="text" name="fio" placeholder="ФИО"/>
             <br>
             <input type="tel" class="text" name="phone" placeholder="Телефон"/>
             <div class="footer">

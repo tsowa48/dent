@@ -98,12 +98,18 @@ main {
     margin: 2px;
 }
 
+.modal input {
+    width: 100%;
+}
+
 .selected_slot {
     background-color: rgb(75, 159, 213);
 }
 
 .cover {
     position: fixed;
+    left: 0;
+    top: 0;
     width: 100%;
     height: 100%;
     background-color: rgb(112, 117, 122);
@@ -142,10 +148,6 @@ main {
     border-bottom-right-radius: 2px;
 }
 
-.list-item.selected {
-    background-color: #cae3f2;
-}
-
 .list-item {
     white-space: nowrap;
 }
@@ -182,4 +184,9 @@ main {
 
 .list-item.disabled {
     cursor: not-allowed;
+    border-color: rgb(221, 221, 221);
+}
+
+.reference .list-item {
+    text-align: center;
 }

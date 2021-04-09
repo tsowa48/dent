@@ -162,9 +162,18 @@ input[type='text']:active, input[type='text']:focus, .text:active, .text:focus {
 .list-item:hover {
     border-color: rgb(75, 159, 213);
 }
-.list-item:active, .list-item:focus {
+.list-item:active, .list-item:focus, .list-item.selected {
     border-color: rgb(75, 159, 213);
     background-color: #cae3f2;
+}
+
+.list-item.success:hover {
+    border-color: rgb(0, 170, 0);
+}
+
+.list-item.success:active, .list-item.success:focus, .list-item.success.selected {
+    border-color: rgb(0, 170, 0);
+    background-color: #caf2e3;
 }
 
 .table {

@@ -18,6 +18,7 @@ function show_modal(e, id) {
     $('.selected_slot').removeClass('selected_slot');
     $(e).addClass('selected_slot');
     $(id).center();
+    $(id + " input:first").focus();
     var cover = $("<div class='cover' onclick=\"hide_modal('.modal');\"></div>");
     $(id).before(cover);
 }
@@ -95,5 +96,61 @@ function remove_slot() {
         method: "DELETE",
     }).done(function() {
         $(".slot > .box[sid='" + currentSlot + "']").remove();
+    });
+}
+
+function show_company() {
+    $(".reference").css("display", "none");
+    $(".reference#company").css("display", "block");
+}
+
+function company_modal(e, id) {
+    $(id).css("display", "block");
+    $('#modal_company .header #header_text').text($(e).text());
+    if(Number($(e).attr('cid')) > 0) {
+        $("#modal_company input[name='cid']").val($(e).attr('cid'));
+        $("#modal_company input[name='name']").val($(e).text());
+        $("#modal_company input[name='address']").val($(e).attr('address'));
+        $("#modal_company input[name='director']").val($(e).attr('director'));
+    }
+    $(id + " input:first").focus();
+    $(id).center();
+    var cover = $("<div class='cover' onclick=\"hide_modal('.modal');\"></div>");
+    $(id).before(cover);
+}
+
+function remove_company() {
+    var id = $("#modal_company input[name='cid']").val();
+    $.ajax({
+        url: "/api/company/" + id,
+        method: "DELETE"
+    }).done(function() {
+        $("#company .list-item[cid='" + id + "']").remove();
+        hide_modal('#modal_company');
+    });
+}
+
+function save_company() {
+    var cid = Number($("#modal_company input[name='cid']").val());
+    var name = $("#modal_company input[name='name']").val();
+    var address = $("#modal_company input[name='address']").val();
+    var director = $("#modal_company input[name='director']").val();
+
+    var json = { id: cid, name: name, address: address, director: director};
+    var method = (cid > 0 ? "PUT" : "POST");
+    $.ajax({
+        url: "/api/company/",
+        method: method,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        data: JSON.stringify(json)
+    }).done(function(company) {
+        if(method === "POST") {
+            $('#company').append("<div class='list-item' cid='" + company.id + "' onclick='company_modal(this, \"#modal_company\")'></div>");
+        }
+        $("#company .list-item[cid='" + company.id + "']").text(company.name);
+        $("#company .list-item[cid='" + company.id + "']").attr("address", company.address);
+        $("#company .list-item[cid='" + company.id + "']").attr("director", company.director);
+        hide_modal('#modal_company');
     });
 }

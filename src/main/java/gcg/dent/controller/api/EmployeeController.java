@@ -7,12 +7,23 @@ import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;
 
 import javax.inject.Inject;
+import java.util.List;
 
 @Controller("/api/employee")
 public class EmployeeController {
 
     @Inject
     EmployeeRepository employeeRepository;
+
+    @Get(uri = "/{id}", produces = MediaType.APPLICATION_JSON)
+    public Employee get(Long id) {
+        return employeeRepository.getById(id);
+    }
+
+    @Get(produces = MediaType.APPLICATION_JSON)
+    public List<Employee> getAll() {
+        return employeeRepository.getAll();
+    }
 
     @Post(produces = MediaType.APPLICATION_JSON)
     public Employee add(Employee employee) {

@@ -22,4 +22,14 @@ public class ScheduleRepository {
                 .createQuery("select S from Schedule S", Schedule.class)
                 .getResultList();
     }
+
+    @Transactional
+    @ReadOnly
+    public Boolean isEmpty() {
+        return entityManager
+                .createQuery("select S from Schedule S")
+                .setMaxResults(1)
+                .getResultList()
+                .isEmpty();
+    }
 }

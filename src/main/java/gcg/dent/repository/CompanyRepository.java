@@ -17,6 +17,7 @@ public class CompanyRepository {
 
     @Transactional
     public Company addCompany(Company company) {
+        company.setId(null);
         entityManager.persist(company);
         return company;
     }

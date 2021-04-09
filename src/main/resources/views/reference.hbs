@@ -4,60 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/style.css?"/>
+    <link rel="stylesheet" href="/css/dent.css?"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="/js/script.js"></script>
 </head>
-<body class="container" style="display: flex;flex-direction: row;">
+<body class="container">
     <nav>
-        <div class="list-item" onclick="show_company();">Организация</div>
-        <div class="list-item" onclick="show_employee();">Сотрудники</div>
+        <div class="list-item" onclick="show_company();">Организации</div>
+        <div class="list-item disabled" onclick="show_employee();">Сотрудники</div>
+        <div class="list-item disabled" onclick="show_manipulation();">Манипуляции</div>
+        <div class="list-item disabled" onclick="show_service();">Услуги</div>
     </nav>
-    <main>
-        <div id="company" style="display:none;">
-
+    <main id="main">
+        <div id="company" style="display:none;" class="reference">
+            <div class="list-item success" cid="0" style="font-weight: bold;" onclick='company_modal(this, "#modal_company")'>Добавить новую организацию</div>
+            {{#each company}}
+                <div class='list-item' cid='{{this.id}}' address='{{this.address}}' director='{{this.director}}' onclick='company_modal(this, "#modal_company")'>{{this.name}}</div>
+            {{/each}}
         </div>
     </main>
 
     <div id="modal_company" class="box modal">
         <div class="header"><span id="header_text"></span><i class="bi bi-x button danger" style="float:right;padding:0" title="Закрыть" onclick="hide_modal('#modal_company');"></i></div>
-        <input type="text" class="text" name="fio" placeholder="ФИО" autofocus/>
+        <input type="hidden" name="cid"/>
+        <input type="text" class="text" name="name" placeholder="Название"/>
         <br>
-        <input type="tel" class="text" name="phone" placeholder="Телефон"/>
+        <input type="text" class="text" name="address" placeholder="Адрес"/>
+        <br>
+        <input type="text" class="text" name="director" placeholder="ФИО Руководителя"/>
+
         <div class="footer">
-            <button class="success" onclick="register();">Записать</button>
-            <button class="danger" onclick="hide_modal('#modal_company');">Отмена</button>
+            <button class="success" onclick="save_company();">Сохранить</button>
+            <button class="danger" onclick="remove_company();">Удалить</button>
         </div>
     </div>
 
     <script type="text/javascript">
-        function show_company() {
-            $("main *").css("display", "none");
-            $("#company").css("display", "block");
-            $.ajax({
-                url: "/api/company",
-                method: "GET",
-            }).done(function(data) {
-                $("#company").empty();
-                data.forEach((c) => {
-                    $("#company").append("<div class='list-item' cid='" + c.id +
-                        "' onclick='company_modal(this, \"#modal_company\")'>" +
-                        c.name + "</div>");
-                });
-            });
-        }
 
-        function show_employee() {
-
-        }
-
-        function company_modal(e, m) {
-            $(id).css("display", "block");
-            $('#modal_company .header #header_text').val($(e).val());
-            //$('.selected_slot').removeClass('selected_slot');
-            //$(e).addClass('selected_slot');
-            $(id).center();
-            var cover = $("<div class='cover' onclick=\"hide_modal('.modal');\"></div>");
-            $(id).before(cover);
-        }
     </script>
 </body>
 </html>
