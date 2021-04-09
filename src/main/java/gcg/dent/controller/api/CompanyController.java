@@ -21,8 +21,8 @@ public class CompanyController {
     }
 
     @Get(produces = MediaType.APPLICATION_JSON)
-    public List<Company> getAllCompany() {
-        return companyRepository.getAllCompany();
+    public List<Company> getAll() {
+        return companyRepository.getAll();
     }
 
     @Post(produces = MediaType.APPLICATION_JSON)

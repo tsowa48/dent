@@ -112,6 +112,9 @@ function company_modal(e, id) {
         $("#modal_company input[name='name']").val($(e).text());
         $("#modal_company input[name='address']").val($(e).attr('address'));
         $("#modal_company input[name='director']").val($(e).attr('director'));
+        $("#modal_company .footer .danger").css("display", "inline-flex");
+    } else {
+        $("#modal_company .footer .danger").css("display", "none");
     }
     $(id + " input:first").focus();
     $(id).center();

@@ -182,8 +182,9 @@ main {
     text-align: right;
 }
 
-.list-item.disabled {
+.list-item.disabled, .list-item.disabled:hover {
     cursor: not-allowed;
+    background-color: rgb(235, 235, 235);
     border-color: rgb(221, 221, 221);
 }
 

@@ -27,7 +27,7 @@ public class EmployeeRepository {
     @ReadOnly
     public List<Employee> getAll() {
         return entityManager
-                .createQuery("select E from Employee order by E.fio")
+                .createQuery("select E from Employee E order by E.fio")
                 .getResultList();
     }
 
