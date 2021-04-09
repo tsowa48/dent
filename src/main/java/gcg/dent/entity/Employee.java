@@ -11,6 +11,10 @@ public class Employee {
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name ="cid" )
+    private Company company;
+
     @Column(name = "fio", nullable = false)
     private String fio;
 
@@ -51,5 +55,13 @@ public class Employee {
 
     public void setScheduled(boolean scheduled) {
         isScheduled = scheduled;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    public Company getCompany() {
+        return company;
     }
 }

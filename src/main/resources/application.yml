@@ -46,4 +46,4 @@ jpa:
         enable_lazy_load_no_trans: true
         hbm2ddl:
           auto: none
-        show_sql: false
+        show_sql: true

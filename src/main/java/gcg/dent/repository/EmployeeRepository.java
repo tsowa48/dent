@@ -28,4 +28,24 @@ public class EmployeeRepository {
     public Employee getById(Long id) {
         return entityManager.find(Employee.class, id);
     }
+
+    @Transactional
+    public Employee addEmployee(Employee employee) {
+        employee.setId(null);
+        entityManager.persist(employee);
+        return employee;
+    }
+
+    @Transactional
+    public void removeById(Long id) {
+        entityManager.createQuery("delete from Employee E where E.id = :id")
+                .setParameter("id", id)
+                .executeUpdate();
+    }
+
+    @Transactional
+    public Employee update(Employee employee) {
+        entityManager.merge(employee);
+        return employee;
+    }
 }
