@@ -22,12 +22,11 @@ public class ScheduleController {
 
     @Get(produces = MediaType.APPLICATION_JSON)
     public List<Schedule> getAllSchedule() {
-        return scheduleRepository.findAll();
+        return scheduleRepository.getAll();
     }
 
     @Get(uri = "/dow/{dow}", produces = MediaType.APPLICATION_JSON)
-    public List<Schedule> getByDow(Integer dow)
-    {
+    public List<Schedule> getByDow(Integer dow) {
         return scheduleRepository.getByDow(dow);
     }
 

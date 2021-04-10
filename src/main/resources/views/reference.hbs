@@ -12,10 +12,10 @@
 <body class="container">
     <nav>
         <div class="list-item" onclick="show_reference('company');">Организации</div>
-        <div class="list-item disabled" onclick="show_reference('schedule');">График работы</div>
+        <div class="list-item" onclick="show_reference('schedule');">График работы</div>
         <div class="list-item" onclick="show_reference('employee');">Сотрудники</div>
-        <div class="list-item disabled" onclick="show_reference('service');">Услуги</div>
-        <div class="list-item disabled" onclick="show_reference('manipulation');">Манипуляции</div>
+        <div class="list-item" onclick="show_reference('service');">Услуги</div>
+        <div class="list-item" onclick="show_reference('manipulation');">Манипуляции</div>
     </nav>
     <main id="main">
         <div id="company" style="display:none;" class="reference">
@@ -24,10 +24,31 @@
                 <div class='list-item' cid='{{this.id}}' address='{{this.address}}' director='{{this.director}}' onclick='company_modal(this, "#modal_company")'>{{this.name}}</div>
             {{/each}}
         </div>
+        <div id="schedule" style="display:none;" class="reference">
+            <div class='list-item' dow='0' onclick='schedule_modal(this, "#modal_schedule")'>Понедельник</div>
+            <div class='list-item' dow='1' onclick='schedule_modal(this, "#modal_schedule")'>Вторник</div>
+            <div class='list-item' dow='2' onclick='schedule_modal(this, "#modal_schedule")'>Среда</div>
+            <div class='list-item' dow='3' onclick='schedule_modal(this, "#modal_schedule")'>Четверг</div>
+            <div class='list-item' dow='4' onclick='schedule_modal(this, "#modal_schedule")'>Птяница</div>
+            <div class='list-item' dow='5' onclick='schedule_modal(this, "#modal_schedule")'>Суббота</div>
+            <div class='list-item' dow='6' onclick='schedule_modal(this, "#modal_schedule")'>Воскресенье</div>
+        </div>
         <div id="employee" style="display:none;" class="reference">
             <div class="list-item success" eid="0" style="font-weight: bold;" onclick='employee_modal(this, "#modal_employee")'>Добавить сотрудника</div>
             {{#each employee}}
                 <div class='list-item' eid='{{this.id}}' cid='{{this.company.id}}' post='{{this.post}}' scheduled='{{this.scheduled}}' onclick='employee_modal(this, "#modal_employee")'>{{this.fio}}</div>
+            {{/each}}
+        </div>
+        <div id="service" style="display:none;" class="reference">
+            <div class="list-item success" sid="0" style="font-weight: bold;" onclick='service_modal(this, "#modal_service")'>Добавить услугу</div>
+            {{#each service}}
+                <div class='list-item' sid='{{this.id}}' price='{{this.price}}' onclick='service_modal(this, "#modal_service")'>{{this.name}}</div>
+            {{/each}}
+        </div>
+        <div id="manipulation" style="display:none;" class="reference">
+            <div class="list-item success" sid="0" style="font-weight: bold;" onclick='manipulation_modal(this, "#modal_manipulation")'>Добавить манипуляцию</div>
+            {{#each manipulation}}
+                <div class='list-item' mid='{{this.id}}' sid='{{this.sid}}' onclick='manipulation_modal(this, "#modal_manipulation")'>{{this.name}}</div>
             {{/each}}
         </div>
     </main>

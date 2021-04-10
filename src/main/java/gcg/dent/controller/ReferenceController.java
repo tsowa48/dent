@@ -7,7 +7,7 @@ import io.micronaut.http.annotation.Get;
 import io.micronaut.views.View;
 
 import javax.inject.Inject;
-import java.util.HashMap;
+import java.util.Map;
 
 @Controller("/reference")
 public class ReferenceController {
@@ -17,9 +17,8 @@ public class ReferenceController {
 
     @View("reference")
     @Get
-    public HttpResponse<HashMap<String, Object>> get() {
-        HashMap<String, Object> params = referenceRepository.getCompany();
-
+    public HttpResponse<Map<String, Object>> get() {
+        Map<String, Object> params = referenceRepository.getReferences();
 
         return HttpResponse.ok(params);
     }

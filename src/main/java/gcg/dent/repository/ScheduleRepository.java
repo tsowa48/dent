@@ -17,7 +17,7 @@ public class ScheduleRepository {
 
     @Transactional
     @ReadOnly
-    public List<Schedule> findAll() {
+    public List<Schedule> getAll() {
         return entityManager
                 .createQuery("select S from Schedule S", Schedule.class)
                 .getResultList();
@@ -36,8 +36,10 @@ public class ScheduleRepository {
     @Transactional
     @ReadOnly
     public List<Schedule> getByDow(Integer dow){
-        return entityManager.createQuery("select S from Schedule S where S.dow = :dow")
-                .setParameter("dow", dow).getResultList();
+        return entityManager
+                .createQuery("select S from Schedule S where S.dow = :dow")
+                .setParameter("dow", dow)
+                .getResultList();
     }
 
     @Transactional
@@ -63,7 +65,8 @@ public class ScheduleRepository {
 
     @Transactional
     public void removeById(Long id){
-        entityManager.createQuery("delete from Schedule S where S.id = :id")
+        entityManager
+                .createQuery("delete from Schedule S where S.id = :id")
                 .setParameter("id", id)
                 .executeUpdate();
     }

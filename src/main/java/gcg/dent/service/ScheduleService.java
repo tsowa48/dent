@@ -28,7 +28,7 @@ public class ScheduleService {
 
     public Time[] findFirstAndLast(int dow) {
         if(schedules == null) {
-            schedules = scheduleRepository.findAll();
+            schedules = scheduleRepository.getAll();
         }
         Schedule start = schedules.stream()
                 .filter(t -> t.getDow() == dow)
@@ -43,7 +43,7 @@ public class ScheduleService {
 
     public Time[] findFirstAndLast() {
         if(schedules == null) {
-            schedules = scheduleRepository.findAll();
+            schedules = scheduleRepository.getAll();
         }
         Time start = schedules.stream()
                 .map(Schedule::getStart)
