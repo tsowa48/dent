@@ -152,6 +152,47 @@ function employee_modal(e, id) {
     $(id).before(cover);
 }
 
+function service_modal(e, id) {
+    $(id).css("display", "block");
+    $(id + " .header #header_text").text($(e).text());
+    if(Number($(e).attr('sid')) > 0) {
+        $(id + " input[name='sid']").val($(e).attr('sid'));
+        $(id + " input[name='name']").val($(e).text());
+        $(id + " input[name='price']").val($(e).attr('price'));
+        $(id + " .footer .danger").css("display", "inline-flex");
+    } else {
+        $(id + " .footer .danger").css("display", "none");
+    }
+    $(id + " input:first").focus();
+    $(id).center();
+    var cover = $("<div class='cover' onclick=\"hide_modal('.modal');\"></div>");
+    $(id).before(cover);
+}
+
+function manipulation_modal(e, id) {
+    $(id).css("display", "block");
+    $(id + " .header #header_text").text($(e).text());
+
+    $(id + " select[name='sid']").empty();
+    $("#service.reference .list-item[sid!='0']").each(function() {
+        $(id + " select[name='sid']").append("<option value='" + $(this).attr('sid') + "'>" + $(this).text() + "</option>");
+    });
+
+    if(Number($(e).attr('mid')) > 0) {
+        $(id + " input[name='mid']").val($(e).attr('mid'));
+        $(id + " input[name='name']").val($(e).text());
+        $(id + " select[name='sid']").val($(e).attr('sid')).change();
+        $(id + " .footer .danger").css("display", "inline-flex");
+    } else {
+        $(id + " select[name='sid']:first-child").change();
+        $(id + " .footer .danger").css("display", "none");
+    }
+    $(id + " input:first").focus();
+    $(id).center();
+    var cover = $("<div class='cover' onclick=\"hide_modal('.modal');\"></div>");
+    $(id).before(cover);
+}
+
 function remove_company() {
     var id = $("#modal_company input[name='cid']").val();
     $.ajax({
@@ -171,6 +212,28 @@ function remove_employee() {
     }).done(function() {
         $("#employee .list-item[eid='" + id + "']").remove();
         hide_modal('#modal_employee');
+    });
+}
+
+function remove_service() {
+    var id = $("#modal_service input[name='sid']").val();
+    $.ajax({
+        url: "/api/service/" + id,
+        method: "DELETE"
+    }).done(function() {
+        $("#service .list-item[sid='" + id + "']").remove();
+        hide_modal('#modal_service');
+    });
+}
+
+function remove_manipulation() {
+    var id = $("#modal_manipulation input[name='mid']").val();
+    $.ajax({
+        url: "/api/manipulation/" + id,
+        method: "DELETE"
+    }).done(function() {
+        $("#manipulation .list-item[mid='" + id + "']").remove();
+        hide_modal('#modal_manipulation');
     });
 }
 
@@ -224,5 +287,52 @@ function save_employee() {
         $("#employee .list-item[eid='" + employee.id + "']").attr("post", employee.post);
         $("#employee .list-item[eid='" + employee.id + "']").attr("scheduled", employee.scheduled);
         hide_modal('#modal_employee');
+    });
+}
+
+function save_service() {
+    var sid = Number($("#modal_service input[name='sid']").val());
+    var name = $("#modal_service input[name='name']").val();
+    var price = $("#modal_service input[name='price']").val();
+
+    var json = { id: sid, name: name, price: price};
+    var method = (sid > 0 ? "PUT" : "POST");
+    $.ajax({
+        url: "/api/service/",
+        method: method,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        data: JSON.stringify(json)
+    }).done(function(service) {
+        if(method === "POST") {
+            $('#service').append("<div class='list-item' sid='" + service.id + "' onclick='service_modal(this, \"#modal_service\")'></div>");
+        }
+        $("#service .list-item[sid='" + service.id + "']").text(service.name);
+        $("#service .list-item[sid='" + service.id + "']").attr("price", service.price);
+        hide_modal('#modal_service');
+    });
+}
+
+function save_manipulation() {
+    var mid = Number($("#modal_manipulation input[name='mid']").val());
+    var sid = Number($("#modal_manipulation select[name='sid']").val());
+    var name = $("#modal_manipulation input[name='name']").val();
+
+    var json = { id: mid, service: {id: sid}, name: name};
+
+    var method = (eid > 0 ? "PUT" : "POST");
+    $.ajax({
+        url: "/api/manipulation/",
+        method: method,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        data: JSON.stringify(json)
+    }).done(function(manipulation) {
+        if(method === "POST") {
+            $('#manipulation').append("<div class='list-item' mid='" + manipulation.id + "' onclick='manipulation_modal(this, \"#modal_manipulation\")'></div>");
+        }
+        $("#manipulation .list-item[mid='" + manipulation.id + "']").text(manipulation.name);
+        $("#manipulation .list-item[mid='" + manipulation.id + "']").attr("sid", manipulation.service.id);
+        hide_modal('#modal_manipulation');
     });
 }
