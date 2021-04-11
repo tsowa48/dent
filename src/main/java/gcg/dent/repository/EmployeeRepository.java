@@ -56,4 +56,14 @@ public class EmployeeRepository {
         entityManager.merge(employee);
         return employee;
     }
+
+    @Transactional
+    @ReadOnly
+    public Boolean isEmpty() {
+        return entityManager
+                .createQuery("select E from Employee E")
+                .setMaxResults(1)
+                .getResultList()
+                .isEmpty();
+    }
 }

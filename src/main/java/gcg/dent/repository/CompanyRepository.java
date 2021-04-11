@@ -46,4 +46,14 @@ public class CompanyRepository {
     public List<Company> getAll() {
         return entityManager.createQuery("select C from Company C order by C.name").getResultList();
     }
+
+    @Transactional
+    @ReadOnly
+    public Boolean isEmpty() {
+        return entityManager
+                .createQuery("select C from Company C")
+                .setMaxResults(1)
+                .getResultList()
+                .isEmpty();
+    }
 }

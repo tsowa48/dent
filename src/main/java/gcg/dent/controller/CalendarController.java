@@ -1,6 +1,7 @@
 package gcg.dent.controller;
 
 import gcg.dent.entity.Employee;
+import gcg.dent.repository.CompanyRepository;
 import gcg.dent.repository.EmployeeRepository;
 import gcg.dent.repository.ScheduleRepository;
 import gcg.dent.service.CalendarService;
@@ -26,6 +27,9 @@ public class CalendarController {
     @Inject
     ScheduleRepository scheduleRepository;
 
+    @Inject
+    CompanyRepository companyRepository;
+
     @View("calendar")
     @Get
     public HttpResponse<HashMap<String, Object>> calendar() throws URISyntaxException {
@@ -36,9 +40,11 @@ public class CalendarController {
     @Get(uri = "/week/{week}")
     public HttpResponse<HashMap<String, Object>> calendar(Short week) throws URISyntaxException {
         boolean isEmpty = scheduleRepository.isEmpty();
-        //if(isEmpty) {
-            //return HttpResponse.temporaryRedirect(new URI("/reference"));
-        //}
+        isEmpty |= employeeRepository.isEmpty();
+        isEmpty |= companyRepository.isEmpty();
+        if(isEmpty) {
+            return HttpResponse.temporaryRedirect(new URI("/reference"));
+        }
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
         calendar.add(Calendar.DATE, week * 7);
