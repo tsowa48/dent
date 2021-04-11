@@ -102,6 +102,8 @@ function remove_slot() {
 function show_reference(id) {
     $(".reference").css("display", "none");
     $(".reference#" + id).css("display", "block");
+    $("#references_menu .list-item").removeClass('selected');
+    $("#references_menu .list-item[reference='" + id + "']").addClass('selected');
 }
 
 function company_modal(e, id) {
@@ -128,6 +130,7 @@ function employee_modal(e, id) {
 
     $(id + " select[name='cid']").empty();
     $(id + " input[name='schedule']").removeAttr("checked");
+    $(id + " input[name='disabled']").removeAttr("checked");
     $("#company.reference .list-item[cid!='0']").each(function() {
         $(id + " select[name='cid']").append("<option value='" + $(this).attr('cid') + "'>" + $(this).text() + "</option>");
     });
@@ -140,12 +143,16 @@ function employee_modal(e, id) {
         if($(e).attr('scheduled') == 'true') {
             $(id + " input[name='schedule']").attr("checked", "checked");
         }
+        if($(e).attr('enabled') == 'true') {
+            $(id + " input[name='disabled']").attr("checked", "checked");
+        }
         $(id + " .footer .danger").css("display", "inline-flex");
     } else {
         $(id + " select[name='cid']:first-child").change();
         $(id + " .footer .danger").css("display", "none");
     }
     $("#employee_schedule").css("width", $(id + " input[name='fio']").css("width"));
+    $("#employee_disabled").css("width", $(id + " input[name='fio']").css("width"));
     $(id + " input:first").focus();
     $(id).center();
     var cover = $("<div class='cover' onclick=\"hide_modal('.modal');\"></div>");
@@ -268,8 +275,9 @@ function save_employee() {
     var fio = $("#modal_employee input[name='fio']").val();
     var post = $("#modal_employee input[name='post']").val();
     var scheduled = $("#modal_employee input[name='schedule']").prop('checked') !== false;
+    var disabled = $("#modal_employee input[name='disabled']").prop('checked') !== false;
 
-    var json = { id: eid, company: {id: cid}, fio: fio, post: post, scheduled: scheduled};
+    var json = { id: eid, company: {id: cid}, fio: fio, post: post, scheduled: scheduled, disabled: disabled};
 
     var method = (eid > 0 ? "PUT" : "POST");
     $.ajax({
@@ -286,6 +294,7 @@ function save_employee() {
         $("#employee .list-item[eid='" + employee.id + "']").attr("cid", employee.company.id);
         $("#employee .list-item[eid='" + employee.id + "']").attr("post", employee.post);
         $("#employee .list-item[eid='" + employee.id + "']").attr("scheduled", employee.scheduled);
+        $("#employee .list-item[eid='" + employee.id + "']").attr("enabled", employee.disabled);
         hide_modal('#modal_employee');
     });
 }

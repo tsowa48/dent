@@ -10,12 +10,12 @@
     <script type="text/javascript" src="/js/script.js"></script>
 </head>
 <body class="container">
-    <nav>
-        <div class="list-item" onclick="show_reference('company');">Организации</div>
-        <div class="list-item" onclick="show_reference('schedule');">График работы</div>
-        <div class="list-item" onclick="show_reference('employee');">Сотрудники</div>
-        <div class="list-item" onclick="show_reference('service');">Услуги</div>
-        <div class="list-item" onclick="show_reference('manipulation');">Манипуляции</div>
+    <nav id="references_menu">
+        <div class="list-item" reference="company" onclick="show_reference('company');">Организации</div>
+        <div class="list-item" reference="schedule" onclick="show_reference('schedule');">График работы</div>
+        <div class="list-item" reference="employee" onclick="show_reference('employee');">Сотрудники</div>
+        <div class="list-item" reference="service" onclick="show_reference('service');">Услуги</div>
+        <div class="list-item" reference="manipulation" onclick="show_reference('manipulation');">Манипуляции</div>
     </nav>
     <main id="main">
         <div id="company" style="display:none;" class="reference">
@@ -36,7 +36,7 @@
         <div id="employee" style="display:none;" class="reference">
             <div class="list-item success" eid="0" style="font-weight: bold;" onclick='employee_modal(this, "#modal_employee")'>Добавить сотрудника</div>
             {{#each employee}}
-                <div class='list-item' eid='{{this.id}}' cid='{{this.company.id}}' post='{{this.post}}' scheduled='{{this.scheduled}}' onclick='employee_modal(this, "#modal_employee")'>{{this.fio}}</div>
+                <div class='list-item' eid='{{this.id}}' cid='{{this.company.id}}' post='{{this.post}}' scheduled='{{this.scheduled}}' enabled='{{this.disabled}}' onclick='employee_modal(this, "#modal_employee")'>{{this.fio}}</div>
             {{/each}}
         </div>
         <div id="service" style="display:none;" class="reference">
@@ -80,6 +80,11 @@
         <div class="text" id="employee_schedule" style="cursor:pointer;">
             <input type="checkbox" name="schedule" style="margin:0;margin-top:3px;min-width:15px;width:15px;min-height:15px;"/>
             <div style="display:inline-block;margin-top:-3px;vertical-align: text-top;">Принимает пациентов</div>
+        </div>
+        <br>
+        <div class="text" id="employee_disabled" style="cursor:pointer;">
+            <input type="checkbox" name="disabled" style="margin:0;margin-top:3px;min-width:15px;width:15px;min-height:15px;"/>
+            <div style="display:inline-block;margin-top:-3px;vertical-align: text-top;">Уволен</div>
         </div>
         <div class="footer">
             <button class="success" onclick="save_employee();">Сохранить</button>

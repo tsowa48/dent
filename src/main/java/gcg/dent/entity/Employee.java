@@ -24,6 +24,9 @@ public class Employee {
     @Column(name = "is_scheduled", nullable = false)
     private boolean isScheduled;
 
+    @Column(name = "is_disabled", nullable = false)
+    private boolean isDisabled;
+
 
     public Long getId() {
         return id;
@@ -63,5 +66,13 @@ public class Employee {
 
     public Company getCompany() {
         return company;
+    }
+
+    public boolean isDisabled() {
+        return isDisabled;
+    }
+
+    public void setDisabled(boolean disabled) {
+        isDisabled = disabled;
     }
 }

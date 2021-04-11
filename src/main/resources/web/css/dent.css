@@ -191,3 +191,7 @@ main {
 .reference .list-item {
     text-align: center;
 }
+
+.list-item[enabled='true'] {
+    background-color: rgb(242, 222, 222);
+}
