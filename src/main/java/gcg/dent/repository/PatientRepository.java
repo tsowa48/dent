@@ -29,22 +29,20 @@ public class PatientRepository {
     }
 
     @Transactional
-    public Patient addRecord(Patient patient)
-    {
+    public Patient addRecord(Patient patient) {
         patient.setId(null);
         entityManager.persist(patient);
         return patient;
     }
 
     @Transactional
-    public Patient update(Patient patient)
-    {
+    public Patient update(Patient patient) {
         entityManager.merge(patient);
         return patient;
     }
 
     @Transactional
-    public void removeById(Long id){
+    public void removeById(Long id) {
         entityManager
                 .createQuery("delete from Patient P where P.id = :id")
                 .setParameter("id", id)

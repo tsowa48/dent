@@ -27,23 +27,22 @@ public class ServiceRepository {
     public Service findById(Long id) {
         return entityManager.find(Service.class, id);
     }
+
     @Transactional
-    public Service addRecord(Service service)
-    {
+    public Service addRecord(Service service) {
         service.setId(null);
         entityManager.persist(service);
         return service;
     }
 
     @Transactional
-    public Service update(Service service)
-    {
+    public Service update(Service service) {
         entityManager.merge(service);
         return service;
     }
 
     @Transactional
-    public void removeById(Long id){
+    public void removeById(Long id) {
         entityManager
                 .createQuery("delete from Service S where S.id = :id")
                 .setParameter("id", id)

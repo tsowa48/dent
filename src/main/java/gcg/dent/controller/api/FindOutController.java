@@ -8,7 +8,7 @@ import io.micronaut.http.annotation.*;
 import javax.inject.Inject;
 import java.util.List;
 
-@Controller("/api/FindOut")
+@Controller("/api/find_out")
 public class FindOutController {
 
     @Inject

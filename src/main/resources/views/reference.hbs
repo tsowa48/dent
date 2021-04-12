@@ -9,8 +9,14 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" src="/js/script.js"></script>
 </head>
-<body class="container">
+<body>
+<div class="container">
     <nav id="references_menu">
+        <div id="menu" class="group">
+            <a title="Расписание" class="button" href="/" style="font-size: 14px;"><i class="bi bi-calendar3"></i></a>
+            <a title="Клиенты" class="button disabled" href="/clients" style="font-size: 14px"><i class="bi bi-people"></i></a>
+            <a title="Swagger" class="button disabled" href="/gcg/swagger-ui" style="font-size: 14px"><i class="bi bi-gear"></i></a>
+        </div>
         <div class="list-item" reference="company" onclick="show_reference('company');">Организации</div>
         <div class="list-item" reference="schedule" onclick="show_reference('schedule');">График работы</div>
         <div class="list-item" reference="employee" onclick="show_reference('employee');">Сотрудники</div>
@@ -25,13 +31,13 @@
             {{/each}}
         </div>
         <div id="schedule" style="display:none;" class="reference">
-            <div class='list-item' dow='0' onclick='schedule_modal(this, "#modal_schedule")'>Понедельник</div>
-            <div class='list-item' dow='1' onclick='schedule_modal(this, "#modal_schedule")'>Вторник</div>
-            <div class='list-item' dow='2' onclick='schedule_modal(this, "#modal_schedule")'>Среда</div>
-            <div class='list-item' dow='3' onclick='schedule_modal(this, "#modal_schedule")'>Четверг</div>
-            <div class='list-item' dow='4' onclick='schedule_modal(this, "#modal_schedule")'>Пятница</div>
-            <div class='list-item' dow='5' onclick='schedule_modal(this, "#modal_schedule")'>Суббота</div>
-            <div class='list-item' dow='6' onclick='schedule_modal(this, "#modal_schedule")'>Воскресенье</div>
+            <div class='list-item disabled' dow='0' onclick='schedule_modal(this, "#modal_schedule")'>Понедельник</div>
+            <div class='list-item disabled' dow='1' onclick='schedule_modal(this, "#modal_schedule")'>Вторник</div>
+            <div class='list-item disabled' dow='2' onclick='schedule_modal(this, "#modal_schedule")'>Среда</div>
+            <div class='list-item disabled' dow='3' onclick='schedule_modal(this, "#modal_schedule")'>Четверг</div>
+            <div class='list-item disabled' dow='4' onclick='schedule_modal(this, "#modal_schedule")'>Пятница</div>
+            <div class='list-item disabled' dow='5' onclick='schedule_modal(this, "#modal_schedule")'>Суббота</div>
+            <div class='list-item disabled' dow='6' onclick='schedule_modal(this, "#modal_schedule")'>Воскресенье</div>
         </div>
         <div id="employee" style="display:none;" class="reference">
             <div class="list-item success" eid="0" style="font-weight: bold;" onclick='employee_modal(this, "#modal_employee")'>Добавить сотрудника</div>
@@ -115,6 +121,7 @@
             <button class="danger" onclick="remove_manipulation();">Удалить</button>
         </div>
     </div>
+</div>
     <script type="text/javascript">
 
     </script>

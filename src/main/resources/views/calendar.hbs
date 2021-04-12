@@ -14,25 +14,23 @@
             }
         </style>
     </head>
-    <body onmousemove="mouse_position(event)" oncontextmenu="return false;" onclick="$('.context-menu').css('display', 'none');">
+    <body class="container-fluid" onmousemove="mouse_position(event)" oncontextmenu="return false;" onclick="$('.context-menu').css('display', 'none');">
         <nav>
-            <!--div id="menu">
-                <a title="Справочники" class="button" href="/reference/" style="font-size: 14px"><i class="bi bi-card-list">Справочники</i></a>
-                <a title="Клиенты" class="button disabled" href="/clients" style="font-size: 14px"><i class="bi bi-people">Клиенты</i></a>
-                <a title="Swagger" class="button" href="/gcg/swagger-ui" style="font-size: 14px"><i class="bi bi-gear">Swagger</i></a>
-            </div>
-            <hr-->
             <div class="group">
-                <a title="Предыдущая неделя" class="button" id="prev" href="/week/{{prev}}" style="font-size: 14px"><i class="bi bi-chevron-left"></i></a>
-                <a title="Текущая неделя" class="button" id="prev" href="/week/0" style="font-size: 14px"><i class="bi bi-calendar-event"></i></a>
-                <a title="Следущая неделя" class="button" id="next" href="/week/{{next}}" style="font-size: 14px"><i class="bi bi-chevron-right"></i></a>
+                <a title="Предыдущая неделя" class="button" id="prev" href="/week/{{prev}}" style="font-size: 14px"><i class="bi bi-caret-left"></i></a>
+                <a title="Текущая неделя" class="button" id="prev" href="/week/0" style="font-size: 14px"><i class="bi bi-calendar3-week"></i></a>
+                <a title="Следущая неделя" class="button" id="next" href="/week/{{next}}" style="font-size: 14px"><i class="bi bi-caret-right"></i></a>
             </div>
-            <a title="Справочники" class="button" href="/reference/" style="font-size: 14px;"><i class="bi bi-card-list"></i></a>
+            <div id="menu" class="group">
+                <a title="Справочники" class="button" href="/reference/" style="font-size: 14px;"><i class="bi bi-card-list"></i></a>
+                <a title="Клиенты" class="button disabled" href="/clients" style="font-size: 14px"><i class="bi bi-people"></i></a>
+                <a title="Swagger" class="button disabled" href="/gcg/swagger-ui" style="font-size: 14px"><i class="bi bi-gear"></i></a>
+            </div>
+
             <!--br>
             <div class="month">
 
             </div-->
-            <hr>
             <div id="doctors">
                 {{#each doctors}}
                     <div class="list-item" onclick="select_doc(this);" doc="{{this.id}}">{{this.fio}}</div>

@@ -1,9 +1,14 @@
-body {
+.container-fluid {
     display: flex;
     overflow: hidden;
     height: 100%;
     width: 100%;
     margin: 0;
+}
+
+.container {
+    display: flex;
+    height: 100%;
 }
 
 main {

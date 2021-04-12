@@ -33,7 +33,7 @@ micronaut:
       enabled: false
 datasources:
   default:
-    url: jdbc:postgresql://localhost:5432/dent
+    url: ${JDBC_URL:`jdbc:postgresql://localhost:5432/dent`}
     username: ${JDBC_USER:dent}
     password: ${JDBC_PASSWORD:dent}
     driverClassName: ${JDBC_DRIVER:org.postgresql.Driver}

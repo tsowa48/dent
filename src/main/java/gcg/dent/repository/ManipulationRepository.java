@@ -19,7 +19,7 @@ public class ManipulationRepository {
     @ReadOnly
     public List<Manipulation> getAll() {
         return entityManager
-                .createQuery("select S from Manipulation S", Manipulation.class)
+                .createQuery("select M from Manipulation M", Manipulation.class)
                 .getResultList();
     }
 
@@ -30,22 +30,20 @@ public class ManipulationRepository {
     }
 
     @Transactional
-    public Manipulation addRecord(Manipulation manipulation)
-    {
+    public Manipulation addRecord(Manipulation manipulation) {
         manipulation.setId(null);
         entityManager.persist(manipulation);
         return manipulation;
     }
 
     @Transactional
-    public Manipulation update(Manipulation manipulation)
-    {
+    public Manipulation update(Manipulation manipulation) {
         entityManager.merge(manipulation);
         return manipulation;
     }
 
     @Transactional
-    public void removeById(Long id){
+    public void removeById(Long id) {
         entityManager
                 .createQuery("delete from Manipulation M where M.id = :id")
                 .setParameter("id", id)

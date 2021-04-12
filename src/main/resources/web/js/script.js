@@ -76,8 +76,10 @@ var currentSlot;
 
 function show_menu(obj) {
     $('.context-menu').css("display", "block");
-    $('.context-menu').css("left", mouseX);
-    $('.context-menu').css("top", mouseY);
+    var x = (mouseX + $('.context-menu').width()) > $(window).width() ? (mouseX - $('.context-menu').width()) : mouseX;
+    var y = (mouseY + $('.context-menu').height()) > $(window).height() ? (mouseY - $('.context-menu').height()) : mouseY;
+    $('.context-menu').css("left", x);
+    $('.context-menu').css("top", y);
     var slot = $(obj).attr('sid');
     currentSlot = slot;
 }
@@ -329,7 +331,7 @@ function save_manipulation() {
 
     var json = { id: mid, service: {id: sid}, name: name};
 
-    var method = (eid > 0 ? "PUT" : "POST");
+    var method = (mid > 0 ? "PUT" : "POST");
     $.ajax({
         url: "/api/manipulation/",
         method: method,
