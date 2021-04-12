@@ -5,14 +5,17 @@ micronaut:
     default-charset: UTF-8
     idle-timeout: 50m
     port: 8090
-  #router:
-    #static-resources:
-      #swagger:
-        #paths: classpath:META-INF/swagger
-        #mapping: /dent/swagger/**
-      #swagger-ui:
-        #paths: classpath:META-INF/swagger/views/swagger-ui
-        #mapping: /dent/swagger-ui/**
+  router:
+    static-resources:
+      static:
+        paths: classpath:/web
+        mapping: /**
+      swagger:
+        paths: classpath:META-INF/swagger
+        mapping: /gcg/swagger/**
+      swagger-ui:
+        paths: classpath:META-INF/swagger/views/swagger-ui
+        mapping: /gcg/swagger-ui/**
   executors:
     io:
       type: fixed
@@ -28,3 +31,19 @@ micronaut:
       enabled: false
     rocker:
       enabled: false
+datasources:
+  default:
+    url: ${JDBC_URL:`jdbc:postgresql://localhost:5432/dent`}
+    username: ${JDBC_USER:dent}
+    password: ${JDBC_PASSWORD:dent}
+    driverClassName: ${JDBC_DRIVER:org.postgresql.Driver}
+jpa:
+  default:
+    packages-to-scan:
+      - 'gcg.dent.entity'
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true
+        hbm2ddl:
+          auto: none
+        show_sql: true

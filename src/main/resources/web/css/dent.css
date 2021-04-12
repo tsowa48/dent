@@ -1,0 +1,202 @@
+.container-fluid {
+    display: flex;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+.container {
+    display: flex;
+    height: 100%;
+}
+
+main {
+    background-color: rgb(243, 243, 243);
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.calendar {
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+}
+.dates {
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    padding-left: 35px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    border-bottom: 1px solid darkgrey;
+    min-height: 50px;
+    height: 50px;
+}
+.date {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    width: calc(100% / 7);
+    border: 1px solid transparent;
+    border-left: 1px solid darkgrey;
+    font-size: 14px;
+}
+.day {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: calc((100% - 35px) / 7);
+}
+.times {
+    width: 35px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
+.time {
+    font-size: 12px;
+    color: #70757a;
+    height: 50px;
+    border-bottom: 1px solid darkgrey;
+    padding: 2px;
+}
+.slot {
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 49px;
+    min-height: 49px;
+    max-height: 49px;
+    border-bottom: 1px solid darkgrey;
+    border-left: 1px solid darkgrey;
+    cursor: pointer;
+}
+.box {
+    cursor: pointer;
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.slot.disabled {
+    cursor: not-allowed;
+    background-color: rgb(244, 177, 176);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    cursor: default;
+    height: auto;
+}
+
+.modal * {
+    margin: 2px;
+}
+
+.modal input {
+    width: 100%;
+}
+
+.selected_slot {
+    background-color: rgb(75, 159, 213);
+}
+
+.cover {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(112, 117, 122);
+    opacity: 0.40;
+    z-index: 9998;
+}
+
+.group {
+    min-height: 50px;
+    height: 50px;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.group * {
+    border-radius: 0px;
+    padding: 5px;
+    margin: 0;
+}
+
+.group *:first-child {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+}
+
+.group *:last-child {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
+
+.list-item {
+    white-space: nowrap;
+}
+
+.context-menu {
+    display: none;
+    padding: 0;
+    position: fixed;/*absolute*/
+    z-index: 9999;
+    cursor: default;
+    height: auto;
+}
+
+.modal .header {
+    font-weight: bold;
+    text-align: center;
+    padding: 5px;
+    margin-top: -5px;
+    margin-left: -5px;
+    margin-right: -5px;
+    margin-bottom: 5px;
+    background-color: rgb(230, 230, 230);
+}
+
+.modal .footer {
+    background-color: rgb(230, 230, 230);
+    padding: 2px;
+    margin-top: 5px;
+    margin-bottom: -5px;
+    margin-left: -5px;
+    margin-right: -5px;
+    text-align: right;
+}
+
+.list-item.disabled, .list-item.disabled:hover {
+    cursor: not-allowed;
+    background-color: rgb(235, 235, 235);
+    border-color: rgb(221, 221, 221);
+}
+
+.reference .list-item {
+    text-align: center;
+}
+
+.list-item[enabled='true'] {
+    background-color: rgb(242, 222, 222);
+}

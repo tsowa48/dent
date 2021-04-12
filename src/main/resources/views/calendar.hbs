@@ -1,0 +1,83 @@
+<html>
+    <head>
+        <title>Расписание</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/css/style.css?"/>
+        <link rel="stylesheet" href="/css/dent.css?"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script type="text/javascript" src="/js/script.js"></script>
+        <style>
+            .day, .times {
+                height: calc(50px * {{times_size}});
+            }
+        </style>
+    </head>
+    <body class="container-fluid" onmousemove="mouse_position(event)" oncontextmenu="return false;" onclick="$('.context-menu').css('display', 'none');">
+        <nav>
+            <div class="group">
+                <a title="Предыдущая неделя" class="button" id="prev" href="/week/{{prev}}" style="font-size: 14px"><i class="bi bi-caret-left"></i></a>
+                <a title="Текущая неделя" class="button" id="prev" href="/week/0" style="font-size: 14px"><i class="bi bi-calendar3-week"></i></a>
+                <a title="Следущая неделя" class="button" id="next" href="/week/{{next}}" style="font-size: 14px"><i class="bi bi-caret-right"></i></a>
+            </div>
+            <div id="menu" class="group">
+                <a title="Справочники" class="button" href="/reference/" style="font-size: 14px;"><i class="bi bi-card-list"></i></a>
+                <a title="Клиенты" class="button disabled" href="/clients" style="font-size: 14px"><i class="bi bi-people"></i></a>
+                <a title="Статистика" class="button disabled" href="/statistics" style="font-size: 14px"><i class="bi bi-graph-up"></i></a>
+                <a title="Swagger" class="button disabled" href="/gcg/swagger-ui" style="font-size: 14px"><i class="bi bi-gear"></i></a>
+            </div>
+
+            <!--br>
+            <div class="month">
+
+            </div-->
+            <div id="doctors">
+                {{#each doctors}}
+                    <div class="list-item" onclick="select_doc(this);" doc="{{this.id}}">{{this.fio}}</div>
+                {{/each}}
+            </div>
+        </nav>
+        <main>
+            <div class="dates" id="dates">
+                {{#each dates}}
+                    {{{this}}}
+                {{/each}}
+            </div>
+            <div class="calendar" id="calendar">
+                <div id="times" class="times">
+                    {{#each times}}
+                        {{{this}}}
+                    {{/each}}
+                </div>
+                {{{slots}}}
+            </div>
+        </main>
+
+        <div class="box modal" id="new_record">
+            <div class="header">Новая запись<i class="bi bi-x button danger" style="float:right;padding:0" title="Закрыть" onclick="hide_modal('#new_record');"></i></div>
+            <input type="text" class="text" name="fio" placeholder="ФИО"/>
+            <br>
+            <input type="tel" class="text" name="phone" placeholder="Телефон"/>
+            <div class="footer">
+                <button class="success" onclick="register();">Записать</button>
+                <button class="danger" onclick="hide_modal('#new_record');">Отмена</button>
+            </div>
+        </div>
+        <div class="box context-menu">
+            <div class="list-item disabled"><i class="bi bi-person-square"></i>&nbsp;Открыть клиента</div>
+            <div class="list-item disabled"><i class="bi bi-pencil-square"></i>&nbsp;Изменить запись</div>
+            <div class="list-item" onclick="remove_slot();"><i class="bi bi-trash"></i>&nbsp;Отменить запись</div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        var SLOT_SIZE = {{slot_size}};
+        if(!sessionStorage.getItem("currentDoc")) {
+            var doc = $('#doctors .list-item:first-child').attr('doc');
+            sessionStorage.setItem("currentDoc", doc);
+        }
+        $("#doctors > .list-item[doc='" + sessionStorage.getItem("currentDoc") + "'").addClass('selected');
+        $(".slot > .box[doc!='" + sessionStorage.getItem("currentDoc") + "']").css("display", "none");
+        $(".slot > .box[doc='" + sessionStorage.getItem("currentDoc") + "']").css("display", "block");
+    </script>
+</html>

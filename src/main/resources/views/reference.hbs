@@ -1,0 +1,130 @@
+<html>
+<head>
+    <title>Справочники</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css?"/>
+    <link rel="stylesheet" href="/css/dent.css?"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="/js/script.js"></script>
+</head>
+<body>
+<div class="container">
+    <nav id="references_menu">
+        <div id="menu" class="group">
+            <a title="Расписание" class="button" href="/" style="font-size: 14px;"><i class="bi bi-calendar3"></i></a>
+            <a title="Клиенты" class="button disabled" href="/clients" style="font-size: 14px"><i class="bi bi-people"></i></a>
+            <a title="Статистика" class="button disabled" href="/statistics" style="font-size: 14px"><i class="bi bi-graph-up"></i></a>
+            <a title="Swagger" class="button disabled" href="/gcg/swagger-ui" style="font-size: 14px"><i class="bi bi-gear"></i></a>
+        </div>
+        <div class="list-item" reference="company" onclick="show_reference('company');">Организации</div>
+        <div class="list-item" reference="schedule" onclick="show_reference('schedule');">График работы</div>
+        <div class="list-item" reference="employee" onclick="show_reference('employee');">Сотрудники</div>
+        <div class="list-item" reference="service" onclick="show_reference('service');">Услуги</div>
+        <div class="list-item" reference="manipulation" onclick="show_reference('manipulation');">Манипуляции</div>
+    </nav>
+    <main id="main">
+        <div id="company" style="display:none;" class="reference">
+            <div class="list-item success" cid="0" style="font-weight: bold;" onclick='company_modal(this, "#modal_company")'>Добавить организацию</div>
+            {{#each company}}
+                <div class='list-item' cid='{{this.id}}' address='{{this.address}}' director='{{this.director}}' onclick='company_modal(this, "#modal_company")'>{{this.name}}</div>
+            {{/each}}
+        </div>
+        <div id="schedule" style="display:none;" class="reference">
+            <div class='list-item disabled' dow='0' onclick='schedule_modal(this, "#modal_schedule")'>Понедельник</div>
+            <div class='list-item disabled' dow='1' onclick='schedule_modal(this, "#modal_schedule")'>Вторник</div>
+            <div class='list-item disabled' dow='2' onclick='schedule_modal(this, "#modal_schedule")'>Среда</div>
+            <div class='list-item disabled' dow='3' onclick='schedule_modal(this, "#modal_schedule")'>Четверг</div>
+            <div class='list-item disabled' dow='4' onclick='schedule_modal(this, "#modal_schedule")'>Пятница</div>
+            <div class='list-item disabled' dow='5' onclick='schedule_modal(this, "#modal_schedule")'>Суббота</div>
+            <div class='list-item disabled' dow='6' onclick='schedule_modal(this, "#modal_schedule")'>Воскресенье</div>
+        </div>
+        <div id="employee" style="display:none;" class="reference">
+            <div class="list-item success" eid="0" style="font-weight: bold;" onclick='employee_modal(this, "#modal_employee")'>Добавить сотрудника</div>
+            {{#each employee}}
+                <div class='list-item' eid='{{this.id}}' cid='{{this.company.id}}' post='{{this.post}}' scheduled='{{this.scheduled}}' enabled='{{this.disabled}}' onclick='employee_modal(this, "#modal_employee")'>{{this.fio}}</div>
+            {{/each}}
+        </div>
+        <div id="service" style="display:none;" class="reference">
+            <div class="list-item success" sid="0" style="font-weight: bold;" onclick='service_modal(this, "#modal_service")'>Добавить услугу</div>
+            {{#each service}}
+                <div class='list-item' sid='{{this.id}}' price='{{this.price}}' onclick='service_modal(this, "#modal_service")'>{{this.name}}</div>
+            {{/each}}
+        </div>
+        <div id="manipulation" style="display:none;" class="reference">
+            <div class="list-item success" mid="0" style="font-weight: bold;" onclick='manipulation_modal(this, "#modal_manipulation")'>Добавить манипуляцию</div>
+            {{#each manipulation}}
+                <div class='list-item' mid='{{this.id}}' sid='{{this.service.id}}' onclick='manipulation_modal(this, "#modal_manipulation")'>{{this.name}}</div>
+            {{/each}}
+        </div>
+    </main>
+
+    <div id="modal_company" class="box modal">
+        <div class="header"><span id="header_text"></span><i class="bi bi-x button danger" style="float:right;padding:0" title="Закрыть" onclick="hide_modal('#modal_company');"></i></div>
+        <input type="hidden" name="cid"/>
+        <input type="text" class="text" name="name" placeholder="Название"/>
+        <br>
+        <input type="text" class="text" name="address" placeholder="Адрес"/>
+        <br>
+        <input type="text" class="text" name="director" placeholder="ФИО Руководителя"/>
+
+        <div class="footer">
+            <button class="success" onclick="save_company();">Сохранить</button>
+            <button class="danger" onclick="remove_company();">Удалить</button>
+        </div>
+    </div>
+    <div id="modal_employee" class="box modal">
+        <div class="header"><span id="header_text"></span><i class="bi bi-x button danger" style="float:right;padding:0" title="Закрыть" onclick="hide_modal('#modal_employee');"></i></div>
+        <input type="hidden" name="eid"/>
+        <select name="cid" class="text" style="width:100%;cursor:pointer;">
+        </select>
+        <br>
+        <input type="text" class="text" name="fio" placeholder="ФИО"/>
+        <br>
+        <input type="text" class="text" name="post" placeholder="Должность"/>
+        <br>
+        <div class="text" id="employee_schedule" style="cursor:pointer;">
+            <input type="checkbox" name="schedule" style="margin:0;margin-top:3px;min-width:15px;width:15px;min-height:15px;"/>
+            <div style="display:inline-block;margin-top:-3px;vertical-align: text-top;">Принимает пациентов</div>
+        </div>
+        <br>
+        <div class="text" id="employee_disabled" style="cursor:pointer;">
+            <input type="checkbox" name="disabled" style="margin:0;margin-top:3px;min-width:15px;width:15px;min-height:15px;"/>
+            <div style="display:inline-block;margin-top:-3px;vertical-align: text-top;">Уволен</div>
+        </div>
+        <div class="footer">
+            <button class="success" onclick="save_employee();">Сохранить</button>
+            <button class="danger" onclick="remove_employee();">Удалить</button>
+        </div>
+    </div>
+    <div id="modal_service" class="box modal">
+        <div class="header"><span id="header_text"></span><i class="bi bi-x button danger" style="float:right;padding:0" title="Закрыть" onclick="hide_modal('#modal_service');"></i></div>
+        <input type="hidden" name="sid"/>
+        <input type="text" class="text" name="name" placeholder="Название"/>
+        <br>
+        <input type="number" class="text" name="price" min="0" step="0.01" placeholder="Цена"/>
+
+        <div class="footer">
+            <button class="success" onclick="save_service();">Сохранить</button>
+            <button class="danger" onclick="remove_service();">Удалить</button>
+        </div>
+    </div>
+    <div id="modal_manipulation" class="box modal">
+        <div class="header"><span id="header_text"></span><i class="bi bi-x button danger" style="float:right;padding:0" title="Закрыть" onclick="hide_modal('#modal_manipulation');"></i></div>
+        <input type="hidden" name="mid"/>
+        <select name="sid" class="text" style="width:100%;cursor:pointer;">
+        </select>
+        <br>
+        <input type="text" class="text" name="name" placeholder="Название"/>
+        <div class="footer">
+            <button class="success" onclick="save_manipulation();">Сохранить</button>
+            <button class="danger" onclick="remove_manipulation();">Удалить</button>
+        </div>
+    </div>
+</div>
+    <script type="text/javascript">
+
+    </script>
+</body>
+</html>
