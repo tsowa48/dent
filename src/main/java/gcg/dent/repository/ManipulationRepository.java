@@ -1,7 +1,6 @@
 package gcg.dent.repository;
 
 import gcg.dent.entity.Manipulation;
-import gcg.dent.entity.Schedule;
 import io.micronaut.transaction.annotation.ReadOnly;
 
 import javax.inject.Singleton;
@@ -22,6 +21,12 @@ public class ManipulationRepository {
         return entityManager
                 .createQuery("select S from Manipulation S", Manipulation.class)
                 .getResultList();
+    }
+
+    @Transactional
+    @ReadOnly
+    public Manipulation findById(Long id) {
+        return entityManager.find(Manipulation.class, id);
     }
 
     @Transactional

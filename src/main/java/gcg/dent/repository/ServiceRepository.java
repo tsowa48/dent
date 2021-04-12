@@ -1,6 +1,5 @@
 package gcg.dent.repository;
 
-import gcg.dent.entity.Schedule;
 import gcg.dent.entity.Service;
 import io.micronaut.transaction.annotation.ReadOnly;
 
@@ -23,6 +22,11 @@ public class ServiceRepository {
                 .getResultList();
     }
 
+    @Transactional
+    @ReadOnly
+    public Service findById(Long id) {
+        return entityManager.find(Service.class, id);
+    }
     @Transactional
     public Service addRecord(Service service)
     {

@@ -1,7 +1,6 @@
 package gcg.dent.repository;
 
 import gcg.dent.entity.Patient;
-import gcg.dent.entity.Service;
 import io.micronaut.transaction.annotation.ReadOnly;
 
 import javax.inject.Singleton;
@@ -21,6 +20,12 @@ public class PatientRepository {
         return entityManager
                 .createQuery("select P from Patient P", Patient.class)
                 .getResultList();
+    }
+
+    @Transactional
+    @ReadOnly
+    public Patient findById(Long id) {
+        return entityManager.find(Patient.class, id);
     }
 
     @Transactional

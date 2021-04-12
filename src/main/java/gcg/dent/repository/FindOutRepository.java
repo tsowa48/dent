@@ -1,7 +1,6 @@
 package gcg.dent.repository;
 
 import gcg.dent.entity.FindOut;
-import gcg.dent.entity.Schedule;
 import io.micronaut.transaction.annotation.ReadOnly;
 
 import javax.inject.Singleton;
