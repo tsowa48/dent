@@ -1,6 +1,6 @@
 package gcg.dent.repository;
 
-import gcg.dent.entity.Schedule;
+import gcg.dent.entity.Patient;
 import gcg.dent.entity.Service;
 import io.micronaut.transaction.annotation.ReadOnly;
 
@@ -11,37 +11,37 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Singleton
-public class ServiceRepository {
+public class PatientRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
     @Transactional
     @ReadOnly
-    public List<Service> getAll() {
+    public List<Patient> getAll() {
         return entityManager
-                .createQuery("select S from Service S", Service.class)
+                .createQuery("select P from Patient P", Patient.class)
                 .getResultList();
     }
 
     @Transactional
-    public Service addRecord(Service service)
+    public Patient addRecord(Patient patient)
     {
-        service.setId(null);
-        entityManager.persist(service);
-        return service;
+        patient.setId(null);
+        entityManager.persist(patient);
+        return patient;
     }
 
     @Transactional
-    public Service update(Service service)
+    public Patient update(Patient patient)
     {
-        entityManager.merge(service);
-        return service;
+        entityManager.merge(patient);
+        return patient;
     }
 
     @Transactional
     public void removeById(Long id){
         entityManager
-                .createQuery("delete from Service S where S.id = :id")
+                .createQuery("delete from Patient P where P.id = :id")
                 .setParameter("id", id)
                 .executeUpdate();
     }

@@ -44,7 +44,7 @@ public class CompanyRepository {
     @Transactional
     @ReadOnly
     public List<Company> getAll() {
-        return entityManager.createQuery("select C from Company C order by C.name").getResultList();
+        return entityManager.createQuery("select C from Company C order by C.name", Company.class).getResultList();
     }
 
     @Transactional

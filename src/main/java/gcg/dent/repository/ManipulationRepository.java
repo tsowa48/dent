@@ -1,6 +1,7 @@
 package gcg.dent.repository;
 
 import gcg.dent.entity.Manipulation;
+import gcg.dent.entity.Schedule;
 import io.micronaut.transaction.annotation.ReadOnly;
 
 import javax.inject.Singleton;
@@ -21,5 +22,28 @@ public class ManipulationRepository {
         return entityManager
                 .createQuery("select S from Manipulation S", Manipulation.class)
                 .getResultList();
+    }
+
+    @Transactional
+    public Manipulation addRecord(Manipulation manipulation)
+    {
+        manipulation.setId(null);
+        entityManager.persist(manipulation);
+        return manipulation;
+    }
+
+    @Transactional
+    public Manipulation update(Manipulation manipulation)
+    {
+        entityManager.merge(manipulation);
+        return manipulation;
+    }
+
+    @Transactional
+    public void removeById(Long id){
+        entityManager
+                .createQuery("delete from Manipulation M where M.id = :id")
+                .setParameter("id", id)
+                .executeUpdate();
     }
 }
