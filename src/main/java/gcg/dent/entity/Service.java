@@ -17,6 +17,10 @@ public class Service {
     @Column(name = "price", nullable = false)
     private Double price;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "atid", nullable = false)
+    private ActType actType;
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -39,5 +43,13 @@ public class Service {
 
     public Double getPrice() {
         return price;
+    }
+
+    public ActType getActType() {
+        return actType;
+    }
+
+    public void setActType(ActType actType) {
+        this.actType = actType;
     }
 }

@@ -25,7 +25,7 @@ public class Employee {
     private boolean isScheduled;
 
     @Column(name = "is_disabled", nullable = false)
-    private boolean isDisabled;
+    private boolean faired;
 
 
     public Long getId() {
@@ -68,11 +68,11 @@ public class Employee {
         return company;
     }
 
-    public boolean isDisabled() {
-        return isDisabled;
+    public boolean isFaired() {
+        return faired;
     }
 
-    public void setDisabled(boolean disabled) {
-        isDisabled = disabled;
+    public void setFaired(boolean faired) {
+        this.faired = faired;
     }
 }

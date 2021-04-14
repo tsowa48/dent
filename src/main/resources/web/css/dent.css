@@ -197,6 +197,6 @@ main {
     text-align: center;
 }
 
-.list-item[enabled='true'] {
-    background-color: rgb(242, 222, 222);
+.list-item[faired='true'] {
+    text-decoration: line-through;
 }

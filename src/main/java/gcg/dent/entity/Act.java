@@ -25,6 +25,10 @@ public class Act {
     @JoinColumn(name = "did", nullable = false)
     private Contract contract;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "atid", nullable = false)
+    private ActType actType;
+
 
     public Long getId() {
         return id;
@@ -64,5 +68,13 @@ public class Act {
 
     public void setContract(Contract contract) {
         this.contract = contract;
+    }
+
+    public ActType getActType() {
+        return actType;
+    }
+
+    public void setActType(ActType actType) {
+        this.actType = actType;
     }
 }

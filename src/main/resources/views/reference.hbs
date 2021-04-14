@@ -21,6 +21,7 @@
         <div class="list-item" reference="company" onclick="show_reference('company');">Организации</div>
         <div class="list-item" reference="schedule" onclick="show_reference('schedule');">График работы</div>
         <div class="list-item" reference="employee" onclick="show_reference('employee');">Сотрудники</div>
+        <div class="list-item" reference="act_type" onclick="show_reference('act_type');">Типы актов</div>
         <div class="list-item" reference="service" onclick="show_reference('service');">Услуги</div>
         <div class="list-item" reference="manipulation" onclick="show_reference('manipulation');">Манипуляции</div>
     </nav>
@@ -43,13 +44,19 @@
         <div id="employee" style="display:none;" class="reference">
             <div class="list-item success" eid="0" style="font-weight: bold;" onclick='employee_modal(this, "#modal_employee")'>Добавить сотрудника</div>
             {{#each employee}}
-                <div class='list-item' eid='{{this.id}}' cid='{{this.company.id}}' post='{{this.post}}' scheduled='{{this.scheduled}}' enabled='{{this.disabled}}' onclick='employee_modal(this, "#modal_employee")'>{{this.fio}}</div>
+                <div class='list-item' eid='{{this.id}}' cid='{{this.company.id}}' post='{{this.post}}' scheduled='{{this.scheduled}}' faired='{{this.faired}}' onclick='employee_modal(this, "#modal_employee")'>{{this.fio}}</div>
+            {{/each}}
+        </div>
+        <div id="act_type" style="display:none;" class="reference">
+            <div class="list-item success" aid="0" style="font-weight: bold;" onclick='act_type_modal(this, "#modal_act_type")'>Добавить тип акта</div>
+            {{#each act_type}}
+                <div class='list-item' aid='{{this.id}}' onclick='act_type_modal(this, "#modal_act_type")'>{{this.name}}</div>
             {{/each}}
         </div>
         <div id="service" style="display:none;" class="reference">
             <div class="list-item success" sid="0" style="font-weight: bold;" onclick='service_modal(this, "#modal_service")'>Добавить услугу</div>
             {{#each service}}
-                <div class='list-item' sid='{{this.id}}' price='{{this.price}}' onclick='service_modal(this, "#modal_service")'>{{this.name}}</div>
+                <div class='list-item' sid='{{this.id}}' price='{{this.price}}' atid='{{this.act_type.id}}' onclick='service_modal(this, "#modal_service")'>{{this.name}}</div>
             {{/each}}
         </div>
         <div id="manipulation" style="display:none;" class="reference">
@@ -89,8 +96,8 @@
             <div style="display:inline-block;margin-top:-3px;vertical-align: text-top;">Принимает пациентов</div>
         </div>
         <br>
-        <div class="text" id="employee_disabled" style="cursor:pointer;">
-            <input type="checkbox" name="disabled" style="margin:0;margin-top:3px;min-width:15px;width:15px;min-height:15px;"/>
+        <div class="text" id="employee_faired" style="cursor:pointer;">
+            <input type="checkbox" name="faired" style="margin:0;margin-top:3px;min-width:15px;width:15px;min-height:15px;"/>
             <div style="display:inline-block;margin-top:-3px;vertical-align: text-top;">Уволен</div>
         </div>
         <div class="footer">
@@ -98,9 +105,22 @@
             <button class="danger" onclick="remove_employee();">Удалить</button>
         </div>
     </div>
+    <div id="modal_act_type" class="box modal">
+        <div class="header"><span id="header_text"></span><i class="bi bi-x button danger" style="float:right;padding:0" title="Закрыть" onclick="hide_modal('#modal_act_type');"></i></div>
+        <input type="hidden" name="aid"/>
+        <input type="text" class="text" name="name" placeholder="Название"/>
+
+        <div class="footer">
+            <button class="success" onclick="save_act_type();">Сохранить</button>
+            <button class="danger" onclick="remove_act_type();">Удалить</button>
+        </div>
+    </div>
     <div id="modal_service" class="box modal">
         <div class="header"><span id="header_text"></span><i class="bi bi-x button danger" style="float:right;padding:0" title="Закрыть" onclick="hide_modal('#modal_service');"></i></div>
         <input type="hidden" name="sid"/>
+        <select name="atid" class="text" style="width:100%;cursor:pointer;">
+        </select>
+        <br>
         <input type="text" class="text" name="name" placeholder="Название"/>
         <br>
         <input type="number" class="text" name="price" min="0" step="0.01" placeholder="Цена"/>

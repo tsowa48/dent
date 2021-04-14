@@ -21,6 +21,9 @@ public class ReferenceRepository {
     ScheduleRepository scheduleRepository;
 
     @Inject
+    ActTypeRepository actTypeRepository;
+
+    @Inject
     ServiceRepository serviceRepository;
 
     @Inject
@@ -31,12 +34,14 @@ public class ReferenceRepository {
         List<Company> company = companyRepository.getAll();
         List<Employee> employee = employeeRepository.getAll();
         List<Schedule> schedule = scheduleRepository.getAll();
+        List<ActType> actType = actTypeRepository.getAll();
         List<Service> service = serviceRepository.getAll();
         List<Manipulation> manipulation = manipulationRepository.getAll();
 
         params.put("company", company);
         params.put("schedule", schedule);
         params.put("employee", employee);
+        params.put("act_type", actType);
         params.put("service", service);
         params.put("manipulation", manipulation);
         return params;

@@ -132,7 +132,7 @@ function employee_modal(e, id) {
 
     $(id + " select[name='cid']").empty();
     $(id + " input[name='schedule']").removeAttr("checked");
-    $(id + " input[name='disabled']").removeAttr("checked");
+    $(id + " input[name='faired']").removeAttr("checked");
     $("#company.reference .list-item[cid!='0']").each(function() {
         $(id + " select[name='cid']").append("<option value='" + $(this).attr('cid') + "'>" + $(this).text() + "</option>");
     });
@@ -145,8 +145,8 @@ function employee_modal(e, id) {
         if($(e).attr('scheduled') == 'true') {
             $(id + " input[name='schedule']").attr("checked", "checked");
         }
-        if($(e).attr('enabled') == 'true') {
-            $(id + " input[name='disabled']").attr("checked", "checked");
+        if($(e).attr('faired') == 'true') {
+            $(id + " input[name='faired']").attr("checked", "checked");
         }
         $(id + " .footer .danger").css("display", "inline-flex");
     } else {
@@ -154,7 +154,23 @@ function employee_modal(e, id) {
         $(id + " .footer .danger").css("display", "none");
     }
     $("#employee_schedule").css("width", $(id + " input[name='fio']").css("width"));
-    $("#employee_disabled").css("width", $(id + " input[name='fio']").css("width"));
+    $("#employee_faired").css("width", $(id + " input[name='fio']").css("width"));
+    $(id + " input:first").focus();
+    $(id).center();
+    var cover = $("<div class='cover' onclick=\"hide_modal('.modal');\"></div>");
+    $(id).before(cover);
+}
+
+function act_type_modal(e, id) {
+    $(id).css("display", "block");
+    $(id + " .header #header_text").text($(e).text());
+    if(Number($(e).attr('cid')) > 0) {
+        $(id + " input[name='aid']").val($(e).attr('aid'));
+        $(id + " input[name='name']").val($(e).text());
+        $(id + " .footer .danger").css("display", "inline-flex");
+    } else {
+        $(id + " .footer .danger").css("display", "none");
+    }
     $(id + " input:first").focus();
     $(id).center();
     var cover = $("<div class='cover' onclick=\"hide_modal('.modal');\"></div>");
@@ -164,8 +180,12 @@ function employee_modal(e, id) {
 function service_modal(e, id) {
     $(id).css("display", "block");
     $(id + " .header #header_text").text($(e).text());
+    $("#act_type.reference .list-item[aid!='0']").each(function() {
+        $(id + " select[name='atid']").append("<option value='" + $(this).attr('aid') + "'>" + $(this).text() + "</option>");
+    });
     if(Number($(e).attr('sid')) > 0) {
         $(id + " input[name='sid']").val($(e).attr('sid'));
+        $(id + " input[name='atid']").val($(e).attr('atid'));
         $(id + " input[name='name']").val($(e).text());
         $(id + " input[name='price']").val($(e).attr('price'));
         $(id + " .footer .danger").css("display", "inline-flex");
@@ -224,6 +244,17 @@ function remove_employee() {
     });
 }
 
+function remove_company() {
+    var id = $("#modal_act_type input[name='aid']").val();
+    $.ajax({
+        url: "/api/act_type/" + id,
+        method: "DELETE"
+    }).done(function() {
+        $("#act_type .list-item[aid='" + id + "']").remove();
+        hide_modal('#modal_act_type');
+    });
+}
+
 function remove_service() {
     var id = $("#modal_service input[name='sid']").val();
     $.ajax({
@@ -277,9 +308,9 @@ function save_employee() {
     var fio = $("#modal_employee input[name='fio']").val();
     var post = $("#modal_employee input[name='post']").val();
     var scheduled = $("#modal_employee input[name='schedule']").prop('checked') !== false;
-    var disabled = $("#modal_employee input[name='disabled']").prop('checked') !== false;
+    var faired = $("#modal_employee input[name='faired']").prop('checked') !== false;
 
-    var json = { id: eid, company: {id: cid}, fio: fio, post: post, scheduled: scheduled, disabled: disabled};
+    var json = { id: eid, company: {id: cid}, fio: fio, post: post, scheduled: scheduled, faired: faired};
 
     var method = (eid > 0 ? "PUT" : "POST");
     $.ajax({
@@ -296,8 +327,29 @@ function save_employee() {
         $("#employee .list-item[eid='" + employee.id + "']").attr("cid", employee.company.id);
         $("#employee .list-item[eid='" + employee.id + "']").attr("post", employee.post);
         $("#employee .list-item[eid='" + employee.id + "']").attr("scheduled", employee.scheduled);
-        $("#employee .list-item[eid='" + employee.id + "']").attr("enabled", employee.disabled);
+        $("#employee .list-item[eid='" + employee.id + "']").attr("faired", employee.faired);
         hide_modal('#modal_employee');
+    });
+}
+
+function save_act_type() {
+    var aid = Number($("#modal_act_type input[name='aid']").val());
+    var name = $("#modal_act_type input[name='name']").val();
+
+    var json = { id: aid, name: name};
+    var method = (aid > 0 ? "PUT" : "POST");
+    $.ajax({
+        url: "/api/act_type/",
+        method: method,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        data: JSON.stringify(json)
+    }).done(function(act_type) {
+        if(method === "POST") {
+            $('#act_type').append("<div class='list-item' aid='" + act_type.id + "' onclick='act_type_modal(this, \"#modal_act_type\")'></div>");
+        }
+        $("#act_type .list-item[aid='" + act_type.id + "']").text(act_type.name);
+        hide_modal('#modal_act_type');
     });
 }
 
