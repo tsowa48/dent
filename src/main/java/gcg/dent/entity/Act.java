@@ -18,9 +18,6 @@ public class Act {
     @Column(name = "date", nullable = false)
     private Date date;
 
-    @Column(name = "type", nullable = false)
-    private Integer type;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "did", nullable = false)
     private Contract contract;
@@ -52,14 +49,6 @@ public class Act {
 
     public void setDate(Date date) {
         this.date = date;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
     }
 
     public Contract getContract() {

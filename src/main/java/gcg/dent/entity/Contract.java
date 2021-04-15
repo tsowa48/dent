@@ -1,10 +1,16 @@
 package gcg.dent.entity;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "contract", schema = "public")
+@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class, defaultForType = JsonNode.class)
 public class Contract {
     @Id
     @SequenceGenerator(name = "contract_id_seq", sequenceName = "public.contract_id_seq", allocationSize = 1)
@@ -18,6 +24,9 @@ public class Contract {
     @Column(name = "date", nullable = false)
     private Date date;
 
+    @Type(type = "jsonb")
+    @Column(name = "props", columnDefinition = "jsonb")
+    private JsonNode props;
 
     public void setId(Long id) {
         this.id = id;
@@ -41,5 +50,13 @@ public class Contract {
 
     public Date getDate() {
         return date;
+    }
+
+    public JsonNode getProps() {
+        return props;
+    }
+
+    public void setProps(JsonNode props) {
+        this.props = props;
     }
 }
