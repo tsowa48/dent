@@ -66,7 +66,7 @@ function register() {
         dataType: "json",
         data: JSON.stringify(json)
     }).done(function(slot) {
-        $('.selected_slot').html("<div class='box pink' onclick='event.stopPropagation();' oncontextmenu='show_menu(this);return false;' sid='" + slot.id +
+        $('.selected_slot').append("<div class='box pink' onclick='event.stopPropagation();' oncontextmenu='show_menu(this);return false;' sid='" + slot.id +
             "' doc='" + slot.doctor.id + "'><b>" + trim_fio(slot.client.fio) + "</b><br><span>" + slot.client.phone + "</span></div>");
         hide_modal('#new_record');
     });
