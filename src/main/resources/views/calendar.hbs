@@ -5,8 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="/css/style.css?"/>
         <link rel="stylesheet" href="/css/dent.css?"/>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
-        <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <link rel="stylesheet" href="/css/bootstrap-icons.css">
+        <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
         <script type="text/javascript" src="/js/script.js"></script>
         <style>
             .day, .times {
@@ -14,7 +14,7 @@
             }
         </style>
     </head>
-    <body class="container-fluid" onmousemove="mouse_position(event)" oncontextmenu="return false;" onclick="$('.context-menu').css('display', 'none');">
+    <body class="container-fluid" onmousemove="mouse_position(event)" oncontextmenu="return false;">
         <nav>
             <div class="group">
                 <a title="Предыдущая неделя" class="button" id="prev" href="/week/{{prev}}" style="font-size: 14px"><i class="bi bi-caret-left"></i></a>
@@ -23,7 +23,7 @@
             </div>
             <div id="menu" class="group">
                 <a title="Справочники" class="button" href="/reference/" style="font-size: 14px;"><i class="bi bi-card-list"></i></a>
-                <a title="Клиенты" class="button disabled" href="/clients" style="font-size: 14px"><i class="bi bi-people"></i></a>
+                <a title="Пациенты" class="button" href="/patient" style="font-size: 14px"><i class="bi bi-people"></i></a>
                 <a title="Статистика" class="button disabled" href="/statistics" style="font-size: 14px"><i class="bi bi-graph-up"></i></a>
                 <a title="Swagger" class="button disabled" href="/gcg/swagger-ui" style="font-size: 14px"><i class="bi bi-gear"></i></a>
             </div>
@@ -55,19 +55,15 @@
         </main>
 
         <div class="box modal" id="new_record">
-            <div class="header">Новая запись<i class="bi bi-x button danger" style="float:right;padding:0" title="Закрыть" onclick="hide_modal('#new_record');"></i></div>
-            <input type="text" class="text" name="fio" placeholder="ФИО"/>
+            <div class="header">Регистрация<i class="bi bi-x button danger" style="float:right;padding:0" title="Закрыть" onclick="hide_modal('#new_record');"></i></div>
+            <input type="text" class="text" name="fio" placeholder="Фамилия Имя Отчество"/>
             <br>
             <input type="tel" class="text" name="phone" placeholder="Телефон"/>
             <div class="footer">
-                <button class="success" onclick="register(true);">Записать</button>
-                <button class="danger" onclick="register(false);">Не занимать</button>
+                <button class="success register" onclick="register(true);"><i class="bi bi-pencil-square success"></i>&nbsp;Записать</button>
+                <button class="warning register_free" onclick="register(false);"><i class="bi bi-flag warning"></i> Не занимать</button>
+                <button class="danger unregister" onclick="unregister();"><i class="bi bi-trash danger"></i>&nbsp;Удалить</button>
             </div>
-        </div>
-        <div class="box context-menu">
-            <div class="list-item disabled"><i class="bi bi-person-square"></i>&nbsp;Открыть клиента</div>
-            <div class="list-item disabled"><i class="bi bi-pencil-square"></i>&nbsp;Изменить запись</div>
-            <div class="list-item" onclick="remove_slot();"><i class="bi bi-trash"></i>&nbsp;Отменить запись</div>
         </div>
     </body>
     <script type="text/javascript">

@@ -8,19 +8,41 @@ jQuery.fn.center = function () {
 };
 
 $(document).keyup(function(e) {
-    if(e.key == "Escape") {
+    if(e.key === "Escape") {
         hide_modal('.modal');
     }
 });
 
-function show_modal(e, id) {
-    $(id).css("display", "block");
-    $('.selected_slot').removeClass('selected_slot');
-    $(e).addClass('selected_slot');
-    $(id).center();
-    $(id + " input:first").focus();
+function slot_modal(e) {
+    var sid = $(e).attr("sid");
+    $("#new_record").css("display", "block");
+    $("#new_record").center();
     var cover = $("<div class='cover' onclick=\"hide_modal('.modal');\"></div>");
-    $(id).before(cover);
+    $("#new_record").before(cover);
+
+    if(sid === undefined) {
+        $('.selected_slot').removeClass('selected_slot');
+        $(e).addClass('selected_slot');
+        //$("#new_record input:first").focus();
+        $("#new_record .footer .register").css("display", "inline-flex");
+        $("#new_record .footer .register_free").css("display", "inline-flex");
+        $("#new_record .footer .unregister").css("display", "none");
+    } else {
+        currentSlot = sid;
+        $("#new_record .footer .register").css("display", "none");
+        $("#new_record .footer .register_free").css("display", "none");
+        $("#new_record .footer .unregister").css("display", "inline-flex");
+        $("#new_record input").prop('disabled', true);
+        if($(e).attr("cid") === undefined) {
+            //$("#new_record input").prop('disabled', true);
+        } else {
+            //$("#new_record input").prop('disabled', false);
+            //$("#new_record input:first").focus();
+            $("#new_record input[name='fio']").val($(e).find(".fio").text());
+            $("#new_record input[name='phone']").val($(e).find(".phone").text());
+            //$("#new_record .footer .register").css("display", "inline-flex");
+        }
+    }
 }
 
 function hide_modal(id) {
@@ -71,20 +93,20 @@ function register(enabled) {
         dataType: "json",
         data: JSON.stringify(json)
     }).done(function(slot) {
-        if(enabled) {
-            $('.selected_slot').append("<div class='box pink' onclick='event.stopPropagation();' oncontextmenu='show_menu(this);return false;' sid='" + slot.id +
-                "' doc='" + slot.doctor.id + "'><b>" + trim_fio(slot.client.fio) + "</b><br><span>" + slot.client.phone + "</span></div>");
+        if(slot.enabled) {
+            $('.selected_slot').append("<div class='box pink' onclick='slot_modal(this);event.stopPropagation();' sid='" + slot.id +
+                "' cid='" + slot.client.id + "' doc='" + slot.doctor.id + "'><b>" + trim_fio(slot.client.fio) + "</b><br><span>" + slot.client.phone + "</span></div>");
         } else {
-            $('.selected_slot').append("<div class='box pink' onclick='event.stopPropagation();' oncontextmenu='show_menu(this);return false;' sid='" + slot.id +
+            $('.selected_slot').append("<div class='box pink' onclick='slot_modal(this);event.stopPropagation();' sid='" + slot.id +
                 "' doc='" + slot.doctor.id + "'></div>");
         }
-        hide_modal('#new_record');
+        hide_modal('.modal');
     });
 }
 
 var currentSlot;
 
-function show_menu(obj) {
+/*function show_menu(obj) {
     $('.context-menu').css("display", "block");
     var x = (mouseX + $('.context-menu').width()) > $(window).width() ? (mouseX - $('.context-menu').width()) : mouseX;
     var y = (mouseY + $('.context-menu').height()) > $(window).height() ? (mouseY - $('.context-menu').height()) : mouseY;
@@ -92,7 +114,7 @@ function show_menu(obj) {
     $('.context-menu').css("top", y);
     var slot = $(obj).attr('sid');
     currentSlot = slot;
-}
+}*/
 
 var mouseX;
 var mouseY;
@@ -102,13 +124,14 @@ function mouse_position(e) {
     mouseY = e.clientY;
 }
 
-function remove_slot() {
+function unregister() {
     $.ajax({
         url: "/api/slot/" + currentSlot,
         method: "DELETE",
     }).done(function() {
         $(".slot > .box[sid='" + currentSlot + "']").remove();
     });
+    hide_modal('.modal');
 }
 
 function show_reference(id) {
@@ -190,6 +213,7 @@ function act_type_modal(e, id) {
 function service_modal(e, id) {
     $(id).css("display", "block");
     $(id + " .header #header_text").text($(e).text());
+    $(id + " select[name='atid']").empty();
     $("#act_type.reference .list-item[aid!='0']").each(function() {
         $(id + " select[name='atid']").append("<option value='" + $(this).attr('aid') + "'>" + $(this).text() + "</option>");
     });
@@ -365,10 +389,11 @@ function save_act_type() {
 
 function save_service() {
     var sid = Number($("#modal_service input[name='sid']").val());
+    var atid = Number($("#modal_service select[name='atid']").val());
     var name = $("#modal_service input[name='name']").val();
     var price = $("#modal_service input[name='price']").val();
 
-    var json = { id: sid, name: name, price: price};
+    var json = { id: sid, name: name, price: price, actType: { id: atid } };
     var method = (sid > 0 ? "PUT" : "POST");
     $.ajax({
         url: "/api/service/",
@@ -381,6 +406,7 @@ function save_service() {
             $('#service').append("<div class='list-item' sid='" + service.id + "' onclick='service_modal(this, \"#modal_service\")'></div>");
         }
         $("#service .list-item[sid='" + service.id + "']").text(service.name);
+        $("#service .list-item[sid='" + service.id + "']").attr("atid", service.actType.id);
         $("#service .list-item[sid='" + service.id + "']").attr("price", service.price);
         hide_modal('#modal_service');
     });

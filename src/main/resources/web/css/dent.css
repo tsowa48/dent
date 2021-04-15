@@ -193,10 +193,14 @@ main {
     border-color: rgb(221, 221, 221);
 }
 
-.reference .list-item {
+.reference .list-item, .center {
     text-align: center;
 }
 
 .list-item[faired='true'] {
     text-decoration: line-through;
+}
+
+.bold {
+    font-weight: bold;
 }

@@ -106,11 +106,14 @@ button.success:hover, .button.success:hover {
     background-color: rgb(0, 170, 0);
 }
 
-.disabled, *:disabled, *:hover:disabled {
-    background-color: rgb(235, 235, 235);
-    border-color: rgb(221, 221, 221);
-    color: rgb(187, 187, 187);
-    cursor: not-allowed;
+.warning {
+    color: rgb(212, 170, 0);
+    border-color: rgb(212, 170, 0);
+}
+
+button.warning:hover, .button.warning:hover {
+    color: rgb(243, 243, 243);
+    background-color: rgb(212, 170, 0);
 }
 
 a, .link {
@@ -131,7 +134,7 @@ a:hover, .link:hover {
     color: rgb(75, 159, 213);
 }
 
-input[type='text'], .text {
+input, .text {
     height: 21px;
     padding: 0px 5px 1px 5px;
     box-shadow: none;
@@ -145,7 +148,7 @@ input[type='text'], .text {
     cursor: text;
 }
 
-input[type='text']:active, input[type='text']:focus, .text:active, .text:focus {
+input:active, input:focus, .text:active, .text:focus {
     box-shadow: none;
     outline: 0;
     border-color: rgb(75, 159, 213);
@@ -212,7 +215,12 @@ header, .header {
     cursor: pointer;
 }
 
-
+.disabled, *:disabled, *:hover:disabled {
+    background-color: rgb(235, 235, 235);
+    border-color: rgb(221, 221, 221);
+    color: rgb(187, 187, 187);
+    cursor: not-allowed;
+}
 
 
 

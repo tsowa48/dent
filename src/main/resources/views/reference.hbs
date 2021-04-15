@@ -5,16 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/style.css?"/>
     <link rel="stylesheet" href="/css/dent.css?"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap-icons.css">
+    <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" src="/js/script.js"></script>
 </head>
-<body>
+<body oncontextmenu="return false;">
 <div class="container">
     <nav id="references_menu">
         <div id="menu" class="group">
             <a title="Расписание" class="button" href="/" style="font-size: 14px;"><i class="bi bi-calendar3"></i></a>
-            <a title="Клиенты" class="button disabled" href="/clients" style="font-size: 14px"><i class="bi bi-people"></i></a>
+            <a title="Пациенты" class="button" href="/patient" style="font-size: 14px"><i class="bi bi-people"></i></a>
             <a title="Статистика" class="button disabled" href="/statistics" style="font-size: 14px"><i class="bi bi-graph-up"></i></a>
             <a title="Swagger" class="button disabled" href="/gcg/swagger-ui" style="font-size: 14px"><i class="bi bi-gear"></i></a>
         </div>
@@ -27,7 +27,7 @@
     </nav>
     <main id="main">
         <div id="company" style="display:none;" class="reference">
-            <div class="list-item success" cid="0" style="font-weight: bold;" onclick='company_modal(this, "#modal_company")'>Добавить организацию</div>
+            <div class="list-item success bold" cid="0" onclick='company_modal(this, "#modal_company")'>Добавить организацию</div>
             {{#each company}}
                 <div class='list-item' cid='{{this.id}}' address='{{this.address}}' director='{{this.director}}' onclick='company_modal(this, "#modal_company")'>{{this.name}}</div>
             {{/each}}
@@ -42,25 +42,25 @@
             <div class='list-item disabled' dow='6' onclick='schedule_modal(this, "#modal_schedule")'>Воскресенье</div>
         </div>
         <div id="employee" style="display:none;" class="reference">
-            <div class="list-item success" eid="0" style="font-weight: bold;" onclick='employee_modal(this, "#modal_employee")'>Добавить сотрудника</div>
+            <div class="list-item success bold" eid="0" onclick='employee_modal(this, "#modal_employee")'>Добавить сотрудника</div>
             {{#each employee}}
                 <div class='list-item' eid='{{this.id}}' cid='{{this.company.id}}' post='{{this.post}}' scheduled='{{this.scheduled}}' faired='{{this.faired}}' onclick='employee_modal(this, "#modal_employee")'>{{this.fio}}</div>
             {{/each}}
         </div>
         <div id="act_type" style="display:none;" class="reference">
-            <div class="list-item success" aid="0" style="font-weight: bold;" onclick='act_type_modal(this, "#modal_act_type")'>Добавить тип акта</div>
+            <div class="list-item success bold" aid="0" onclick='act_type_modal(this, "#modal_act_type")'>Добавить тип акта</div>
             {{#each act_type}}
                 <div class='list-item' aid='{{this.id}}' onclick='act_type_modal(this, "#modal_act_type")'>{{this.name}}</div>
             {{/each}}
         </div>
         <div id="service" style="display:none;" class="reference">
-            <div class="list-item success" sid="0" style="font-weight: bold;" onclick='service_modal(this, "#modal_service")'>Добавить услугу</div>
+            <div class="list-item success bold" sid="0" onclick='service_modal(this, "#modal_service")'>Добавить услугу</div>
             {{#each service}}
                 <div class='list-item' sid='{{this.id}}' price='{{this.price}}' atid='{{this.act_type.id}}' onclick='service_modal(this, "#modal_service")'>{{this.name}}</div>
             {{/each}}
         </div>
         <div id="manipulation" style="display:none;" class="reference">
-            <div class="list-item success" mid="0" style="font-weight: bold;" onclick='manipulation_modal(this, "#modal_manipulation")'>Добавить манипуляцию</div>
+            <div class="list-item success bold" mid="0" onclick='manipulation_modal(this, "#modal_manipulation")'>Добавить манипуляцию</div>
             {{#each manipulation}}
                 <div class='list-item' mid='{{this.id}}' sid='{{this.service.id}}' onclick='manipulation_modal(this, "#modal_manipulation")'>{{this.name}}</div>
             {{/each}}
@@ -87,7 +87,7 @@
         <select name="cid" class="text" style="width:100%;cursor:pointer;">
         </select>
         <br>
-        <input type="text" class="text" name="fio" placeholder="ФИО"/>
+        <input type="text" class="text" name="fio" placeholder="Фамилия Имя Отчество"/>
         <br>
         <input type="text" class="text" name="post" placeholder="Должность"/>
         <br>

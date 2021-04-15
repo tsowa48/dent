@@ -14,7 +14,7 @@ public class Slot {
     private Long id;
 
     @Column(name = "enabled", nullable = false)
-    private Boolean enabled;
+    private boolean enabled;
 
     @Column(name = "date", nullable = false)
     private Date date;
@@ -42,11 +42,11 @@ public class Slot {
         this.id = id;
     }
 
-    public Boolean getEnabled() {
+    public boolean isEnabled() {
         return enabled;
     }
 
-    public void setEnabled(Boolean enabled) {
+    public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 

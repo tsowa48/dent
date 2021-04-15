@@ -49,6 +49,7 @@ public class SlotController {
         if(fio.isPresent() && phone.isPresent()) {
             Client client = clientRepository.find(fio.get(), phone.get());
             slot.setClient(client);
+            slot.setEnabled(true);
         }
         slot.setDoctor(doctor);
         entityManager.persist(slot);
