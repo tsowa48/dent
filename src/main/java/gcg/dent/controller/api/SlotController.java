@@ -18,6 +18,7 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.sql.Time;
 import java.util.Date;
+import java.util.Optional;
 
 @Controller("/api/slot")
 public class SlotController {
@@ -41,12 +42,14 @@ public class SlotController {
 
     @Transactional
     @Post(uri = "/add", produces = MediaType.APPLICATION_JSON)
-    public Slot add(String fio, String phone, Long doc, Date date, String time, Integer size) {
-        Client client = clientRepository.find(fio, phone);
+    public Slot add(Optional<String> fio, Optional<String> phone, Long doc, Date date, String time, Integer size) {
         Employee doctor = employeeRepository.getById(doc);
         String sizeTime = String.format("%02d:%02d:00", (size / 60), size % 60);
         Slot slot = slotRepository.makeSlot(date, Time.valueOf(time + ":00"), Time.valueOf(sizeTime));
-        slot.setClient(client);
+        if(fio.isPresent() && phone.isPresent()) {
+            Client client = clientRepository.find(fio.get(), phone.get());
+            slot.setClient(client);
+        }
         slot.setDoctor(doctor);
         entityManager.persist(slot);
         return slot;

@@ -49,15 +49,20 @@ function trim_fio(fio) {
     return fio_part.join(" ");
 }
 
-function register() {
-    var fio = $("#new_record input[name='fio']").val();
-    var phone = $("#new_record input[name='phone']").val();
+function register(enabled) {
     var doc = Number($("#doctors .selected").attr('doc'));
     var date = $('.selected_slot').attr('date');
     var time = $('.selected_slot').attr('time');
     var size = Number($('.selected_slot').attr('size'));
 
-    var json = { fio: fio, phone: phone, doc: doc, date: date, time: time, size: size};
+    var json;
+    if(enabled) {
+        var fio = $("#new_record input[name='fio']").val();
+        var phone = $("#new_record input[name='phone']").val();
+        json = { fio: fio, phone: phone, doc: doc, date: date, time: time, size: size};
+    } else {
+        json = { enabled: enabled, doc: doc, date: date, time: time, size: size};
+    }
 
     $.ajax({
         url: "/api/slot/add",
@@ -66,8 +71,13 @@ function register() {
         dataType: "json",
         data: JSON.stringify(json)
     }).done(function(slot) {
-        $('.selected_slot').append("<div class='box pink' onclick='event.stopPropagation();' oncontextmenu='show_menu(this);return false;' sid='" + slot.id +
-            "' doc='" + slot.doctor.id + "'><b>" + trim_fio(slot.client.fio) + "</b><br><span>" + slot.client.phone + "</span></div>");
+        if(enabled) {
+            $('.selected_slot').append("<div class='box pink' onclick='event.stopPropagation();' oncontextmenu='show_menu(this);return false;' sid='" + slot.id +
+                "' doc='" + slot.doctor.id + "'><b>" + trim_fio(slot.client.fio) + "</b><br><span>" + slot.client.phone + "</span></div>");
+        } else {
+            $('.selected_slot').append("<div class='box pink' onclick='event.stopPropagation();' oncontextmenu='show_menu(this);return false;' sid='" + slot.id +
+                "' doc='" + slot.doctor.id + "'></div>");
+        }
         hide_modal('#new_record');
     });
 }

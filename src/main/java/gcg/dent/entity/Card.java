@@ -18,18 +18,9 @@ public class Card {
     @Column(name = "date", nullable = false)
     private Date date;
 
-    @Column(name = "diagnosis", nullable = false)
-    private String diagnosis;
-
-    @Column(name = "complaints", nullable = false)
-    private String complaints;
-
-    @Column(name = "anamnesis", nullable = false)
-    private String anamnesis;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "doc")
-    private Employee doc;
+    @JoinColumn(name = "cid")
+    private Company company;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pid")
@@ -43,36 +34,12 @@ public class Card {
         return id;
     }
 
-    public void setDiagnosis(String diagnosis) {
-        this.diagnosis = diagnosis;
-    }
-
-    public String getDiagnosis() {
-        return diagnosis;
-    }
-
-    public void setComplaints(String complaints) {
-        this.complaints = complaints;
-    }
-
-    public String getComplaints() {
-        return complaints;
-    }
-
     public void setNumber(Long number) {
         this.number = number;
     }
 
     public Long getNumber() {
         return number;
-    }
-
-    public void setAnamnesis(String anamnesis) {
-        this.anamnesis = anamnesis;
-    }
-
-    public String getAnamnesis() {
-        return anamnesis;
     }
 
     public void setDate(Date date) {
@@ -83,19 +50,19 @@ public class Card {
         return date;
     }
 
-    public Employee getDoc() {
-        return doc;
-    }
-
-    public void setDoc(Employee doc) {
-        this.doc = doc;
-    }
-
     public void setPatient(Patient patient) {
         this.patient = patient;
     }
 
     public Patient getPatient() {
         return patient;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 }

@@ -18,25 +18,6 @@ public class Contract {
     @Column(name = "date", nullable = false)
     private Date date;
 
-    @Column(name = "warranty", nullable = false)
-    private String warranty;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cid", nullable = false)
-    private Company company;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name ="doc", nullable = false)
-    private Employee doctor;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pid")
-    private Patient patient;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tech")
-    private Employee tech;
-
 
     public void setId(Long id) {
         this.id = id;
@@ -60,45 +41,5 @@ public class Contract {
 
     public Date getDate() {
         return date;
-    }
-
-    public void setWarranty(String warranty) {
-        this.warranty = warranty;
-    }
-
-    public String getWarranty() {
-        return warranty;
-    }
-
-    public void setCompany(Company company) {
-        this.company = company;
-    }
-
-    public Company getCompany() {
-        return company;
-    }
-
-    public Employee getDoctor() {
-        return doctor;
-    }
-
-    public void setDoctor(Employee doctor) {
-        this.doctor = doctor;
-    }
-
-    public Patient getPatient() {
-        return patient;
-    }
-
-    public void setPatient(Patient patient) {
-        this.patient = patient;
-    }
-
-    public Employee getTech() {
-        return tech;
-    }
-
-    public void setTech(Employee tech) {
-        this.tech = tech;
     }
 }
