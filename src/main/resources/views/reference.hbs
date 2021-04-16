@@ -18,12 +18,13 @@
             <a title="Статистика" class="button disabled" href="/statistics" style="font-size: 14px"><i class="bi bi-graph-up"></i></a>
             <a title="Swagger" class="button disabled" href="/gcg/swagger-ui" style="font-size: 14px"><i class="bi bi-gear"></i></a>
         </div>
-        <div class="list-item" reference="company" onclick="show_reference('company');">Организации</div>
-        <div class="list-item" reference="schedule" onclick="show_reference('schedule');">График работы</div>
-        <div class="list-item" reference="employee" onclick="show_reference('employee');">Сотрудники</div>
-        <div class="list-item" reference="act_type" onclick="show_reference('act_type');">Типы актов</div>
-        <div class="list-item" reference="service" onclick="show_reference('service');">Услуги</div>
-        <div class="list-item" reference="manipulation" onclick="show_reference('manipulation');">Манипуляции</div>
+        <div class="list-item" reference="company" onclick="show_reference(this);">Организации</div>
+        <div class="list-item" reference="schedule" onclick="show_reference(this);">График работы</div>
+        <div class="list-item" reference="employee" onclick="show_reference(this);">Сотрудники</div>
+        <div class="list-item" reference="act_type" onclick="show_reference(this);">Типы актов</div>
+        <div class="list-item" reference="service" onclick="show_reference(this);">Услуги</div>
+        <div class="list-item" reference="manipulation" onclick="show_reference(this);">Манипуляции</div>
+        <div class="list-item disabled" reference="document" onclick="show_reference(this);">Документы</div>
     </nav>
     <main id="main">
         <div id="company" style="display:none;" class="reference">
@@ -64,6 +65,9 @@
             {{#each manipulation}}
                 <div class='list-item' mid='{{this.id}}' sid='{{this.service.id}}' onclick='manipulation_modal(this, "#modal_manipulation")'>{{this.name}}</div>
             {{/each}}
+        </div>
+        <div id="document" style="display:none;" class="reference">
+            <div class="list-item success bold" sid="0" onclick='document_modal(this, "#modal_document")'>Добавить документ</div>
         </div>
     </main>
 

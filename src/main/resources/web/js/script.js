@@ -134,7 +134,8 @@ function unregister() {
     hide_modal('.modal');
 }
 
-function show_reference(id) {
+function show_reference(t) {
+    var id = $(t).attr("reference");
     $(".reference").css("display", "none");
     $(".reference#" + id).css("display", "block");
     $("#references_menu .list-item").removeClass('selected');

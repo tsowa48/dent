@@ -25,7 +25,10 @@ public class PatientRepository {
     @Transactional
     @ReadOnly
     public Patient findById(Long id) {
-        return entityManager.find(Patient.class, id);
+        return entityManager
+                .createQuery("select P from Patient P left join fetch P.findOut where P.id = :id", Patient.class)
+                .setParameter("id", id)
+                .getSingleResult();
     }
 
     @Transactional

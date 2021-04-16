@@ -24,10 +24,14 @@
     </div>
 </nav>
 <main>
-    <div class="box pink" pid="{{patient.id}}">
+    <div class="box" pid="{{patient.id}}">
         <div>ФИО:&nbsp;<b>{{patient.fio}}</b></div>
         <div>Телефон:&nbsp;<b>{{patient.phone}}</b></div>
         <div>Адрес:&nbsp;<b>{{patient.address}}</b></div>
+        <div>Откуда узнал о компании:&nbsp;<b>{{patient.findOut.name}}</b></div>
+    </div>
+    <div class="box" cid="{{card.id}}">
+        Мед.карта №{{card.number}}
     </div>
 </main>
 </div>
