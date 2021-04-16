@@ -1,5 +1,8 @@
 package gcg.dent.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import gcg.dent.util.ObjectUtils;
+
 import javax.persistence.*;
 import java.sql.Time;
 
@@ -15,8 +18,8 @@ public class Schedule {
     @Column(name = "start", nullable = false)
     private Time start;
 
-    @Column(name = "end", nullable = false)
-    private Time end;
+    @Column(name = "finish", nullable = false)
+    private Time finish;
 
     @Column(name = "dow", nullable = false)
     private int dow;
@@ -37,12 +40,12 @@ public class Schedule {
         this.start = start;
     }
 
-    public Time getEnd() {
-        return end;
+    public Time getFinish() {
+        return finish;
     }
 
-    public void setEnd(Time end) {
-        this.end = end;
+    public void setFinish(Time finish) {
+        this.finish = finish;
     }
 
     public int getDow() {
@@ -51,5 +54,10 @@ public class Schedule {
 
     public void setDow(int dow) {
         this.dow = dow;
+    }
+
+    @JsonProperty(value = "dayOfWeek", access = JsonProperty.Access.READ_ONLY)
+    public String getDayOfWeek() {
+        return ObjectUtils.weekDaysFull[getDow()];
     }
 }

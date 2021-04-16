@@ -34,13 +34,10 @@
             {{/each}}
         </div>
         <div id="schedule" style="display:none;" class="reference">
-            <div class='list-item disabled' dow='0' onclick='schedule_modal(this, "#modal_schedule")'>Понедельник</div>
-            <div class='list-item disabled' dow='1' onclick='schedule_modal(this, "#modal_schedule")'>Вторник</div>
-            <div class='list-item disabled' dow='2' onclick='schedule_modal(this, "#modal_schedule")'>Среда</div>
-            <div class='list-item disabled' dow='3' onclick='schedule_modal(this, "#modal_schedule")'>Четверг</div>
-            <div class='list-item disabled' dow='4' onclick='schedule_modal(this, "#modal_schedule")'>Пятница</div>
-            <div class='list-item disabled' dow='5' onclick='schedule_modal(this, "#modal_schedule")'>Суббота</div>
-            <div class='list-item disabled' dow='6' onclick='schedule_modal(this, "#modal_schedule")'>Воскресенье</div>
+            <div class="list-item success bold" sid="0" onclick='schedule_modal(this, "#modal_schedule")'>Добавить график работы</div>
+            {{#each schedule}}
+                <div class='list-item' sid='{{this.id}}' dow='{{this.dow}}' start='{{this.start}}' finish='{{this.finish}}' onclick='schedule_modal(this, "#modal_schedule")'>{{this.dayOfWeek}} {{this.start}} - {{this.finish}}</div>
+            {{/each}}
         </div>
         <div id="employee" style="display:none;" class="reference">
             <div class="list-item success bold" eid="0" onclick='employee_modal(this, "#modal_employee")'>Добавить сотрудника</div>
@@ -66,9 +63,6 @@
                 <div class='list-item' mid='{{this.id}}' sid='{{this.service.id}}' onclick='manipulation_modal(this, "#modal_manipulation")'>{{this.name}}</div>
             {{/each}}
         </div>
-        <div id="document" style="display:none;" class="reference">
-            <div class="list-item success bold" sid="0" onclick='document_modal(this, "#modal_document")'>Добавить документ</div>
-        </div>
     </main>
 
     <div id="modal_company" class="box modal">
@@ -83,6 +77,28 @@
         <div class="footer">
             <button class="success" onclick="save_company();">Сохранить</button>
             <button class="danger" onclick="remove_company();">Удалить</button>
+        </div>
+    </div>
+    <div id="modal_schedule" class="box modal">
+        <div class="header"><span id="header_text"></span><i class="bi bi-x button danger" style="float:right;padding:0" title="Закрыть" onclick="hide_modal('#modal_schedule');"></i></div>
+        <input type="hidden" name="sid"/>
+        <select name="dow" class="text" style="width:100%;cursor:pointer;">
+            <option value="0">Понедельник</option>
+            <option value="1">Вторник</option>
+            <option value="2">Среда</option>
+            <option value="3">Черверг</option>
+            <option value="4">Пятница</option>
+            <option value="5">Суббота</option>
+            <option value="6">Воскресенье</option>
+        </select>
+        <br>
+        <input type="time" class="text" min="00:01" max="23:59" name="start" placeholder="Начало периода"/>
+        <br>
+        <input type="time" class="text" min="00:01" max="23:59" name="finish" placeholder="Окончание периода"/>
+
+        <div class="footer">
+            <button class="success" onclick="save_schedule();">Сохранить</button>
+            <button class="danger" onclick="remove_schedule();">Удалить</button>
         </div>
     </div>
     <div id="modal_employee" class="box modal">

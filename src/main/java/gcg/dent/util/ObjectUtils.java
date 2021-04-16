@@ -5,6 +5,7 @@ import java.util.Date;
 
 public class ObjectUtils {
     private static final String[] weekDays = new String[] {"", "вс", "пн", "вт", "ср", "чт", "пт", "сб"};
+    public static final String[] weekDaysFull = new String[] {"Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"};
 
     private ObjectUtils() {}
 

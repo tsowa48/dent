@@ -160,6 +160,24 @@ function company_modal(e, id) {
     $(id).before(cover);
 }
 
+function schedule_modal(e, id) {
+    $(id).css("display", "block");
+    $(id + " .header #header_text").text($(e).text());
+    if(Number($(e).attr('sid')) > 0) {
+        $(id + " input[name='sid']").val($(e).attr('sid'));
+        $(id + " select[name='dow']").val($(e).attr('dow'));
+        $(id + " input[name='start']").val($(e).attr('start'));
+        $(id + " input[name='finish']").val($(e).attr('finish'));
+        $(id + " .footer .danger").css("display", "inline-flex");
+    } else {
+        $(id + " .footer .danger").css("display", "none");
+    }
+    $(id + " input:first").focus();
+    $(id).center();
+    var cover = $("<div class='cover' onclick=\"hide_modal('.modal');\"></div>");
+    $(id).before(cover);
+}
+
 function employee_modal(e, id) {
     $(id).css("display", "block");
     $(id + " .header #header_text").text($(e).text());
@@ -268,6 +286,17 @@ function remove_company() {
     });
 }
 
+function remove_schedule() {
+    var id = $("#modal_schedule input[name='sid']").val();
+    $.ajax({
+        url: "/api/schedule/" + id,
+        method: "DELETE"
+    }).done(function() {
+        $("#schedule .list-item[sid='" + id + "']").remove();
+        hide_modal('#modal_schedule');
+    });
+}
+
 function remove_employee() {
     var id = $("#modal_employee input[name='eid']").val();
     $.ajax({
@@ -334,6 +363,32 @@ function save_company() {
         $("#company .list-item[cid='" + company.id + "']").attr("address", company.address);
         $("#company .list-item[cid='" + company.id + "']").attr("director", company.director);
         hide_modal('#modal_company');
+    });
+}
+
+function save_schedule() {
+    var sid = Number($("#modal_schedule input[name='sid']").val());
+    var dow = Number($("#modal_schedule select[name='dow']").val());
+    var start = $("#modal_schedule input[name='start']").val().split(":");
+    var finish = $("#modal_schedule input[name='finish']").val().split(":");
+
+    var json = { id: sid, dow: dow, start: start[0] + ":" + start[1] + ":00", finish: finish[0] + ":" + finish[1] + ":00" };
+    var method = (sid > 0 ? "PUT" : "POST");
+    $.ajax({
+        url: "/api/schedule/",
+        method: method,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        data: JSON.stringify(json)
+    }).done(function(schedule) {
+        if(method === "POST") {
+            $('#schedule').append("<div class='list-item' sid='" + schedule.id + "' onclick='schedule_modal(this, \"#modal_schedule\")'></div>");
+        }
+        $("#schedule .list-item[sid='" + schedule.id + "']").text(schedule.dayOfWeek + " " + schedule.start + " - " + schedule.finish);
+        $("#schedule .list-item[sid='" + schedule.id + "']").attr("dow", schedule.dow);
+        $("#schedule .list-item[sid='" + schedule.id + "']").attr("start", schedule.start);
+        $("#schedule .list-item[sid='" + schedule.id + "']").attr("finish", schedule.finish);
+        hide_modal('#modal_schedule');
     });
 }
 
