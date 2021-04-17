@@ -1,5 +1,8 @@
 package gcg.dent.entity;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 
 @Entity
@@ -14,6 +17,18 @@ public class History {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cid")
     private Card card;
+
+    @Type(type = "jsonb")
+    @Column(name = "props", columnDefinition = "jsonb")
+    private JsonNode props;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "did")
+    private Contract contract;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "doc")
+    private Employee employee;
 
 
     public Long getId() {
@@ -31,4 +46,16 @@ public class History {
     public void setCard(Card card) {
         this.card = card;
     }
+
+    public void setProps(JsonNode props) {this.props = props; }
+
+    public JsonNode getProps() {return props; }
+
+    public void setContract(Contract contract) {this.contract = contract; }
+
+    public Contract getContract() {return contract; }
+
+    public void setEmployee(Employee employee) {this.employee = employee; }
+
+    public Employee getEmployee() {return employee; }
 }
