@@ -31,6 +31,10 @@ public class Patient {
     @JoinColumn(name = "fid")
     private FindOut findOut;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id")
+    private Card card;
+
 
     public Long getId() {
         return id;
@@ -86,5 +90,13 @@ public class Patient {
 
     public void setFindOut(FindOut findOut) {
         this.findOut = findOut;
+    }
+
+    public Card getCard() {
+        return card;
+    }
+
+    public void setCard(Card card) {
+        this.card = card;
     }
 }

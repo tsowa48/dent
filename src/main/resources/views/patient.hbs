@@ -30,8 +30,16 @@
         <div>Адрес:&nbsp;<b>{{patient.address}}</b></div>
         <div>Откуда узнал о компании:&nbsp;<b>{{patient.findOut.name}}</b></div>
     </div>
-    <div class="box" cid="{{card.id}}">
-        Мед.карта №{{card.number}}
+    <div class="box" cid="{{patient.card.id}}">
+        Мед.карта №{{patient.card.number}}
+
+        <br>
+        История болезни:
+        <div class="box">
+            {{#each patient.card.history}}
+                <div class="list-item" hid="{{this.id}}">{{this.id}}</div>
+            {{/each}}
+        </div>
     </div>
 </main>
 </div>

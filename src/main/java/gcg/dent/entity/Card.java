@@ -1,7 +1,9 @@
 package gcg.dent.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "card", schema = "public")
@@ -22,9 +24,8 @@ public class Card {
     @JoinColumn(name = "cid")
     private Company company;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pid")
-    private Patient patient;
+    @OneToMany(mappedBy = "card")
+    private List<History> history = new ArrayList<>();
 
     public void setId(Long id) {
         this.id = id;
@@ -50,19 +51,19 @@ public class Card {
         return date;
     }
 
-    public void setPatient(Patient patient) {
-        this.patient = patient;
-    }
-
-    public Patient getPatient() {
-        return patient;
-    }
-
     public Company getCompany() {
         return company;
     }
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    public List<History> getHistory() {
+        return history;
+    }
+
+    public void setHistory(List<History> history) {
+        this.history = history;
     }
 }
