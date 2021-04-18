@@ -1,13 +1,14 @@
 package gcg.dent.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "act", schema = "public")
-public class Act {
+public class Act implements Serializable {
     @Id
     @SequenceGenerator(name = "act_id_seq", sequenceName = "public.act_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "act_id_seq")
@@ -17,8 +18,9 @@ public class Act {
     @Column(name = "number", nullable = false)
     private Long number;
 
-    @Column(name = "doc", nullable = false)
-    private Long doc;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "doc")
+    private Employee doctor;
 
     @Column(name = "date", nullable = false)
     private Date date;
@@ -31,7 +33,7 @@ public class Act {
     @JoinColumn(name = "atid", nullable = false)
     private ActType actType;
 
-    @OneToMany(mappedBy = "act")
+    @OneToMany(mappedBy = "act", fetch = FetchType.EAGER)
     private List<ActService> actServices = new ArrayList<>();
 
     public Long getId() {
@@ -74,11 +76,19 @@ public class Act {
         this.actType = actType;
     }
 
-    public void setDoc(Long doc) {this.doc = doc; }
+    public Employee getDoctor() {
+        return doctor;
+    }
 
-    public Long getDoc() {return doc; }
+    public void setDoctor(Employee doctor) {
+        this.doctor = doctor;
+    }
 
-    public void setActServices(List<ActService> actServises) {this.actServices = actServises; }
+    public List<ActService> getActServices() {
+        return actServices;
+    }
 
-    public List<ActService> getActServices() {return actServices; }
+    public void setActServices(List<ActService> actServices) {
+        this.actServices = actServices;
+    }
 }

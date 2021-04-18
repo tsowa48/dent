@@ -47,3 +47,4 @@ jpa:
         hbm2ddl:
           auto: none
         show_sql: true
+#env PGPASSWORD="dent" pg_dump -h localhost -p 5432 -U dent -v -b -Fp dent > dent_full.sql

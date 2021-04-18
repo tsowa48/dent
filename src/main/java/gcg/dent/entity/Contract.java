@@ -2,6 +2,7 @@ package gcg.dent.entity;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import gcg.dent.util.ObjectUtils;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
@@ -30,7 +31,7 @@ public class Contract {
     @Column(name = "props", columnDefinition = "jsonb")
     private JsonNode props;
 
-    @OneToMany(mappedBy = "contract")
+    @OneToMany(mappedBy = "contract", fetch = FetchType.EAGER)
     private List<Act> acts = new ArrayList<>();
 
     public void setId(Long id) {
@@ -53,8 +54,8 @@ public class Contract {
         this.date = date;
     }
 
-    public Date getDate() {
-        return date;
+    public String getDate() {
+        return ObjectUtils.dateFormat.format(this.date);
     }
 
     public JsonNode getProps() {

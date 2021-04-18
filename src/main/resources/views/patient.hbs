@@ -24,22 +24,20 @@
     </div>
 </nav>
 <main>
-    <div class="box" pid="{{patient.id}}">
-        <div>ФИО:&nbsp;<b>{{patient.fio}}</b></div>
-        <div>Телефон:&nbsp;<b>{{patient.phone}}</b></div>
-        <div>Адрес:&nbsp;<b>{{patient.address}}</b></div>
-        <div>Откуда узнал о компании:&nbsp;<b>{{patient.findOut.name}}</b></div>
+    <div class="box" pid="{{patient.id}}" style="height: fit-content">
+        <div class="item" name="fio">ФИО:&nbsp;<b>{{patient.fio}}</b></div>
+        <div class="item" name="phone">Телефон:&nbsp;<b>{{patient.phone}}</b></div>
+        <div class="item" name="address">Адрес:&nbsp;<b>{{patient.address}}</b></div>
+        <div class="item" name="findOut">Откуда узнал о компании:&nbsp;<b>{{patient.findOut.name}}</b></div>
+        <div class="item" name="card" cid="{{patient.card.id}}">Мед.карта <b>№{{patient.card.number}}</b> от <b>{{patient.card.date}}г.</b></div>
+        <div class="item">&nbsp;</div>
     </div>
-    <div class="box" cid="{{patient.card.id}}">
-        Мед.карта №{{patient.card.number}}
-
-        <br>
-        История болезни:
-        <div class="box">
+    <br>
+        <div class="box" id="history_list" style="overflow-y: scroll;padding:0">
+            <div class="list-item success bold center" hid="0" onclick="history_modal(this, '#modal_history')">Добавить карту эпиданамнеза</div>
             {{#each patient.card.history}}
-                <div class="list-item" hid="{{this.id}}">{{this.id}}</div>
+                <div class="list-item center" hid="{{this.id}}" onclick="history_modal(this, '#modal_history')">Карта эпиданамнеза от {{this.props.date}}г. (договор №{{this.contract.number}} от {{this.contract.date}}г.)</div>
             {{/each}}
-        </div>
     </div>
 </main>
 </div>

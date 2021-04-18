@@ -36,7 +36,7 @@
         <div id="schedule" style="display:none;" class="reference">
             <div class="list-item success bold" sid="0" onclick='schedule_modal(this, "#modal_schedule")'>Добавить график работы</div>
             {{#each schedule}}
-                <div class='list-item' sid='{{this.id}}' dow='{{this.dow}}' start='{{this.start}}' finish='{{this.finish}}' onclick='schedule_modal(this, "#modal_schedule")'>{{this.dayOfWeek}} {{this.start}} - {{this.finish}}</div>
+                <div class='list-item' sid='{{this.id}}' dow='{{this.dow}}' start='{{this.start}}' finish='{{this.finish}}' onclick='schedule_modal(this, "#modal_schedule")'>{{this.dayOfWeek}} {{this.timeStart}} - {{this.timeFinish}}</div>
             {{/each}}
         </div>
         <div id="employee" style="display:none;" class="reference">

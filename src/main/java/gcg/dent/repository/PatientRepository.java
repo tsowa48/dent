@@ -26,8 +26,12 @@ public class PatientRepository {
     @ReadOnly
     public Patient findById(Long id) {
         return entityManager
-                .createQuery("select P from Patient P left join fetch P.findOut " +
-                        "left join fetch P.card C left join fetch C.history where P.id = :id", Patient.class)
+                .createQuery("select P from Patient P " +
+                        "left join fetch P.findOut F " +
+                        "left join fetch P.card C " +
+                        "left join fetch C.history H " +
+                        "left join fetch H.contract D " +
+                        "where P.id = :id order by D.date desc", Patient.class)
                 .setParameter("id", id)
                 .getSingleResult();
     }

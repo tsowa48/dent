@@ -215,6 +215,14 @@ header, .header {
     cursor: pointer;
 }
 
+.item {
+    display: block;
+    border: 1px solid transparent;
+    text-align: left;
+    line-height: 22px;
+    padding: 0px 5px 0px 5px;
+}
+
 .disabled, *:disabled, *:hover:disabled {
     background-color: rgb(235, 235, 235);
     border-color: rgb(221, 221, 221);

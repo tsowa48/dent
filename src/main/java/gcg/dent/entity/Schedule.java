@@ -60,4 +60,14 @@ public class Schedule {
     public String getDayOfWeek() {
         return ObjectUtils.weekDaysFull[getDow()];
     }
+
+    @JsonProperty(value = "timeStart", access = JsonProperty.Access.READ_ONLY)
+    public String getTimeStart() {
+        return ObjectUtils.timeFormat.format(this.start);
+    }
+
+    @JsonProperty(value = "timeFinish", access = JsonProperty.Access.READ_ONLY)
+    public String getTimeFinish() {
+        return ObjectUtils.timeFormat.format(this.finish);
+    }
 }

@@ -1,11 +1,14 @@
 package gcg.dent.util;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 public class ObjectUtils {
     private static final String[] weekDays = new String[] {"", "вс", "пн", "вт", "ср", "чт", "пт", "сб"};
     public static final String[] weekDaysFull = new String[] {"Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"};
+    public static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.YYYY");
+    public static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
     private ObjectUtils() {}
 

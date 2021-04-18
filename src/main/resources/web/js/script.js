@@ -384,7 +384,7 @@ function save_schedule() {
         if(method === "POST") {
             $('#schedule').append("<div class='list-item' sid='" + schedule.id + "' onclick='schedule_modal(this, \"#modal_schedule\")'></div>");
         }
-        $("#schedule .list-item[sid='" + schedule.id + "']").text(schedule.dayOfWeek + " " + schedule.start + " - " + schedule.finish);
+        $("#schedule .list-item[sid='" + schedule.id + "']").text(schedule.dayOfWeek + " " + schedule.timeStart + " - " + schedule.timeFinish);
         $("#schedule .list-item[sid='" + schedule.id + "']").attr("dow", schedule.dow);
         $("#schedule .list-item[sid='" + schedule.id + "']").attr("start", schedule.start);
         $("#schedule .list-item[sid='" + schedule.id + "']").attr("finish", schedule.finish);

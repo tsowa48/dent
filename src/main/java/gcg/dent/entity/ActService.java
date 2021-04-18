@@ -1,20 +1,24 @@
 package gcg.dent.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@IdClass(ActServiceId.class)
 @Table(name = "act_service", schema = "public")
-public class ActService {
+public class ActService implements Serializable {
     @Id
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sid")
-    private Service sid;
+    private Long aid;
+    @Id
+    private Long sid;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "aid")
-    private Act aid;
+    private Act act;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "sid")
+    private Service service;
 
     @Column(name = "amount", nullable = false)
     private Integer amount;
@@ -22,19 +26,35 @@ public class ActService {
     @Column(name = "date", nullable = false)
     private Date date;
 
-    public void setSid(Service sid) {this.sid = sid; }
+    public Act getAct() {
+        return act;
+    }
 
-    public Service getSid() {return sid; }
+    public void setAct(Act act) {
+        this.act = act;
+    }
 
-    public void setAid(Act aid) {this.aid = aid; }
+    public Service getService() {
+        return service;
+    }
 
-    public Act getAid() {return aid; }
+    public void setService(Service service) {
+        this.service = service;
+    }
 
-    public void setAmount(Integer amount) {this.amount = amount; }
+    public Integer getAmount() {
+        return amount;
+    }
 
-    public Integer getAmount() {return amount; }
+    public void setAmount(Integer amount) {
+        this.amount = amount;
+    }
 
-    public void setDate(Date date) {this.date = date; }
+    public Date getDate() {
+        return date;
+    }
 
-    public Date getDate() {return date; }
+    public void setDate(Date date) {
+        this.date = date;
+    }
 }

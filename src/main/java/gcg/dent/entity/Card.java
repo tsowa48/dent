@@ -1,5 +1,7 @@
 package gcg.dent.entity;
 
+import gcg.dent.util.ObjectUtils;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,7 +26,7 @@ public class Card {
     @JoinColumn(name = "cid")
     private Company company;
 
-    @OneToMany(mappedBy = "card")
+    @OneToMany(mappedBy = "card", fetch = FetchType.EAGER)
     private List<History> history = new ArrayList<>();
 
     public void setId(Long id) {
@@ -47,8 +49,8 @@ public class Card {
         this.date = date;
     }
 
-    public Date getDate() {
-        return date;
+    public String getDate() {
+        return ObjectUtils.dateFormat.format(this.date);
     }
 
     public Company getCompany() {
