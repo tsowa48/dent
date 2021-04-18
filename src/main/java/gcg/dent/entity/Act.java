@@ -1,7 +1,9 @@
 package gcg.dent.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "act", schema = "public")
@@ -15,6 +17,9 @@ public class Act {
     @Column(name = "number", nullable = false)
     private Long number;
 
+    @Column(name = "doc", nullable = false)
+    private Long doc;
+
     @Column(name = "date", nullable = false)
     private Date date;
 
@@ -26,6 +31,8 @@ public class Act {
     @JoinColumn(name = "atid", nullable = false)
     private ActType actType;
 
+    @OneToMany(mappedBy = "act")
+    private List<ActService> actServices = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -66,4 +73,12 @@ public class Act {
     public void setActType(ActType actType) {
         this.actType = actType;
     }
+
+    public void setDoc(Long doc) {this.doc = doc; }
+
+    public Long getDoc() {return doc; }
+
+    public void setActServices(List<ActService> actServises) {this.actServices = actServises; }
+
+    public List<ActService> getActServices() {return actServices; }
 }

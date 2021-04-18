@@ -6,7 +6,9 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "contract", schema = "public")
@@ -27,6 +29,9 @@ public class Contract {
     @Type(type = "jsonb")
     @Column(name = "props", columnDefinition = "jsonb")
     private JsonNode props;
+
+    @OneToMany(mappedBy = "contract")
+    private List<Act> acts = new ArrayList<>();
 
     public void setId(Long id) {
         this.id = id;
@@ -59,4 +64,8 @@ public class Contract {
     public void setProps(JsonNode props) {
         this.props = props;
     }
+
+    public void setActs(List<Act> acts) {this.acts = acts; }
+
+    public List<Act> getActs() {return acts; }
 }

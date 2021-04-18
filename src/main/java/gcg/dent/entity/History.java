@@ -1,12 +1,15 @@
 package gcg.dent.entity;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import org.hibernate.annotations.Type;
-
+import org.hibernate.annotations.TypeDef;
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "history", schema = "public")
+@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class, defaultForType = JsonNode.class)
 public class History {
     @Id
     @SequenceGenerator(name = "history_id_seq", sequenceName = "public.history_id_seq", allocationSize = 1)
@@ -26,9 +29,8 @@ public class History {
     @JoinColumn(name = "did")
     private Contract contract;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "doc")
-    private Employee employee;
+    @Column(name = "date", nullable = false)
+    private Date date;
 
 
     public Long getId() {
@@ -55,7 +57,7 @@ public class History {
 
     public Contract getContract() {return contract; }
 
-    public void setEmployee(Employee employee) {this.employee = employee; }
+    public void setDate(Date date) {this.date = date; }
 
-    public Employee getEmployee() {return employee; }
+    public Date getDate() {return date; }
 }
