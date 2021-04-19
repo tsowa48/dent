@@ -29,4 +29,10 @@ public class HistoryRepository {
                 .setParameter("pid", pid)
                 .getResultList();
     }
+
+    @Transactional
+    @ReadOnly
+    public History findById(Long id) {
+        return entityManager.find(History.class, id);
+    }
 }

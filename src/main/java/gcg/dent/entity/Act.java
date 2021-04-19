@@ -1,5 +1,7 @@
 package gcg.dent.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ public class Act implements Serializable {
     @Column(name = "date", nullable = false)
     private Date date;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "did", nullable = false)
     private Contract contract;

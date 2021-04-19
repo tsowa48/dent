@@ -66,7 +66,11 @@ public class Contract {
         this.props = props;
     }
 
-    public void setActs(List<Act> acts) {this.acts = acts; }
+    public void setActs(List<Act> acts) {
+        this.acts = acts;
+    }
 
-    public List<Act> getActs() {return acts; }
+    public List<Act> getActs() {
+        return acts;
+    }
 }

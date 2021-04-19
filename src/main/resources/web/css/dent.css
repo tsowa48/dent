@@ -204,3 +204,24 @@ main {
 .bold {
     font-weight: bold;
 }
+
+table, tr, td {
+    border: 1px solid rgb(221, 221, 221);
+    border-collapse: collapse;
+    padding: 0;
+}
+td {
+    text-align: center;
+}
+
+.dent_state, .dent_state * {
+    margin: 0;
+}
+
+.inline {
+    display: inline-block;
+}
+
+.selected {
+    background-color: #cae3f2;
+}

@@ -275,6 +275,48 @@ function manipulation_modal(e, id) {
     $(id).before(cover);
 }
 
+function history_modal(e, id) {
+    $(id).css("display", "block");
+    $(id + " .header #header_text").text($(e).text());
+
+    if(Number($(e).attr('hid')) > 0) {
+        $(id + " input[name='hid']").val($(e).attr('hid'));
+        $(id + " input[name='did']").val($(e).attr('did'));
+        $.ajax({
+            url: "/api/history/" + Number($(e).attr('hid')),
+            method: "GET"
+        }).done(function(history) {
+            $(id + " input[name='props.complaints']").val(history.props.complaints);
+            if(history.props.gepatit === true) {
+                $(id + " input[name='props.gepatit']").attr("checked", "checked");
+            }
+            if(history.props.tuber === true) {
+                $(id + " input[name='props.tuber']").attr("checked", "checked");
+            }
+            if(history.props.pedi === true) {
+                $(id + " input[name='props.pedi']").attr("checked", "checked");
+            }
+            $(id + " input[name='props.break']").val(history.props.break);
+            $(id + " input[name='props.manipulation']").val(history.props.manipulation);
+            $(id + " input[name='props.sick']").val(history.props.sick);
+            $(id + " input[name='props.visit']").val(history.props.visit);
+            $(id + " input[name='props.allergy']").val(history.props.allergy);
+            $(id + " input[name='props.outer']").val(history.props.outer);
+
+            $(id + " input[name='props.bite']").val(history.props.bite);
+            $(id + " input[name='props.mucous']").val(history.props.mucous);
+            $(id + " input[name='props.lab']").val(history.props.lab);
+            $(id + " input[name='props.diagnosis']").val(history.props.diagnosis);
+        });
+    } else {
+        //$(id + " select[name='sid']:first-child").change();
+    }
+    $(id + " input:first").focus();
+    $(id).center();
+    var cover = $("<div class='cover' onclick=\"hide_modal('.modal');\"></div>");
+    $(id).before(cover);
+}
+
 function remove_company() {
     var id = $("#modal_company input[name='cid']").val();
     $.ajax({
