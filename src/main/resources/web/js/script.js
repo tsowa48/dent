@@ -309,7 +309,7 @@ function history_modal(e, id) {
             $(id + " input[name='props.diagnosis']").val(history.props.diagnosis);
         });
     } else {
-        //$(id + " select[name='sid']:first-child").change();
+
     }
     $(id + " input:first").focus();
     $(id).center();
@@ -350,7 +350,7 @@ function remove_employee() {
     });
 }
 
-function remove_company() {
+function remove_act_type() {
     var id = $("#modal_act_type input[name='aid']").val();
     $.ajax({
         url: "/api/act_type/" + id,
@@ -531,5 +531,44 @@ function save_manipulation() {
         $("#manipulation .list-item[mid='" + manipulation.id + "']").text(manipulation.name);
         $("#manipulation .list-item[mid='" + manipulation.id + "']").attr("sid", manipulation.service.id);
         hide_modal('#modal_manipulation');
+    });
+}
+
+function save_history() {
+    var hid = Number($("#modal_history input[name='hid']").val());
+    var complaints = $("#modal_history input[name='props.complaints']").val();
+    var _break = $("#modal_history input[name='props.break']").val();
+    var manipulation = $("#modal_history input[name='props.manipulation']").val();
+    var sick = $("#modal_history input[name='props.sick']").val();
+    var visit = $("#modal_history input[name='props.visit']").val();
+    var allergy = $("#modal_history input[name='props.allergy']").val();
+    var outer = $("#modal_history input[name='props.outer']").val();
+    var gepatit = $("#modal_history input[name='props.gepatit']").prop('checked') !== false;
+    var tuber = $("#modal_history input[name='props.tuber']").prop('checked') !== false;
+    var pedi = $("#modal_history input[name='props.pedi']").prop('checked') !== false;
+    var bite = $("#modal_history input[name='props.bite']").val();
+    var mucous = $("#modal_history input[name='props.mucous']").val();
+    var lab = $("#modal_history input[name='props.lab']").val();
+    var diagnosis = $("#modal_history input[name='props.diagnosis']").val();
+
+    var json = { id: hid, props: {
+            complaints: complaints, break: _break, manipulation: manipulation, sick: sick, visit: visit, allergy: allergy, outer: outer,
+            gepatit: gepatit, tuber: tuber, pedi: pedi, bite: bite, mucous: mucous, lab: lab, diagnosis: diagnosis
+        }
+    };
+    var method = (hid > 0 ? "PUT" : "POST");
+    $.ajax({
+        url: "/api/history/",
+        method: method,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        data: JSON.stringify(json)
+    }).done(function(history) {
+        if(method === "POST") {
+            $('#history_list').append("<div class='list-item center' hid=" + history.id + " onclick=\"history_modal(this, '#modal_history')\"></div>");
+        }
+        $("#history_list .list-item[hid='" + history.id + "']").attr("did", history.contract.id);
+        $("#history_list .list-item[hid='" + history.id + "']").text("Карта эпиданамнеза от " + history.date + "г. (договор №" + history.contract.number + " от " + history.contract.date + "г.)");
+        hide_modal('#modal_history');
     });
 }
