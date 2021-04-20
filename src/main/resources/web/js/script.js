@@ -19,7 +19,7 @@ function slot_modal(e) {
     $("#new_record").center();
     var cover = $("<div class='cover' onclick=\"hide_modal('.modal');\"></div>");
     $("#new_record").before(cover);
-
+    $("#new_record input").removeAttr("disabled");
     if(sid === undefined) {
         $('.selected_slot').removeClass('selected_slot');
         $(e).addClass('selected_slot');
@@ -40,6 +40,8 @@ function slot_modal(e) {
             //$("#new_record input:first").focus();
             $("#new_record input[name='fio']").val($(e).find(".fio").text());
             $("#new_record input[name='phone']").val($(e).find(".phone").text());
+            var note = $(e).find(".note").text();
+            $("#new_record input[name='note']").val(note === undefined || note === null ? "" : note);
             //$("#new_record .footer .register").css("display", "inline-flex");
         }
     }
@@ -81,7 +83,8 @@ function register(enabled) {
     if(enabled) {
         var fio = $("#new_record input[name='fio']").val();
         var phone = $("#new_record input[name='phone']").val();
-        json = { fio: fio, phone: phone, doc: doc, date: date, time: time, size: size};
+        var note = $("#new_record input[name='note']").val();
+        json = { fio: fio, phone: phone, doc: doc, date: date, time: time, size: size, note: (note === null ? "" : note)};
     } else {
         json = { enabled: enabled, doc: doc, date: date, time: time, size: size};
     }
@@ -95,7 +98,9 @@ function register(enabled) {
     }).done(function(slot) {
         if(slot.enabled) {
             $('.selected_slot').append("<div class='box pink' onclick='slot_modal(this);event.stopPropagation();' sid='" + slot.id +
-                "' cid='" + slot.client.id + "' doc='" + slot.doctor.id + "'><b>" + trim_fio(slot.client.fio) + "</b><br><span>" + slot.client.phone + "</span></div>");
+                "' cid='" + slot.client.id + "' doc='" + slot.doctor.id + "'><span class='fio' style='display:none;'>" + slot.client.fio +
+                "</span><span class='note' style='display:none;'>" + (slot.client.note === undefined ? "": slot.client.note) + "</span><b>" +
+                trim_fio(slot.client.fio) + "</b><br><span class='phone'>" + slot.client.phone + "</span></div>");
         } else {
             $('.selected_slot').append("<div class='box pink' onclick='slot_modal(this);event.stopPropagation();' sid='" + slot.id +
                 "' doc='" + slot.doctor.id + "'></div>");

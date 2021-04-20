@@ -17,6 +17,9 @@ public class Client {
     @Column(name = "phone", nullable = false)
     private String phone;
 
+    @Column(name = "note")
+    private String note;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pid")
     private Patient patient;
@@ -51,5 +54,13 @@ public class Client {
 
     public void setPatient(Patient patient) {
         this.patient = patient;
+    }
+
+    public String getNote() {
+        return note == null ? "" : note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 }
