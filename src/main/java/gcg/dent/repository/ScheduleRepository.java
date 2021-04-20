@@ -25,16 +25,6 @@ public class ScheduleRepository {
 
     @Transactional
     @ReadOnly
-    public Boolean isEmpty() {
-        return entityManager
-                .createQuery("select S from Schedule S", Schedule.class)
-                .setMaxResults(1)
-                .getResultList()
-                .isEmpty();
-    }
-
-    @Transactional
-    @ReadOnly
     public List<Schedule> getByDow(Integer dow){
         return entityManager
                 .createQuery("select S from Schedule S where S.dow = :dow", Schedule.class)

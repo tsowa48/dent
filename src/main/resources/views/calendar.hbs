@@ -16,23 +16,18 @@
     </head>
     <body class="container-fluid" onmousemove="mouse_position(event)" oncontextmenu="return false;">
         <nav>
-            <div class="group">
-                <a title="Предыдущая неделя" class="button" id="prev" href="/week/{{prev}}" style="font-size: 14px"><i class="bi bi-caret-left"></i></a>
-                <a title="Текущая неделя" class="button" id="prev" href="/week/0" style="font-size: 14px"><i class="bi bi-calendar3-week"></i></a>
-                <a title="Следущая неделя" class="button" id="next" href="/week/{{next}}" style="font-size: 14px"><i class="bi bi-caret-right"></i></a>
+            <div id="menu" class="group" style="margin-top:8px;margin-bottom:8px;">
+                <a title="Расписание" class="button selected" href="/week/0"><i class="bi bi-calendar3"></i></a>
+                <a title="Справочники" class="button" href="/reference/"><i class="bi bi-card-list"></i></a>
+                <a title="Пациенты" class="button" href="/patient"><i class="bi bi-people"></i></a>
+                <a title="Статистика" class="button disabled" href="/statistics"><i class="bi bi-graph-up"></i></a>
+                <a title="Swagger" class="button disabled" href="/gcg/swagger-ui"><i class="bi bi-gear"></i></a>
             </div>
-            <div id="menu" class="group">
-                <a title="Расписание" class="button selected" href="/week/0" style="font-size: 14px;"><i class="bi bi-calendar3"></i></a>
-                <a title="Справочники" class="button" href="/reference/" style="font-size: 14px;"><i class="bi bi-card-list"></i></a>
-                <a title="Пациенты" class="button" href="/patient" style="font-size: 14px"><i class="bi bi-people"></i></a>
-                <a title="Статистика" class="button disabled" href="/statistics" style="font-size: 14px"><i class="bi bi-graph-up"></i></a>
-                <a title="Swagger" class="button disabled" href="/gcg/swagger-ui" style="font-size: 14px"><i class="bi bi-gear"></i></a>
+            <div class="group" style="margin-top:8px;margin-bottom:8px;">
+                <a title="Предыдущая неделя" class="button" id="prev" href="/week/{{prev}}"><i class="bi bi-caret-left"></i></a>
+                <a title="Текущая неделя" class="button" id="prev" href="/week/0"><i class="bi bi-calendar3-week"></i></a>
+                <a title="Следущая неделя" class="button" id="next" href="/week/{{next}}"><i class="bi bi-caret-right"></i></a>
             </div>
-
-            <!--br>
-            <div class="month">
-
-            </div-->
             <div id="doctors">
                 {{#each doctors}}
                     <div class="list-item" onclick="select_doc(this);" doc="{{this.id}}">{{this.fio}}</div>
@@ -62,7 +57,7 @@
             <input type="tel" class="text" name="phone" placeholder="Телефон"/>
             <div class="footer">
                 <button class="success register" onclick="register(true);"><i class="bi bi-pencil-square success"></i>&nbsp;Записать</button>
-                <button class="warning register_free" onclick="register(false);"><i class="bi bi-flag warning"></i> Не занимать</button>
+                <button class="info register_free" onclick="register(false);"><i class="bi bi-flag info"></i> Не занимать</button>
                 <button class="danger unregister" onclick="unregister();"><i class="bi bi-trash danger"></i>&nbsp;Удалить</button>
             </div>
         </div>

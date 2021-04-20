@@ -1,9 +1,8 @@
 package gcg.dent.controller;
 
 import gcg.dent.entity.Employee;
-import gcg.dent.repository.CompanyRepository;
 import gcg.dent.repository.EmployeeRepository;
-import gcg.dent.repository.ScheduleRepository;
+import gcg.dent.repository.ReferenceRepository;
 import gcg.dent.service.CalendarService;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Controller;
@@ -25,10 +24,7 @@ public class CalendarController {
     EmployeeRepository employeeRepository;
 
     @Inject
-    ScheduleRepository scheduleRepository;
-
-    @Inject
-    CompanyRepository companyRepository;
+    ReferenceRepository referenceRepository;
 
     @View("calendar")
     @Get
@@ -39,9 +35,7 @@ public class CalendarController {
     @View("calendar")
     @Get(uri = "/week/{week}")
     public HttpResponse<HashMap<String, Object>> calendar(Short week) throws URISyntaxException {
-        boolean isEmpty = scheduleRepository.isEmpty();
-        isEmpty |= employeeRepository.isEmpty();
-        isEmpty |= companyRepository.isEmpty();
+        boolean isEmpty = referenceRepository.isEmpty();
         if(isEmpty) {
             return HttpResponse.temporaryRedirect(new URI("/reference"));
         }

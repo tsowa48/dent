@@ -1,6 +1,6 @@
 package gcg.dent.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 
@@ -16,7 +16,7 @@ public class Manipulation {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sid", nullable = false)
     private Service service;
@@ -43,5 +43,10 @@ public class Manipulation {
 
     public void setService(Service service) {
         this.service = service;
+    }
+
+    @JsonProperty(value = "sid", access = JsonProperty.Access.READ_ONLY)
+    public Long getSid() {
+        return this.service.getId();
     }
 }

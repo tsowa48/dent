@@ -55,13 +55,13 @@
         <div id="service" style="display:none;" class="reference">
             <div class="list-item success bold" sid="0" onclick='service_modal(this, "#modal_service")'>Добавить услугу</div>
             {{#each service}}
-                <div class='list-item' sid='{{this.id}}' price='{{this.price}}' atid='{{this.act_type.id}}' onclick='service_modal(this, "#modal_service")'>{{this.name}}</div>
+                <div class='list-item' sid='{{this.id}}' price='{{this.price}}' atid='{{this.actType.id}}' onclick='service_modal(this, "#modal_service")'>{{this.name}}</div>
             {{/each}}
         </div>
         <div id="manipulation" style="display:none;" class="reference">
             <div class="list-item success bold" mid="0" onclick='manipulation_modal(this, "#modal_manipulation")'>Добавить манипуляцию</div>
             {{#each manipulation}}
-                <div class='list-item' mid='{{this.id}}' sid='{{this.service.id}}' onclick='manipulation_modal(this, "#modal_manipulation")'>{{this.name}}</div>
+                <div class='list-item' mid='{{this.id}}' sid='{{this.sid}}' onclick='manipulation_modal(this, "#modal_manipulation")'>{{this.name}}</div>
             {{/each}}
         </div>
     </main>

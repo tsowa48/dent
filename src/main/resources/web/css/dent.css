@@ -77,6 +77,11 @@ main {
     border-left: 1px solid darkgrey;
     cursor: pointer;
 }
+
+.slot:hover {
+    background-color: #cae3f2;
+}
+
 .box {
     cursor: pointer;
     margin: 0;
@@ -123,32 +128,44 @@ main {
 }
 
 .group {
-    min-height: 50px;
-    height: 50px;
+    /*min-height: 50px;
+    height: 50px;*/
     padding: 0;
-    margin: 0;
+    width: fit-content;
+    margin: auto;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
 }
 
-.group * {
-    border-radius: 0px;
-    padding: 5px;
+.group .button {
+    border-radius: 0;
+    border: 0;
+    padding: 10px;
     margin: 0;
+    border-top: 1px solid rgb(230, 230, 230);
+    border-bottom: 1px solid rgb(230, 230, 230);
+    border-left: 0;
+    border-right: 0;
 }
 
-.group *:first-child {
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
+/*.group *:hover {
+    border-color: rgb(230, 230, 230);
+}*/
+
+.group .button:first-child {
+    border-left: 1px solid rgb(230, 230, 230);
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
     border-top-left-radius: 2px;
     border-bottom-left-radius: 2px;
 }
 
-.group *:last-child {
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
+.group .button:last-child {
+    border-right: 1px solid rgb(230, 230, 230);
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
 }
@@ -224,4 +241,8 @@ td {
 
 .selected {
     background-color: #cae3f2;
+}
+
+.slot .box {
+    border-radius: 0;
 }

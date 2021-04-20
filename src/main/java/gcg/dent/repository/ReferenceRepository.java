@@ -1,15 +1,22 @@
 package gcg.dent.repository;
 
 import gcg.dent.entity.*;
+import io.micronaut.transaction.annotation.ReadOnly;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Singleton
 public class ReferenceRepository {
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Inject
     CompanyRepository companyRepository;
@@ -45,5 +52,13 @@ public class ReferenceRepository {
         params.put("service", service);
         params.put("manipulation", manipulation);
         return params;
+    }
+
+    @Transactional
+    @ReadOnly
+    public Boolean isEmpty() {
+        return (Integer)entityManager
+                .createNativeQuery("select count(*)::::int from (select S.id, E.id, C.id from schedule S, employee E, company C limit 1) R;")
+                .getSingleResult() == 0;
     }
 }

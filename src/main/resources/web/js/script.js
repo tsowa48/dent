@@ -257,7 +257,8 @@ function manipulation_modal(e, id) {
 
     $(id + " select[name='sid']").empty();
     $("#service.reference .list-item[sid!='0']").each(function() {
-        $(id + " select[name='sid']").append("<option value='" + $(this).attr('sid') + "'>" + $(this).text() + "</option>");
+        var act_type = $("#act_type.reference .list-item[aid='" + $(this).attr('atid') + "']").text();
+        $(id + " select[name='sid']").append("<option value='" + $(this).attr('sid') + "'>" + $(this).text() + " (" + act_type + ")</option>");
     });
 
     if(Number($(e).attr('mid')) > 0) {
