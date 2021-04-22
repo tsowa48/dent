@@ -19,7 +19,7 @@ micronaut:
   executors:
     io:
       type: fixed
-      nThreads: 75
+      nThreads: 16
 #    scheduled:
 #      type: scheduled
 #      core-pool-size: 30

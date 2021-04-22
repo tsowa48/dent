@@ -1,6 +1,7 @@
 package gcg.dent.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import gcg.dent.util.ObjectUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -55,8 +56,8 @@ public class Act implements Serializable {
         this.number = number;
     }
 
-    public Date getDate() {
-        return date;
+    public String getDate() {
+        return ObjectUtils.dateFormat.format(date);
     }
 
     public void setDate(Date date) {

@@ -221,7 +221,7 @@ function employee_modal(e, id) {
 function act_type_modal(e, id) {
     $(id).css("display", "block");
     $(id + " .header #header_text").text($(e).text());
-    if(Number($(e).attr('cid')) > 0) {
+    if(Number($(e).attr('aid')) > 0) {
         $(id + " input[name='aid']").val($(e).attr('aid'));
         $(id + " input[name='name']").val($(e).text());
         $(id + " .footer .danger").css("display", "inline-flex");
@@ -318,6 +318,13 @@ function history_modal(e, id) {
 
     }
     $(id + " input:first").focus();
+    $(id).center();
+    var cover = $("<div class='cover' onclick=\"hide_modal('.modal');\"></div>");
+    $(id).before(cover);
+}
+
+function patient_modal(e, id) {
+    $(id).css("display", "block");
     $(id).center();
     var cover = $("<div class='cover' onclick=\"hide_modal('.modal');\"></div>");
     $(id).before(cover);
@@ -576,5 +583,11 @@ function save_history() {
         $("#history_list .list-item[hid='" + history.id + "']").attr("did", history.contract.id);
         $("#history_list .list-item[hid='" + history.id + "']").text("Карта эпиданамнеза от " + history.date + "г. (договор №" + history.contract.number + " от " + history.contract.date + "г.)");
         hide_modal('#modal_history');
+    });
+}
+
+function save_patient() {
+    var pid = Number($("#modal_patient input[name='pid']").val());
+        hide_modal('#modal_patient');
     });
 }

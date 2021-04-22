@@ -22,215 +22,57 @@
         <a title="Статистика" class="button disabled" href="/statistics"><i class="bi bi-graph-up"></i></a>
         <a title="Swagger" class="button disabled" href="/gcg/swagger-ui"><i class="bi bi-gear"></i></a>
     </div>
+    <br>
+    <div id="menu2">
+        <div class="list-item selected" onclick="show_box(this)" box="primary_info">Основная информация</div>
+        <div class="list-item" onclick="show_box(this)" box="history_list" cid="{{patient.card.id}}">Мед.карта №{{patient.card.number}} от {{patient.card.date}}г.</div>
+        <div class="list-item" onclick="show_box(this)" box="contract_list">Договора</div>
+        <div class="list-item" onclick="show_box(this)" box="act_list">Акты</div>
+        <div class="list-item" onclick="show_box(this)">Прочие документы</div>
+    </div>
 </nav>
 <main>
-    <div class="box" pid="{{patient.id}}" style="height: fit-content">
+    <div class="box" id="primary_info" pid="{{patient.id}}">
         <div class="item" name="fio">ФИО:&nbsp;<b>{{patient.fio}}</b></div>
         <div class="item" name="phone">Телефон:&nbsp;<b>{{patient.phone}}</b></div>
         <div class="item" name="address">Адрес:&nbsp;<b>{{patient.address}}</b></div>
         <div class="item" name="findOut">Откуда узнал о компании:&nbsp;<b>{{patient.findOut.name}}</b></div>
-        <div class="item" name="card" cid="{{patient.card.id}}">Мед.карта <b>№{{patient.card.number}}</b> от <b>{{patient.card.date}}г.</b></div>
         <div class="item">&nbsp;</div>
     </div>
-    <br>
-        <div class="box" id="history_list" style="overflow-y: scroll;padding:0">
-            <div class="list-item success bold center" hid="0" onclick="history_modal(this, '#modal_history')">Добавить карту эпиданамнеза</div>
-            {{#each patient.card.history}}
-                <div class="list-item center" hid="{{this.id}}" did="{{this.contract.id}}" onclick="history_modal(this, '#modal_history')">Карта эпиданамнеза от {{this.date}}г. (договор №{{this.contract.number}} от {{this.contract.date}}г.)</div>
+    <div class="box" id="history_list" style="padding:0">
+        <div class="list-item success bold center" hid="0" onclick="history_modal(this, '#modal_history')">Добавить карту эпиданамнеза</div>
+        {{#each patient.card.history}}
+            <div class="list-item center" hid="{{this.id}}" did="{{this.contract.id}}" onclick="history_modal(this, '#modal_history')">Карта эпиданамнеза от {{this.date}}г. (договор №{{this.contract.number}} от {{this.contract.date}}г.)</div>
+        {{/each}}
+    </div>
+    <div class="box" id="contract_list" style="padding:0">
+        {{#each patient.card.history}}
+            <div class="list-item center" did="{{this.contract.id}}" >Договор №{{this.contract.number}} от {{this.contract.date}}г.</div>
+        {{/each}}
+    </div>
+    <div class="box" id="act_list" style="padding:0">
+        {{#each patient.card.history}}
+            {{#each this.contract.acts}}
+                <div class="list-item center" aid="{{this.id}}" >Акт ({{this.actType.name}}) №{{this.number}} от {{this.date}}г.</div>
             {{/each}}
+        {{/each}}
     </div>
 </main>
 </div>
 
-<div id="modal_history" class="box modal">
-    <div class="header"><span id="header_text"></span><i class="bi bi-x button danger" style="float:right;padding:0" title="Закрыть" onclick="hide_modal('#modal_history');"></i></div>
-    <input type="hidden" name="hid"/>
-    <input type="hidden" name="did"/>
-    Жалобы:<br>
-    <input type="text" class="text" name="props.complaints"/>
-    <br>
-    <div class="text" id="props_gepatit" style="cursor:pointer;width:auto;">
-        <input type="checkbox" name="props.gepatit" style="margin:0;margin-top:3px;min-width:15px;width:15px;min-height:15px;"/>
-        <div style="display:inline-block;margin-top:-3px;vertical-align: text-top;">Является ли больным или носителем вирусного гепатита A, B, C</div>
-    </div>
-
-    <div class="text" id="props_tuberkules" style="cursor:pointer;width:auto;">
-        <input type="checkbox" name="props.tuber" style="margin:0;margin-top:3px;min-width:15px;width:15px;min-height:15px;"/>
-        <div style="display:inline-block;margin-top:-3px;vertical-align: text-top;">Является ли больным или носителем туберкулеза</div>
-    </div>
-
-    <div class="text" id="props_pedikules" style="cursor:pointer;width:auto;">
-        <input type="checkbox" name="props.pedi" style="margin:0;margin-top:3px;min-width:15px;width:15px;min-height:15px;"/>
-        <div style="display:inline-block;margin-top:-3px;vertical-align: text-top;">Наличие педикулеза у пациента</div>
-    </div>
-
-    <br>
-    Наличие у пациента травм, ожогов, переливания крови, операций за последние 6 месяцев (если да, указать место и время):<br>
-    <input type="text" class="text" name="props.break"/>
-    <br>
-    Были ли у пациента эндоскопические, гинекологические манипуляции (если да, указать место и время):<br>
-    <input type="text" class="text" name="props.manipulation"/>
-    <br>
-    Склонность к рецидивирующим или остро распространенным заболеваниям полости рта (при наличии указать срок давности):<br>
-    <input type="text" class="text" name="porps.sick"/>
-    <br>
-    Дата последнего обращения к врачу-стоматологу с указанием манипуляций: лечение, протезирование, удаление:<br>
-    <input type="text" class="text" name="props.visit"/>
-    <br>
-    Наличие аллергических реакций:<br>
-    <input type="text" class="text" name="props.allergy"/>
-    <br>
-    Данные объективного исследования, внешний осмотр:<br>
-    <input type="text" class="text" name="props.outer"/>
-
-    <br>
-    Осмотр полости рта. Состояние зубов <br>(<span style="color:rgb(212, 51, 63);font-weight:bold;">O</span>-Отсутствие, <span style="color:rgb(212, 51, 63);font-weight:bold;">R</span>-Корень,&nbsp;
-    <span style="color:rgb(212, 51, 63);font-weight:bold;">C</span>-Кариес, <span style="color:rgb(212, 51, 63);font-weight:bold;">P</span>-Пульпит,&nbsp;
-    <span style="color:rgb(212, 51, 63);font-weight:bold;">Pt</span>-Периодонтит, <span style="color:rgb(212, 51, 63);font-weight:bold;">П</span>-Пломба,&nbsp;
-    <span style="color:rgb(212, 51, 63);font-weight:bold;">A</span>-Парадонтоз, <span style="color:rgb(212, 51, 63);font-weight:bold;">K</span>-Коронка,&nbsp;
-    <span style="color:rgb(212, 51, 63);font-weight:bold;">И</span>-Искусст.зуб, <span style="color:rgb(212, 51, 63);font-weight:bold;">1</span>,<span style="color:rgb(212, 51, 63);font-weight:bold;">2</span>,<span style="color:rgb(212, 51, 63);font-weight:bold;">3</span>-Подвижность (1,2,3 степень)):
-    <table id="dent_status">
-        <tr>
-            <td>{{> views/part/dent_state tr="3" td="8" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="3" td="7" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="3" td="6" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="3" td="5" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="3" td="4" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="3" td="3" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="3" td="2" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="3" td="1" half="left"}}</td>
-
-            <td>{{> views/part/dent_state tr="3" td="1" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="3" td="2" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="3" td="3" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="3" td="4" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="3" td="5" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="3" td="6" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="3" td="7" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="3" td="8" half="right"}}</td>
-        </tr>
-        <tr>
-            <td>{{> views/part/dent_state tr="2" td="8" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="2" td="7" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="2" td="6" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="2" td="5" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="2" td="4" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="2" td="3" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="2" td="2" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="2" td="1" half="left"}}</td>
-
-            <td>{{> views/part/dent_state tr="2" td="1" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="2" td="2" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="2" td="3" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="2" td="4" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="2" td="5" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="2" td="6" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="2" td="7" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="2" td="8" half="right"}}</td>
-        </tr>
-        <tr>
-            <td>{{> views/part/dent_state tr="1" td="8" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="1" td="7" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="1" td="6" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="1" td="5" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="1" td="4" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="1" td="3" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="1" td="2" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="1" td="1" half="left"}}</td>
-
-            <td>{{> views/part/dent_state tr="1" td="1" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="1" td="2" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="1" td="3" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="1" td="4" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="1" td="5" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="1" td="6" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="1" td="7" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="1" td="8" half="right"}}</td>
-        </tr>
-        <tr>
-            <th>8</th><th>7</th><th>6</th><th>5</th><th>4</th><th>3</th><th>2</th><th>1</th>
-            <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th>
-        </tr>
-        <tr>
-            <td>{{> views/part/dent_state tr="-1" td="8" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="-1" td="7" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="-1" td="6" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="-1" td="5" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="-1" td="4" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="-1" td="3" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="-1" td="2" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="-1" td="1" half="left"}}</td>
-
-            <td>{{> views/part/dent_state tr="-1" td="1" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="-1" td="2" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="-1" td="3" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="-1" td="4" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="-1" td="5" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="-1" td="6" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="-1" td="7" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="-1" td="8" half="right"}}</td>
-        </tr>
-        <tr>
-            <td>{{> views/part/dent_state tr="-2" td="8" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="-2" td="7" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="-2" td="6" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="-2" td="5" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="-2" td="4" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="-2" td="3" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="-2" td="2" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="-2" td="1" half="left"}}</td>
-
-            <td>{{> views/part/dent_state tr="-2" td="1" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="-2" td="2" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="-2" td="3" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="-2" td="4" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="-2" td="5" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="-2" td="6" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="-2" td="7" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="-2" td="8" half="right"}}</td>
-        </tr>
-        <tr>
-            <td>{{> views/part/dent_state tr="-3" td="8" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="-3" td="7" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="-3" td="6" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="-3" td="5" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="-3" td="4" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="-3" td="3" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="-3" td="2" half="left"}}</td>
-            <td>{{> views/part/dent_state tr="-3" td="1" half="left"}}</td>
-
-            <td>{{> views/part/dent_state tr="-3" td="1" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="-3" td="2" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="-3" td="3" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="-3" td="4" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="-3" td="5" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="-3" td="6" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="-3" td="7" half="right"}}</td>
-            <td>{{> views/part/dent_state tr="-3" td="8" half="right"}}</td>
-        </tr>
-    </table>
-    <br>
-    Прикус:<br>
-    <input type="text" class="text" name="props.bite"/>
-    <br>
-    Состояние слизистой обочки рта, десен, альвеолярных отростков и неба:<br>
-    <input type="text" class="text" name="props.mucous"/>
-    <br>
-    Данные рентгеновских лабораторных исследований:<br>
-    <input type="text" class="text" name="props.lab"/>
-    <br>
-    <br>
-    Диагноз:<br>
-    <input type="text" class="text" name="props.diagnosis"/>
-    <br>
-    <div class="footer">
-        <button class="warning" onclick="open_contract();">Открыть договор</button>
-        <button class="success" onclick="save_history();">Сохранить</button>
-    </div>
-</div>
+{{> views/part/modal_history }}
 
 </body>
 <script type="text/javascript">
+    $('main .box').css('display', 'none');
+    $('main .box#primary_info').css('display', 'block');
 
+    function show_box(base) {
+        $('#menu2 .list-item').removeClass('selected');
+        $(base).addClass('selected');
+        var box_id = $(base).attr('box');
+        $('main .box').css('display', 'none');
+        $('main .box#' + box_id).css('display', 'block');
+    }
 </script>
 </html>
