@@ -42,12 +42,13 @@ public class SlotController {
 
     @Transactional
     @Post(uri = "/add", produces = MediaType.APPLICATION_JSON)
-    public Slot add(Optional<String> fio, Optional<String> phone, Long doc, Date date, String time, Integer size) {
+    public Slot add(Optional<String> fio, Optional<String> phone, Long doc, Date date, String time, Integer size, String note) {
         Employee doctor = employeeRepository.getById(doc);
         String sizeTime = String.format("%02d:%02d:00", (size / 60), size % 60);
         Slot slot = slotRepository.makeSlot(date, Time.valueOf(time + ":00"), Time.valueOf(sizeTime));
         if(fio.isPresent() && phone.isPresent()) {
             Client client = clientRepository.find(fio.get(), phone.get());
+            slot.setNote(note);
             slot.setClient(client);
             slot.setEnabled(true);
         }

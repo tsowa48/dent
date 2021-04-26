@@ -25,6 +25,9 @@ public class Slot {
     @Column(name = "size", nullable = false)
     private Time size;
 
+    @Column(name = "note")
+    private String note;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cid")
     private Client client;
@@ -88,5 +91,13 @@ public class Slot {
 
     public void setDoctor(Employee doctor) {
         this.doctor = doctor;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 }

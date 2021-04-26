@@ -84,7 +84,8 @@ function register(enabled) {
         var fio = $("#new_record input[name='fio']").val();
         var phone = $("#new_record input[name='phone']").val();
         var note = $("#new_record input[name='note']").val();
-        json = { fio: fio, phone: phone, doc: doc, date: date, time: time, size: size, note: (note === null ? "" : note)};
+        note = (note === null ? "" : note);
+        json = { fio: fio, phone: phone, doc: doc, date: date, time: time, size: size, note: note};
     } else {
         json = { enabled: enabled, doc: doc, date: date, time: time, size: size};
     }
@@ -99,7 +100,7 @@ function register(enabled) {
         if(slot.enabled) {
             $('.selected_slot').append("<div class='box pink' onclick='slot_modal(this);event.stopPropagation();' sid='" + slot.id +
                 "' cid='" + slot.client.id + "' doc='" + slot.doctor.id + "'><span class='fio' style='display:none;'>" + slot.client.fio +
-                "</span><span class='note' style='display:none;'>" + (slot.client.note === undefined ? "": slot.client.note) + "</span><b>" +
+                "</span><span class='note' style='display:none;'>" + (slot.note === undefined ? "": slot.note) + "</span><b>" +
                 trim_fio(slot.client.fio) + "</b><br><span class='phone'>" + slot.client.phone + "</span></div>");
         } else {
             $('.selected_slot').append("<div class='box pink' onclick='slot_modal(this);event.stopPropagation();' sid='" + slot.id +
