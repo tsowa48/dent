@@ -250,3 +250,6 @@ td {
 .slot .box {
     border-radius: 0;
 }
+.note {
+    font-style: italic;
+}

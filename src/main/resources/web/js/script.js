@@ -59,9 +59,13 @@ function select_doc(d) {
     $('#doctors > .selected').removeClass('selected');
     $(d).addClass('selected');
 
-    var doc = $(d).attr('doc');
-    $(".slot > .box[doc!='" + doc + "']").css("display", "none");
-    $(".slot > .box[doc='" + doc + "']").css("display", "block");
+    var doc = Number($(d).attr('doc'));
+    if(doc === 0) {
+        $(".slot > .box[doc!='" + doc + "']").css("display", "block");
+    } else {
+        $(".slot > .box[doc!='" + doc + "']").css("display", "none");
+        $(".slot > .box[doc='" + doc + "']").css("display", "block");
+    }
     sessionStorage.setItem("currentDoc", doc);
 }
 
@@ -100,8 +104,8 @@ function register(enabled) {
         if(slot.enabled) {
             $('.selected_slot').append("<div class='box pink' onclick='slot_modal(this);event.stopPropagation();' sid='" + slot.id +
                 "' cid='" + slot.client.id + "' doc='" + slot.doctor.id + "'><span class='fio' style='display:none;'>" + slot.client.fio +
-                "</span><span class='note' style='display:none;'>" + (slot.note === undefined ? "": slot.note) + "</span><b>" +
-                trim_fio(slot.client.fio) + "</b><br><span class='phone'>" + slot.client.phone + "</span></div>");
+                "</span><b>" + trim_fio(slot.client.fio) + "</b><br><span class='phone'>" + slot.client.phone + "</span>" +
+                "<br><span class='note'>" + (slot.note === undefined ? "": slot.note) + "</span></div>");
         } else {
             $('.selected_slot').append("<div class='box pink' onclick='slot_modal(this);event.stopPropagation();' sid='" + slot.id +
                 "' doc='" + slot.doctor.id + "'></div>");

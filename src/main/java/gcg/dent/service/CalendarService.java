@@ -91,8 +91,9 @@ public class CalendarService {
                         htmlSlots.append("<div class='box pink' onclick=\"slot_modal(this);event.stopPropagation();\" sid='" + ts.getId() +
                                 "' cid='" + c.getId() + "' doc='" + ts.getDoctor().getId() +
                                 "'><span class='fio' style='display:none;'>" + c.getFio() + "</span>" +
-                                "<span class='note' style='display:none;'>" + (note == null ? "" : note) + "</span><b>" + ObjectUtils.fio(c.getFio()) +
-                                "</b><br><span class='phone'>" + c.getPhone() + "</span></div>");
+                                "<b>" + ObjectUtils.fio(c.getFio()) +
+                                "</b><br><span class='phone'>" + c.getPhone() + "</span>" +
+                                "<br><span class='note'>" + (note == null ? "" : note) + "</span></div>");
                     } else {
                         htmlSlots.append("<div class='box pink' onclick=\"slot_modal(this);event.stopPropagation();\" sid='" + ts.getId() +
                                 "' doc='" + ts.getDoctor().getId() + "'></div>");

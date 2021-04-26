@@ -29,6 +29,7 @@
                 <a title="Следущая неделя" class="button" id="next" href="/week/{{next}}"><i class="bi bi-caret-right"></i></a>
             </div>
             <div id="doctors">
+                <div class="list-item bold" onclick="select_doc(this);" doc="0">ВСЕ ВРАЧИ</div>
                 {{#each doctors}}
                     <div class="list-item" onclick="select_doc(this);" doc="{{this.id}}">{{this.fio}}</div>
                 {{/each}}
@@ -71,7 +72,11 @@
             sessionStorage.setItem("currentDoc", doc);
         }
         $("#doctors > .list-item[doc='" + sessionStorage.getItem("currentDoc") + "'").addClass('selected');
-        $(".slot > .box[doc!='" + sessionStorage.getItem("currentDoc") + "']").css("display", "none");
-        $(".slot > .box[doc='" + sessionStorage.getItem("currentDoc") + "']").css("display", "block");
+        if (Number(sessionStorage.getItem("currentDoc")) === 0) {
+            $(".slot > .box[doc!='" + sessionStorage.getItem("currentDoc") + "']").css("display", "block");
+        } else {
+            $(".slot > .box[doc!='" + sessionStorage.getItem("currentDoc") + "']").css("display", "none");
+            $(".slot > .box[doc='" + sessionStorage.getItem("currentDoc") + "']").css("display", "block");
+        }
     </script>
 </html>
