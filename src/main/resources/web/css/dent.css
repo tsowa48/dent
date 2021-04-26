@@ -214,6 +214,10 @@ main {
     border-color: rgb(221, 221, 221);
 }
 
+.reference {
+    overflow-y: auto;
+}
+
 .reference .list-item, .center {
     text-align: center;
 }

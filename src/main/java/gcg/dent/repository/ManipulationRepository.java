@@ -19,7 +19,7 @@ public class ManipulationRepository {
     @ReadOnly
     public List<Manipulation> getAll() {
         return entityManager
-                .createQuery("select M from Manipulation M", Manipulation.class)
+                .createQuery("select M from Manipulation M order by M.service.name, M.name", Manipulation.class)
                 .getResultList();
     }
 

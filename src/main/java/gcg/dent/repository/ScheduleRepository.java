@@ -19,7 +19,7 @@ public class ScheduleRepository {
     @ReadOnly
     public List<Schedule> getAll() {
         return entityManager
-                .createQuery("select S from Schedule S order by S.dow", Schedule.class)
+                .createQuery("select S from Schedule S order by S.dow, S.start", Schedule.class)
                 .getResultList();
     }
 

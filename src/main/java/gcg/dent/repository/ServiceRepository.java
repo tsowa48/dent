@@ -18,7 +18,7 @@ public class ServiceRepository {
     @ReadOnly
     public List<Service> getAll() {
         return entityManager
-                .createQuery("select S from Service S", Service.class)
+                .createQuery("select S from Service S order by S.actType.name, S.name", Service.class)
                 .getResultList();
     }
 
