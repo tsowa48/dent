@@ -53,11 +53,17 @@
 
         <div class="box modal" id="new_record">
             <div class="header">Регистрация<i class="bi bi-x button danger" style="float:right;padding:0" title="Закрыть" onclick="hide_modal('#new_record');"></i></div>
-            <input type="text" class="text" name="fio" placeholder="Фамилия Имя Отчество"/>
+            <span>Фамилия Имя Отчество:</span>
             <br>
-            <input type="tel" class="text" name="phone" placeholder="Телефон"/>
+            <input type="text" class="text" name="fio"/>
             <br>
-            <input type="text" class="text" name="note" placeholder="Примечание"/>
+            <span>Телефон:</span>
+            <br>
+            <input type="tel" class="text" name="phone">
+            <br>
+            <span>Примечание:</span>
+            <br>
+            <input type="text" class="text" name="note"/>
             <div class="footer">
                 <button class="success register" onclick="register(true);"><i class="bi bi-pencil-square success"></i>&nbsp;Записать</button>
                 <button class="info register_free" onclick="register(false);"><i class="bi bi-flag info"></i> Не занимать</button>

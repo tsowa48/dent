@@ -24,7 +24,7 @@ public class Service implements Serializable {
     @JoinColumn(name = "atid", nullable = false)
     private ActType actType;
 
-    @OneToMany(mappedBy = "service", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "service", fetch = FetchType.LAZY)
     private List<Manipulation> manipulations = new ArrayList<>();
 
     public void setId(Long id) {

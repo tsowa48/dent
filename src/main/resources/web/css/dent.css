@@ -106,6 +106,7 @@ main {
     z-index: 9999;
     cursor: default;
     height: auto;
+    min-width: 400px;
 }
 
 .modal * {
@@ -256,4 +257,8 @@ td {
 }
 .note {
     font-style: italic;
+}
+
+nav {
+    max-width: 300px;
 }
