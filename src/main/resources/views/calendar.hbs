@@ -53,6 +53,7 @@
 
         <div class="box modal" id="new_record">
             <div class="header">Регистрация<i class="bi bi-x button danger" style="float:right;padding:0" title="Закрыть" onclick="hide_modal('#new_record');"></i></div>
+            <input type="hidden" name="pid"/>
             <span>Фамилия Имя Отчество:</span>
             <br>
             <input type="text" class="text" name="fio"/>
@@ -69,6 +70,10 @@
                 <button class="info register_free" onclick="register(false);"><i class="bi bi-flag info"></i> Не занимать</button>
                 <button class="danger unregister" onclick="unregister();"><i class="bi bi-trash danger"></i>&nbsp;Удалить</button>
             </div>
+
+            <div id="patient_list" style="display:none;position:fixed;background-color:rgb(243,243,243);">
+
+            </div>
         </div>
     </body>
     <script type="text/javascript">
@@ -84,5 +89,48 @@
             $(".slot > .box[doc!='" + sessionStorage.getItem("currentDoc") + "']").css("display", "none");
             $(".slot > .box[doc='" + sessionStorage.getItem("currentDoc") + "']").css("display", "block");
         }
+
+        $("#new_record input[name='fio']").on('input', function() {
+            if($(this).val().length > 2) {
+                $("#patient_list").empty();
+                var inp = $(this);
+                var json = { fio: inp.val() };
+                $.ajax({
+                    url: "/api/patient/find",
+                    method: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify(json)
+                }).done(function(patient) {
+                    $("#patient_list").empty();
+                    if(patient.length > 0) {
+                        var x = inp.offset().left;
+                        var y = inp.offset().top + inp.height() + 1;
+                        $('#patient_list').css('display', 'block');
+                        $('#patient_list').css("left", x);
+                        $('#patient_list').css("top", y);
+                        $('#patient_list').css("width", inp.width());
+                        patient.forEach((p) => {
+                            $("#patient_list").append("<div class='list-item' onclick='set_patient(this)' style='margin:0' pid='" + p.id + "'><b>" +
+                                p.fio + "</b> (" + p.phone + ")" +
+                                "<span style='display:none' class='patient_phone'>" + p.phone + "</span>" +
+                                "<span style='display:none' class='patient_fio'>" + p.fio + "</span>" +
+                                "</div>");
+                        });
+                    }
+                });
+            }
+        });
+
+        function set_patient(t) {
+            $("#new_record input[name='pid']").val($(t).attr('pid'));
+            $("#new_record input[name='fio']").val($(t).find('.patient_fio').text());
+            $("#new_record input[name='phone']").val($(t).find('.patient_phone').text());
+            $('#patient_list').css('display', 'none');
+        }
+
+        $(document).click(function() {
+            $('#patient_list').css('display', 'none');
+        });
     </script>
 </html>

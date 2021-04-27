@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name = "act_service", schema = "public")
@@ -59,5 +60,21 @@ public class ActService implements Serializable {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ActService that = (ActService) o;
+        return aid.equals(that.aid) &&
+                sid.equals(that.sid) &&
+                amount.equals(that.amount) &&
+                date.equals(that.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(aid, sid, amount, date);
     }
 }

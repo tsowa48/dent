@@ -24,6 +24,18 @@ public class PatientRepository {
 
     @Transactional
     @ReadOnly
+    public List<Patient> findByFio(String fioPart) {
+        return entityManager
+                .createQuery("select new Patient(P.id, P.fio, P.phone) from Patient P " +
+                        "where lower(P.fio) like (:fioPart) " +
+                        "order by P.fio", Patient.class)
+                .setParameter("fioPart", "%" + fioPart.toLowerCase() + "%")
+                .setMaxResults(10)
+                .getResultList();
+    }
+
+    @Transactional
+    @ReadOnly
     public Patient findById(Long id) {
         return entityManager
                 .createQuery("select P from Patient P " +

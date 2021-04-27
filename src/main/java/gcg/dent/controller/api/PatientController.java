@@ -41,4 +41,9 @@ public class PatientController {
         return HttpResponse.ok();
     }
 
+    @Post(value = "/find", produces = MediaType.APPLICATION_JSON)
+    public List<Patient> findByFio(String fio) {
+        return patientRepository.findByFio(fio);
+    }
+
 }

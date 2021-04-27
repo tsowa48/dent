@@ -36,6 +36,15 @@ public class Patient {
     private Card card;
 
 
+    public Patient() {
+    }
+
+    public Patient(Long id, String fio, String phone) {
+        this.id = id;
+        this.fio = fio;
+        this.phone = phone;
+    }
+
     public Long getId() {
         return id;
     }

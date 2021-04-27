@@ -26,7 +26,7 @@ public class Card {
     @JoinColumn(name = "cid")
     private Company company;
 
-    @OneToMany(mappedBy = "card", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "card", fetch = FetchType.LAZY)
     private List<History> history = new ArrayList<>();
 
     public void setId(Long id) {

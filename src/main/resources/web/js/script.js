@@ -9,7 +9,11 @@ jQuery.fn.center = function () {
 
 $(document).keyup(function(e) {
     if(e.key === "Escape") {
-        hide_modal('.modal');
+        if($('#patient_list').css('display') === 'none') {
+            hide_modal('.modal');
+        } else {
+            $('#patient_list').css('display', 'none');
+        }
     }
 });
 
@@ -51,6 +55,7 @@ function hide_modal(id) {
     $(id + " :input").val("");
     $(id).css('display', 'none');
     $('.selected_slot').removeClass('selected_slot');
+    $('#patient_list').css('display', 'none');
     $('.cover').remove();
 }
 
@@ -85,11 +90,12 @@ function register(enabled) {
 
     var json;
     if(enabled) {
+        var pid = Number($("#new_record input[name='pid']").val());
         var fio = $("#new_record input[name='fio']").val();
         var phone = $("#new_record input[name='phone']").val();
         var note = $("#new_record input[name='note']").val();
         note = (note === null ? "" : note);
-        json = { fio: fio, phone: phone, doc: doc, date: date, time: time, size: size, note: note};
+        json = { fio: fio, phone: phone, doc: doc, date: date, time: time, size: size, note: note, pid: pid};
     } else {
         json = { enabled: enabled, doc: doc, date: date, time: time, size: size};
     }
