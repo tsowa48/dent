@@ -134,8 +134,7 @@ a:hover, .link:hover {
     color: rgb(75, 159, 213);
 }
 
-input, .text {
-    height: 21px;
+input, textarea, .text {
     padding: 0px 5px 1px 5px;
     box-shadow: none;
     outline: 0;
@@ -148,7 +147,22 @@ input, .text {
     cursor: text;
 }
 
-input:active, input:focus, .text:active, .text:focus {
+input, .text {
+    height: 21px;
+}
+
+select {
+    cursor: pointer;
+    width: 100%;
+}
+
+textarea {
+    height: calc(21px * attr(rows integer, 1));
+    min-height: calc(21px * attr(rows integer, 1));
+    width: 100%;
+}
+
+input:active, input:focus, textarea:active, textarea:focus, .text:active, .text:focus {
     box-shadow: none;
     outline: 0;
     border-color: rgb(75, 159, 213);

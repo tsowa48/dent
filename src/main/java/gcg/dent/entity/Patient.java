@@ -1,5 +1,7 @@
 package gcg.dent.entity;
 
+import gcg.dent.util.ObjectUtils;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -25,14 +27,14 @@ public class Patient {
     private Date birth;
 
     @Column(name = "sex", nullable = false)
-    private Boolean isMale;
+    private boolean isMale;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fid")
     private FindOut findOut;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @OneToOne(mappedBy = "patient", fetch = FetchType.LAZY)
+    @PrimaryKeyJoinColumn
     private Card card;
 
 
@@ -77,19 +79,19 @@ public class Patient {
         this.address = address;
     }
 
-    public Date getBirth() {
-        return birth;
+    public String getBirth() {
+        return ObjectUtils.dateFormat.format(birth);
     }
 
     public void setBirth(Date birth) {
         this.birth = birth;
     }
 
-    public Boolean getMale() {
+    public boolean isMale() {
         return isMale;
     }
 
-    public void setMale(Boolean male) {
+    public void setMale(boolean male) {
         isMale = male;
     }
 

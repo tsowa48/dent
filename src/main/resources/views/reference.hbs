@@ -69,13 +69,13 @@
     <div id="modal_company" class="box modal">
         <div class="header"><span id="header_text"></span><i class="bi bi-x button danger" style="float:right;padding:0" title="Закрыть" onclick="hide_modal('#modal_company');"></i></div>
         <input type="hidden" name="cid"/>
-        <span>Название:</span><br>
+        <span class="bold">Название:</span><br>
         <input type="text" class="text" name="name"/>
         <br>
-        <span>Адрес:</span><br>
+        <span class="bold">Адрес:</span><br>
         <input type="text" class="text" name="address"/>
         <br>
-        <span>ФИО руководителя:</span><br>
+        <span class="bold">ФИО руководителя:</span><br>
         <input type="text" class="text" name="director"/>
 
         <div class="footer">
@@ -86,7 +86,7 @@
     <div id="modal_schedule" class="box modal">
         <div class="header"><span id="header_text"></span><i class="bi bi-x button danger" style="float:right;padding:0" title="Закрыть" onclick="hide_modal('#modal_schedule');"></i></div>
         <input type="hidden" name="sid"/>
-        <span>День недели:</span><br>
+        <span class="bold">День недели:</span><br>
         <select name="dow" class="text" style="width:100%;cursor:pointer;">
             <option value="0">Понедельник</option>
             <option value="1">Вторник</option>
@@ -97,10 +97,10 @@
             <option value="6">Воскресенье</option>
         </select>
         <br>
-        <span>Начало периода:</span><br>
+        <span class="bold">Начало периода:</span><br>
         <input type="time" class="text" min="00:01" max="23:59" name="start"/>
         <br>
-        <span>Окончание периода:</span><br>
+        <span class="bold">Окончание периода:</span><br>
         <input type="time" class="text" min="00:01" max="23:59" name="finish"/>
 
         <div class="footer">
@@ -111,14 +111,14 @@
     <div id="modal_employee" class="box modal">
         <div class="header"><span id="header_text"></span><i class="bi bi-x button danger" style="float:right;padding:0" title="Закрыть" onclick="hide_modal('#modal_employee');"></i></div>
         <input type="hidden" name="eid"/>
-        <span>Организация:</span><br>
+        <span class="bold">Организация:</span><br>
         <select name="cid" class="text" style="width:100%;cursor:pointer;">
         </select>
         <br>
-        <span>ФИО сотрудника:</span><br>
+        <span class="bold">ФИО сотрудника:</span><br>
         <input type="text" class="text" name="fio"/>
         <br>
-        <span>Должность:</span><br>
+        <span class="bold">Должность:</span><br>
         <input type="text" class="text" name="post"/>
         <br>
         <div class="text" id="employee_schedule" style="cursor:pointer;">
@@ -138,7 +138,7 @@
     <div id="modal_act_type" class="box modal">
         <div class="header"><span id="header_text"></span><i class="bi bi-x button danger" style="float:right;padding:0" title="Закрыть" onclick="hide_modal('#modal_act_type');"></i></div>
         <input type="hidden" name="aid"/>
-        <span>Название акта:</span><br>
+        <span class="bold">Название акта:</span><br>
         <input type="text" class="text" name="name"/>
 
         <div class="footer">
@@ -149,14 +149,14 @@
     <div id="modal_service" class="box modal">
         <div class="header"><span id="header_text"></span><i class="bi bi-x button danger" style="float:right;padding:0" title="Закрыть" onclick="hide_modal('#modal_service');"></i></div>
         <input type="hidden" name="sid"/>
-        <span>Тип акта:</span><br>
+        <span class="bold">Тип акта:</span><br>
         <select name="atid" class="text" style="width:100%;cursor:pointer;">
         </select>
         <br>
-        <span>Название услуги:</span><br>
+        <span class="bold">Название услуги:</span><br>
         <input type="text" class="text" name="name"/>
         <br>
-        <span>Цена:</span><br>
+        <span class="bold">Цена:</span><br>
         <input type="number" class="text" name="price" min="0" step="0.01"/>
 
         <div class="footer">
@@ -167,11 +167,11 @@
     <div id="modal_manipulation" class="box modal">
         <div class="header"><span id="header_text"></span><i class="bi bi-x button danger" style="float:right;padding:0" title="Закрыть" onclick="hide_modal('#modal_manipulation');"></i></div>
         <input type="hidden" name="mid"/>
-        <span>Услуга:</span><br>
+        <span class="bold">Услуга:</span><br>
         <select name="sid" class="text" style="width:100%;cursor:pointer;">
         </select>
         <br>
-        <span>Название манипуляции:</span><br>
+        <span class="bold">Название манипуляции:</span><br>
         <input type="text" class="text" name="name" placeholder="Название"/>
         <div class="footer">
             <button class="success" onclick="save_manipulation();">Сохранить</button>

@@ -599,6 +599,26 @@ function save_history() {
 
 function save_patient() {
     var pid = Number($("#modal_patient input[name='pid']").val());
+    var fio = $("#modal_patient input[name='fio']").val();
+    var birth = $("#modal_patient input[name='birth']").val();
+    var phone = $("#modal_patient input[name='phone']").val();
+    var address = $("#modal_patient textarea[name='address']").val();
+    var isMale = Number($("#modal_patient select[name='sex']").val()) === 1;
+
+    var json = { id: pid, fio: fio, address: address, birth: birth, phone: phone, male: isMale };
+
+    var method = (pid > 0 ? "PUT" : "POST");
+    $.ajax({
+        url: "/api/patient/",
+        method: method,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        data: JSON.stringify(json)
+    }).done(function(patient) {
+        if(method === "POST") {
+            $('#patients').append("<div class='list-item' pid='" + patient.id + "' onclick=\"location.href='/patient/" + patient.id + "'\"></div>");
+        }
+        $("#patients .list-item[pid='" + patient.id + "']").html("<b>" + patient.fio + "</b> (" + patient.phone + ") " + patient.address);
         hide_modal('#modal_patient');
     });
 }

@@ -1,5 +1,6 @@
 package gcg.dent.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import gcg.dent.util.ObjectUtils;
 
 import javax.persistence.*;
@@ -22,8 +23,18 @@ public class Card {
     @Column(name = "date", nullable = false)
     private Date date;
 
+    @JsonIgnore
+    @Column(name = "pid", nullable = false, insertable = false, updatable = false)
+    private Long pid;
+
+    @JsonIgnore
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "pid", insertable = false, updatable = false)
+    private Patient patient;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cid")
+    @JoinColumn(name = "cid", nullable = false)
     private Company company;
 
     @OneToMany(mappedBy = "card", fetch = FetchType.LAZY)
@@ -51,6 +62,14 @@ public class Card {
 
     public String getDate() {
         return ObjectUtils.dateFormat.format(this.date);
+    }
+
+    public Long getPid() {
+        return pid;
+    }
+
+    public void setPid(Long pid) {
+        this.pid = pid;
     }
 
     public Company getCompany() {

@@ -3,6 +3,7 @@ package gcg.dent.repository;
 import gcg.dent.entity.Patient;
 import io.micronaut.transaction.annotation.ReadOnly;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -13,6 +14,9 @@ import java.util.List;
 public class PatientRepository {
     @PersistenceContext
     private EntityManager entityManager;
+
+    @Inject
+    CardRepository cardRepository;
 
     @Transactional
     @ReadOnly
@@ -52,6 +56,8 @@ public class PatientRepository {
     public Patient addRecord(Patient patient) {
         patient.setId(null);
         entityManager.persist(patient);
+        entityManager.flush();
+        cardRepository.makeNew(patient);
         return patient;
     }
 
