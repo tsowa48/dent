@@ -45,6 +45,7 @@ public class Patient {
         this.id = id;
         this.fio = fio;
         this.phone = phone;
+        this.birth = new Date();
     }
 
     public Long getId() {
