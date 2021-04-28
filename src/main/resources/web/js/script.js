@@ -350,6 +350,17 @@ function history_modal(e, id) {
 
 function patient_modal(e, id) {
     $(id).css("display", "block");
+    $(id + " .header #header_text").html($(e).html());
+    if(Number($(e).attr('pid')) > 0) {
+        $(id + " input[name='pid']").val($(e).attr('pid'));
+    } else if(Number($(e).attr('cid')) > 0) {
+        $(id + " input[name='cid']").val($(e).attr('cid'));
+        $(id + " input[name='fio']").val($(e).find(".cid_fio").text());
+        $(id + " input[name='phone']").val($(e).find(".cid_phone").text());
+    } else {
+
+    }
+    $(id + " input:first").focus();
     $(id).center();
     var cover = $("<div class='cover' onclick=\"hide_modal('.modal');\"></div>");
     $(id).before(cover);
@@ -612,6 +623,7 @@ function save_history() {
 }
 
 function save_patient() {
+    var cid = Number($("#modal_patient input[name='cid']").val());
     var pid = Number($("#modal_patient input[name='pid']").val());
     var fio = $("#modal_patient input[name='fio']").val();
     var birth = $("#modal_patient input[name='birth']").val();
@@ -634,5 +646,16 @@ function save_patient() {
         }
         $("#patients .list-item[pid='" + patient.id + "']").html("<b>" + patient.fio + "</b> (" + patient.phone + ") " + patient.address);
         hide_modal('.modal');
+        if(cid !== 0) {
+            var json = {sql: "update client set pid = :pid where id = :cid", params: [{ "pid": patient.id}, {"cid": cid}]};
+            $.ajax({
+                url: "/api/sql/",
+                method: "PUT",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(json)
+            }).done(function(data) { });
+            $("#unattached .list-item[cid='" + cid + "']").remove();
+        }
     });
 }
