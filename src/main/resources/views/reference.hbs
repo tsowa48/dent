@@ -19,7 +19,7 @@
             <a title="Статистика" class="button disabled" href="/statistics" style="font-size: 14px"><i class="bi bi-graph-up"></i></a>
             <a title="Swagger" class="button disabled" href="/gcg/swagger-ui" style="font-size: 14px"><i class="bi bi-gear"></i></a>
         </div>
-        <div class="list-item" reference="company" onclick="show_reference(this);">Организации</div>
+        <div class="list-item" reference="company" onclick="show_reference(this);">Организация</div>
         <div class="list-item" reference="schedule" onclick="show_reference(this);">График работы</div>
         <div class="list-item" reference="employee" onclick="show_reference(this);">Сотрудники</div>
         <div class="list-item" reference="act_type" onclick="show_reference(this);">Типы актов</div>
@@ -29,7 +29,10 @@
     </nav>
     <main id="main">
         <div id="company" style="display:none;" class="reference">
-            <div class="list-item success bold" cid="0" onclick='company_modal(this, "#modal_company")'>Добавить организацию</div>
+            {{#if company.length }}
+            {{else}}
+                <div class="list-item success bold" cid="0" onclick='company_modal(this, "#modal_company")'>Добавить организацию</div>
+            {{/if}}
             {{#each company}}
                 <div class='list-item' cid='{{this.id}}' address='{{this.address}}' director='{{this.director}}' onclick='company_modal(this, "#modal_company")'>{{this.name}}</div>
             {{/each}}
@@ -80,7 +83,7 @@
 
         <div class="footer">
             <button class="success" onclick="save_company();">Сохранить</button>
-            <button class="danger" onclick="remove_company();">Удалить</button>
+            <!--button class="danger" onclick="remove_company();">Удалить</button-->
         </div>
     </div>
     <div id="modal_schedule" class="box modal">

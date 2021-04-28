@@ -17,6 +17,20 @@ $(document).keyup(function(e) {
     }
 });
 
+window.onerror = function (msg, url, line) {
+    var json = { msg: msg, url: url, line: line };
+    try {
+        $.ajax({
+            url: "/api/js/error",
+            method: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(json)
+        }).done(function (data) {
+        });
+    } catch(e) { }
+}
+
 function slot_modal(e) {
     var sid = $(e).attr("sid");
     $("#new_record").css("display", "block");
@@ -428,7 +442,7 @@ function save_company() {
         $("#company .list-item[cid='" + company.id + "']").text(company.name);
         $("#company .list-item[cid='" + company.id + "']").attr("address", company.address);
         $("#company .list-item[cid='" + company.id + "']").attr("director", company.director);
-        hide_modal('#modal_company');
+        hide_modal('.modal');
     });
 }
 
@@ -454,7 +468,7 @@ function save_schedule() {
         $("#schedule .list-item[sid='" + schedule.id + "']").attr("dow", schedule.dow);
         $("#schedule .list-item[sid='" + schedule.id + "']").attr("start", schedule.start);
         $("#schedule .list-item[sid='" + schedule.id + "']").attr("finish", schedule.finish);
-        hide_modal('#modal_schedule');
+        hide_modal('.modal');
     });
 }
 
@@ -484,7 +498,7 @@ function save_employee() {
         $("#employee .list-item[eid='" + employee.id + "']").attr("post", employee.post);
         $("#employee .list-item[eid='" + employee.id + "']").attr("scheduled", employee.scheduled);
         $("#employee .list-item[eid='" + employee.id + "']").attr("faired", employee.faired);
-        hide_modal('#modal_employee');
+        hide_modal('.modal');
     });
 }
 
@@ -505,7 +519,7 @@ function save_act_type() {
             $('#act_type').append("<div class='list-item' aid='" + act_type.id + "' onclick='act_type_modal(this, \"#modal_act_type\")'></div>");
         }
         $("#act_type .list-item[aid='" + act_type.id + "']").text(act_type.name);
-        hide_modal('#modal_act_type');
+        hide_modal('.modal');
     });
 }
 
@@ -530,7 +544,7 @@ function save_service() {
         $("#service .list-item[sid='" + service.id + "']").text(service.name);
         $("#service .list-item[sid='" + service.id + "']").attr("atid", service.actType.id);
         $("#service .list-item[sid='" + service.id + "']").attr("price", service.price);
-        hide_modal('#modal_service');
+        hide_modal('.modal');
     });
 }
 
@@ -553,8 +567,8 @@ function save_manipulation() {
             $('#manipulation').append("<div class='list-item' mid='" + manipulation.id + "' onclick='manipulation_modal(this, \"#modal_manipulation\")'></div>");
         }
         $("#manipulation .list-item[mid='" + manipulation.id + "']").text(manipulation.name);
-        $("#manipulation .list-item[mid='" + manipulation.id + "']").attr("sid", manipulation.service.id);
-        hide_modal('#modal_manipulation');
+        $("#manipulation .list-item[mid='" + manipulation.id + "']").attr("sid", manipulation.sid);
+        hide_modal('.modal');
     });
 }
 
@@ -593,7 +607,7 @@ function save_history() {
         }
         $("#history_list .list-item[hid='" + history.id + "']").attr("did", history.contract.id);
         $("#history_list .list-item[hid='" + history.id + "']").text("Карта эпиданамнеза от " + history.date + "г. (договор №" + history.contract.number + " от " + history.contract.date + "г.)");
-        hide_modal('#modal_history');
+        hide_modal('.modal');
     });
 }
 
@@ -619,6 +633,6 @@ function save_patient() {
             $('#patients').append("<div class='list-item' pid='" + patient.id + "' onclick=\"location.href='/patient/" + patient.id + "'\"></div>");
         }
         $("#patients .list-item[pid='" + patient.id + "']").html("<b>" + patient.fio + "</b> (" + patient.phone + ") " + patient.address);
-        hide_modal('#modal_patient');
+        hide_modal('.modal');
     });
 }
