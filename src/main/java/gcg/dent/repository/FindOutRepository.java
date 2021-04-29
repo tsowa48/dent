@@ -19,7 +19,7 @@ public class FindOutRepository {
     @ReadOnly
     public List<FindOut> getAll() {
         return entityManager
-                .createQuery("select F from FindOut F", FindOut.class)
+                .createQuery("select F from FindOut F order by F.name", FindOut.class)
                 .getResultList();
     }
 }

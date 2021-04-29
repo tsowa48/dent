@@ -350,15 +350,27 @@ function history_modal(e, id) {
 
 function patient_modal(e, id) {
     $(id).css("display", "block");
-    $(id + " .header #header_text").html($(e).html());
-    if(Number($(e).attr('pid')) > 0) {
+    $(id + " .footer .info").css("display", "none");
+    if (Number($(e).attr('pid')) > 0) {
+        $(id + " .header #header_text").text($(e).find(".fio").text());
         $(id + " input[name='pid']").val($(e).attr('pid'));
-    } else if(Number($(e).attr('cid')) > 0) {
+        $(id + " input[name='fio']").val($(e).find(".fio").text());
+        $(id + " input[name='phone']").val($(e).find(".phone").text());
+        $(id + " select[name='sex']").val($(e).find(".sex").text() === 'true' ? '1' : '0');
+        var day = $(e).find(".birth").text().substr(0, 2);
+        var month = $(e).find(".birth").text().substr(3, 2);
+        var birth = $(e).find(".birth").text().substr(6, 4) + "-" + (month) + "-" + (day);
+        $(id + " input[name='birth']").val(birth);
+        $(id + " textarea[name='address']").val($(e).find(".address").text());
+        $(id + " select[name='find_out']").val($(e).find(".find_out").text());
+        $(id + " .footer .info").css("display", "inline-flex");
+    } else if (Number($(e).attr('cid')) > 0) {
+        $(id + " .header #header_text").text($(e).find(".fio").text());
         $(id + " input[name='cid']").val($(e).attr('cid'));
-        $(id + " input[name='fio']").val($(e).find(".cid_fio").text());
-        $(id + " input[name='phone']").val($(e).find(".cid_phone").text());
+        $(id + " input[name='fio']").val($(e).find(".fio").text());
+        $(id + " input[name='phone']").val($(e).find(".phone").text());
     } else {
-
+        $(id + " .header #header_text").text($(e).text());
     }
     $(id + " input:first").focus();
     $(id).center();
@@ -629,9 +641,10 @@ function save_patient() {
     var birth = $("#modal_patient input[name='birth']").val();
     var phone = $("#modal_patient input[name='phone']").val();
     var address = $("#modal_patient textarea[name='address']").val();
+    var findOut = $("#modal_patient select[name='find_out']").val();
     var isMale = Number($("#modal_patient select[name='sex']").val()) === 1;
 
-    var json = { id: pid, fio: fio, address: address, birth: birth, phone: phone, male: isMale };
+    var json = { id: pid, fio: fio, address: address, birth: birth, phone: phone, male: isMale, findOut: { id: findOut } };
 
     var method = (pid > 0 ? "PUT" : "POST");
     $.ajax({
@@ -642,9 +655,16 @@ function save_patient() {
         data: JSON.stringify(json)
     }).done(function(patient) {
         if(method === "POST") {
-            $('#patients').append("<div class='list-item' pid='" + patient.id + "' onclick=\"location.href='/patient/" + patient.id + "'\"></div>");
+            $('#patients').append("<div class='list-item' pid='" + patient.id + "' onclick=\"patient_modal(this, '#modal_patient')\"></div>");
         }
-        $("#patients .list-item[pid='" + patient.id + "']").html("<b>" + patient.fio + "</b> (" + patient.phone + ") " + patient.address);
+        $("#patients .list-item[pid='" + patient.id + "']").html(
+            "<span style='display:none;' class='fio'>" + patient.fio + "</span>" +
+            "<span style='display:none;' class='phone'>" + patient.phone + "</span>" +
+            "<span style='display:none;' class='address'>" + patient.address + "</span>" +
+            "<span style='display:none;' class='sex'>" + patient.male + "</span>" +
+            "<span style='display:none;' class='birth'>" + patient.birth + "</span>" +
+            "<span style='display:none;' class='find_out'>" + patient.findOut.id + "</span>" +
+            "<b>" + patient.fio + "</b> (" + patient.phone + ") " + patient.address);
         hide_modal('.modal');
         if(cid !== 0) {
             var json = {sql: "update client set pid = :pid where id = :cid", params: [{ "pid": patient.id}, {"cid": cid}]};

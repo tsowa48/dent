@@ -24,21 +24,13 @@
     </div>
     <br>
     <div id="menu2">
-        <div class="list-item selected" onclick="show_box(this)" box="primary_info">Основная информация</div>
-        <div class="list-item" onclick="show_box(this)" box="history_list" cid="{{patient.card.id}}">Мед.карта №{{patient.card.number}} от {{patient.card.date}}г.</div>
+        <div class="list-item selected" onclick="show_box(this)" box="history_list" cid="{{patient.card.id}}">Мед.карта №{{patient.card.number}} от {{patient.card.date}}г.</div>
         <div class="list-item" onclick="show_box(this)" box="contract_list">Договора</div>
         <div class="list-item" onclick="show_box(this)" box="act_list">Акты</div>
         <div class="list-item" onclick="show_box(this)">Прочие документы</div>
     </div>
 </nav>
 <main>
-    <div class="box" id="primary_info" pid="{{patient.id}}">
-        <div class="item" name="fio">ФИО:&nbsp;<b>{{patient.fio}}</b></div>
-        <div class="item" name="phone">Телефон:&nbsp;<b>{{patient.phone}}</b></div>
-        <div class="item" name="address">Адрес:&nbsp;<b>{{patient.address}}</b></div>
-        <div class="item" name="findOut">Откуда узнал о компании:&nbsp;<b>{{patient.findOut.name}}</b></div>
-        <div class="item">&nbsp;</div>
-    </div>
     <div class="box" id="history_list" style="padding:0">
         <div class="list-item success bold center" hid="0" onclick="history_modal(this, '#modal_history')">Добавить карту эпиданамнеза</div>
         {{#each patient.card.history}}
@@ -65,7 +57,7 @@
 </body>
 <script type="text/javascript">
     $('main .box').css('display', 'none');
-    $('main .box#primary_info').css('display', 'block');
+    $('main .box#history_list').css('display', 'block');
 
     function show_box(base) {
         $('#menu2 .list-item').removeClass('selected');

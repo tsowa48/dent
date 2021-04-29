@@ -87,12 +87,14 @@ public class CalendarService {
                 timeSlots.forEach(ts -> {
                     if(ts.isEnabled()) {
                         Client c = ts.getClient();
+                        String fio = c.getPatient() != null ? c.getPatient().getFio() : c.getFio();
+                        String phone = c.getPatient() != null ? c.getPatient().getPhone() : c.getPhone();
                         String note = ts.getNote();
                         htmlSlots.append("<div class='box pink' onclick=\"slot_modal(this);event.stopPropagation();\" sid='" + ts.getId() +
                                 "' cid='" + c.getId() + "' doc='" + ts.getDoctor().getId() +
-                                "'><span class='fio' style='display:none;'>" + c.getFio() + "</span>" +
-                                "<b>" + ObjectUtils.fio(c.getFio()) +
-                                "</b><br><span class='phone'>" + c.getPhone() + "</span>" +
+                                "'><span class='fio' style='display:none;'>" + fio + "</span>" +
+                                "<b>" + ObjectUtils.fio(fio) +
+                                "</b><br><span class='phone'>" + phone + "</span>" +
                                 "<br><span class='note'>" + (note == null ? "" : note) + "</span></div>");
                     } else {
                         htmlSlots.append("<div class='box pink' onclick=\"slot_modal(this);event.stopPropagation();\" sid='" + ts.getId() +

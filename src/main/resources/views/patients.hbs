@@ -28,8 +28,8 @@
         <div id="unattached" style="overflow-y: auto;">
             {{#each clients}}
                 <div class="list-item" cid='{{this.id}}' onclick='patient_modal(this, "#modal_patient")'>
-                    <span style="display:none;" class="cid_fio">{{this.fio}}</span>
-                    <span style="display:none;" class="cid_phone">{{this.phone}}</span>
+                    <span style="display:none;" class="fio">{{this.fio}}</span>
+                    <span style="display:none;" class="phone">{{this.phone}}</span>
                     <b>{{this.fio}}</b> ({{this.phone}})</div>
             {{/each}}
         </div>
@@ -37,7 +37,14 @@
     <main class="reference" id="patients">
         <div class="list-item success bold" pid='0' onclick='patient_modal(this, "#modal_patient")'>Добавить пациента</div>
         {{#each patients}}
-            <div class="list-item" onclick="location.href='/patient/{{this.id}}'" pid='{{this.id}}'><b>{{this.fio}}</b> ({{this.phone}}) {{this.address}}</div>
+            <div class="list-item" pid='{{this.id}}' onclick='patient_modal(this, "#modal_patient")'>
+                <span style="display:none;" class="fio">{{this.fio}}</span>
+                <span style="display:none;" class="phone">{{this.phone}}</span>
+                <span style="display:none;" class="address">{{this.address}}</span>
+                <span style="display:none;" class="sex">{{this.male}}</span>
+                <span style="display:none;" class="birth">{{this.birth}}</span>
+                <span style="display:none;" class="find_out">{{this.findOut.id}}</span>
+                <b>{{this.fio}}</b> ({{this.phone}}) {{this.address}}</div>
         {{/each}}
     </main>
 </div>
@@ -63,7 +70,15 @@
     <span class="bold">Адрес проживания:</span><br>
     <textarea name="address" rows="4"></textarea>
 
+    <br>
+    <span class="bold">Откуда узнал о компании:</span><br>
+    <select class="text" name="find_out">
+    {{#each findOut}}
+        <option value="{{this.id}}">{{this.name}}</option>
+    {{/each}}
+    </select>
     <div class="footer">
+        <button class="info" onclick="location.href='/patient/'+$('#modal_patient input[name=\'pid\']').val()">Мед.карта</button>
         <button class="success" onclick="save_patient();">Сохранить</button>
     </div>
 </div>
