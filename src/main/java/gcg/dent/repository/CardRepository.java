@@ -31,7 +31,7 @@ public class CardRepository {
     @Transactional
     public Card makeNew(Patient patient) {
         return (Card) entityManager.createNativeQuery("insert into card(number, \"date\", pid, cid) " +
-                "values ((select max(number) + 1 from card), now(), (:pid), (select id from company order by name limit 1)) " +
+                "values ((select coalesce(max(number), 0) + 1 from card), now(), (:pid), (select id from company order by name limit 1)) " +
                 "returning *;", Card.class)
                 .setParameter("pid", patient.getId())
                 .getSingleResult();

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micronaut.http.HttpResponse;
+import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Put;
 
@@ -23,7 +24,7 @@ public class SqlController {
 
     static final ObjectMapper mapper = new ObjectMapper();
 
-    @Put
+    @Put(produces = MediaType.APPLICATION_JSON)
     @Transactional
     public HttpResponse executeUpdate(String sql, JsonNode params) {
         HashMap<String, Object> mapParams = mapper.convertValue(params, new TypeReference<HashMap<String, Object>>() {});
