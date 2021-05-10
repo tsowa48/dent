@@ -29,7 +29,7 @@ window.onerror = function (msg, url, line) {
         }).done(function (data) {
         });
     } catch(e) { }
-}
+};
 
 function slot_modal(e) {
     var sid = $(e).attr("sid");
@@ -39,6 +39,10 @@ function slot_modal(e) {
     $("#new_record").before(cover);
     $("#new_record input").removeAttr("disabled");
     if(sid === undefined) {
+        if (Number(sessionStorage.getItem("currentDoc")) === 0) {
+            hide_modal('.modal');
+            return;
+        }
         $('.selected_slot').removeClass('selected_slot');
         $(e).addClass('selected_slot');
         //$("#new_record input:first").focus();
@@ -113,7 +117,6 @@ function register(enabled) {
     } else {
         json = { enabled: enabled, doc: doc, date: date, time: time, size: size};
     }
-
     $.ajax({
         url: "/api/slot/add",
         method: "POST",
@@ -268,7 +271,7 @@ function service_modal(e, id) {
     });
     if(Number($(e).attr('sid')) > 0) {
         $(id + " input[name='sid']").val($(e).attr('sid'));
-        $(id + " input[name='atid']").val($(e).attr('atid'));
+        $(id + " select[name='atid']").val($(e).attr('atid')).change();
         $(id + " input[name='name']").val($(e).text());
         $(id + " input[name='price']").val($(e).attr('price'));
         $(id + " .footer .danger").css("display", "inline-flex");
@@ -298,6 +301,24 @@ function manipulation_modal(e, id) {
         $(id + " .footer .danger").css("display", "inline-flex");
     } else {
         $(id + " select[name='sid']:first-child").change();
+        $(id + " .footer .danger").css("display", "none");
+    }
+    $(id + " input:first").focus();
+    $(id).center();
+    var cover = $("<div class='cover' onclick=\"hide_modal('.modal');\"></div>");
+    $(id).before(cover);
+}
+
+function document_modal(e, id) {
+    $(id).css("display", "block");
+    $(id + " .header #header_text").text($(e).text());
+    if(Number($(e).attr('did')) > 0) {
+        $(id + " input[name='did']").val($(e).attr('did'));
+        $(id + " select[name='type']").val($(e).attr('type')).change();
+        $(id + " input[name='name']").val($(e).text());
+        //$(id + " input[name='template']").css("display", "none");
+        $(id + " .footer .danger").css("display", "inline-flex");
+    } else {
         $(id + " .footer .danger").css("display", "none");
     }
     $(id + " input:first").focus();
@@ -441,6 +462,17 @@ function remove_manipulation() {
     }).done(function() {
         $("#manipulation .list-item[mid='" + id + "']").remove();
         hide_modal('#modal_manipulation');
+    });
+}
+
+function remove_document() {
+    var id = $("#modal_document input[name='did']").val();
+    $.ajax({
+        url: "/api/document/" + id,
+        method: "DELETE"
+    }).done(function() {
+        $("#document .list-item[did='" + id + "']").remove();
+        hide_modal('#modal_document');
     });
 }
 
@@ -595,6 +627,34 @@ function save_manipulation() {
     });
 }
 
+function save_document() {
+    var did = Number($("#modal_document input[name='did']").val());
+    var type = $("#modal_document select[name='type']").val();
+    var name = $("#modal_document input[name='name']").val();
+    var file = $("#modal_document input[name='template']").prop('files')[0];
+    var reader = new FileReader();
+    reader.readAsText(file);
+    reader.onload = function(event) {
+        var content = event.target.result;
+        var json = { id: did, name: name, type: type, template: content};
+        var method = (did > 0 ? "PUT" : "POST");
+        $.ajax({
+            url: "/api/document/",
+            method: method,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(json)
+        }).done(function(document) {
+            if(method === "POST") {
+                $('#document').append("<div class='list-item' did='" + document.id + "' onclick='document_modal(this, \"#modal_document\")'></div>");
+            }
+            $("#document .list-item[did='" + document.id + "']").text(document.name);
+            $("#document .list-item[did='" + document.id + "']").attr("type", document.type);
+            hide_modal('.modal');
+        });
+    };
+}
+
 function save_history() {
     var hid = Number($("#modal_history input[name='hid']").val());
     var complaints = $("#modal_history input[name='props.complaints']").val();
@@ -678,4 +738,15 @@ function save_patient() {
             $("#unattached .list-item[cid='" + cid + "']").remove();
         }
     });
+}
+
+function show_modal(e, id) {
+    $(id).css("display", "block");
+    $(id + " .header #header_text").text($(e).text());
+    var uid = Number($(e).attr("uid"));
+    $(id + " input[name='uid']").val(uid);
+
+    $(id).center();
+    var cover = $("<div class='cover' onclick=\"hide_modal('.modal');\"></div>");
+    $(id).before(cover);
 }

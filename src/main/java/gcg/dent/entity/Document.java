@@ -14,6 +14,9 @@ public class Document {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "type", nullable = false)
+    private String type;
+
     @Column(name = "hbs", nullable = false)
     private String template;
 
@@ -32,6 +35,14 @@ public class Document {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getTemplate() {

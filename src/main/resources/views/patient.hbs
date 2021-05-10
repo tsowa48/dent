@@ -27,7 +27,7 @@
         <div class="list-item selected" onclick="show_box(this)" box="history_list" cid="{{patient.card.id}}">Мед.карта №{{patient.card.number}} от {{patient.card.date}}г.</div>
         <div class="list-item" onclick="show_box(this)" box="contract_list">Договора</div>
         <div class="list-item" onclick="show_box(this)" box="act_list">Акты</div>
-        <div class="list-item" onclick="show_box(this)">Прочие документы</div>
+        <div class="list-item" onclick="show_box(this)" box="other_list">Прочие документы</div>
     </div>
 </nav>
 <main>
@@ -49,10 +49,27 @@
             {{/each}}
         {{/each}}
     </div>
+    <div class="box" id="other_list" style="padding:0">
+        {{#each docs}}
+             <div class="list-item center" uid="{{this.id}}" onclick="show_modal(this, '#document_modal');">{{this.name}}</div>
+        {{/each}}
+    </div>
 </main>
 </div>
 
 {{> views/part/modal_history }}
+
+<div id='document_modal' class="box modal">
+    <div class="header"><span id="header_text"></span><i class="bi bi-x button danger" style="float:right;padding:0" title="Закрыть" onclick="hide_modal('.modal');"></i></div>
+    <input type="hidden" name="uid"/>
+    <input type="hidden" name="params"/>
+    <div class="body">
+
+    </div>
+    <div class="footer">
+        <button class="info" onclick="download_document();"><i class="bi bi-printer"></i>&nbsp;Скачать</button>
+    </div>
+</div>
 
 </body>
 <script type="text/javascript">
@@ -65,6 +82,13 @@
         var box_id = $(base).attr('box');
         $('main .box').css('display', 'none');
         $('main .box#' + box_id).css('display', 'block');
+    }
+
+    function download_document() {
+        var uid = $('#document_modal').find("input[name='uid']").val();
+        var params = "&card={{patient.card.id}}&patient={{patient.id}}";
+
+        window.location = "/api/document/download?uid=" + uid + params;
     }
 </script>
 </html>

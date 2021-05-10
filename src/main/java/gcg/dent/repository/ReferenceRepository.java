@@ -36,6 +36,9 @@ public class ReferenceRepository {
     @Inject
     ManipulationRepository manipulationRepository;
 
+    @Inject
+    DocumentRepository documentRepository;
+
     public Map<String, Object> getReferences() {
         HashMap<String, Object> params = new HashMap<>();
         List<Company> company = companyRepository.getAll();
@@ -44,6 +47,7 @@ public class ReferenceRepository {
         List<ActType> actType = actTypeRepository.getAll();
         List<Service> service = serviceRepository.getAll();
         List<Manipulation> manipulation = manipulationRepository.getAll();
+        List<Document> document = documentRepository.getAll();
 
         params.put("company", company);
         params.put("schedule", schedule);
@@ -51,6 +55,7 @@ public class ReferenceRepository {
         params.put("act_type", actType);
         params.put("service", service);
         params.put("manipulation", manipulation);
+        params.put("document", document);
         return params;
     }
 

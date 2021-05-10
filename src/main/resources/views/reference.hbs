@@ -25,7 +25,7 @@
         <div class="list-item" reference="act_type" onclick="show_reference(this);">Типы актов</div>
         <div class="list-item" reference="service" onclick="show_reference(this);">Услуги</div>
         <div class="list-item" reference="manipulation" onclick="show_reference(this);">Манипуляции</div>
-        <div class="list-item disabled" reference="document" onclick="show_reference(this);">Документы</div>
+        <div class="list-item" reference="document" onclick="show_reference(this);">Документы</div>
     </nav>
     <main id="main">
         <div id="company" style="display:none;" class="reference">
@@ -65,6 +65,12 @@
             <div class="list-item success bold" mid="0" onclick='manipulation_modal(this, "#modal_manipulation")'>Добавить манипуляцию</div>
             {{#each manipulation}}
                 <div class='list-item' mid='{{this.id}}' sid='{{this.sid}}' onclick='manipulation_modal(this, "#modal_manipulation")'>{{this.name}}</div>
+            {{/each}}
+        </div>
+        <div id="document" style="display:none;" class="reference">
+            <div class="list-item success bold" did="0" onclick='document_modal(this, "#modal_document")'>Добавить документ</div>
+            {{#each document}}
+                <div class='list-item' did='{{this.id}}' type='{{this.type}}' onclick='document_modal(this, "#modal_document")'>{{this.name}}</div>
             {{/each}}
         </div>
     </main>
@@ -179,6 +185,28 @@
         <div class="footer">
             <button class="success" onclick="save_manipulation();">Сохранить</button>
             <button class="danger" onclick="remove_manipulation();">Удалить</button>
+        </div>
+    </div>
+    <div id="modal_document" class="box modal">
+        <div class="header"><span id="header_text"></span><i class="bi bi-x button danger" style="float:right;padding:0" title="Закрыть" onclick="hide_modal('#modal_document');"></i></div>
+        <input type="hidden" name="did"/>
+        <span class="bold">Тип шаблона:</span><br>
+        <select name="type" class="text" style="width:100%;cursor:pointer;">
+            <option value="act" selected>Акт</option>
+            <option value="contract">Договор</option>
+            <option value="card">Мед.карта</option>
+            <option value="other">Прочее</option>
+        </select>
+        <br>
+        <span class="bold">Название:</span><br>
+        <input type="text" class="text" name="name"/>
+        <br>
+        <span class="bold">Файл шаблона (xml):</span><br>
+        <input type="file" class="text" name="template" accept=".xml"/>
+
+        <div class="footer">
+            <button class="success" onclick="save_document();">Сохранить</button>
+            <button class="danger" onclick="remove_document();">Удалить</button>
         </div>
     </div>
 </div>

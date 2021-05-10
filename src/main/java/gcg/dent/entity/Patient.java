@@ -1,12 +1,18 @@
 package gcg.dent.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import gcg.dent.util.ObjectUtils;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "patient", schema = "public")
+@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class, defaultForType = JsonNode.class)
 public class Patient {
     @Id
     @SequenceGenerator(name = "patient_id_seq", sequenceName = "public.patient_id_seq", allocationSize = 1)
@@ -28,6 +34,10 @@ public class Patient {
 
     @Column(name = "sex", nullable = false)
     private boolean isMale;
+
+    @Type(type = "jsonb")
+    @Column(name = "props", columnDefinition = "jsonb")
+    private JsonNode props;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fid")
@@ -94,6 +104,11 @@ public class Patient {
 
     public void setMale(boolean male) {
         isMale = male;
+    }
+
+    @JsonProperty(value = "sex", access = JsonProperty.Access.READ_ONLY)
+    public String getSex() {
+        return isMale() ? "мужской" : "женский";
     }
 
     public FindOut getFindOut() {
