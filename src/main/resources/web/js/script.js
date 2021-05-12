@@ -332,13 +332,17 @@ function history_modal(e, id) {
     $(id + " .header #header_text").text($(e).text());
 
     if(Number($(e).attr('hid')) > 0) {
+        $(id + " input[name='uid']").val(Number($(e).attr('uid')));
+        $(id + " input[name='params']").val("&history=" + $(e).attr('hid'));
         $(id + " input[name='hid']").val($(e).attr('hid'));
         $(id + " input[name='did']").val($(e).attr('did'));
         $.ajax({
             url: "/api/history/" + Number($(e).attr('hid')),
             method: "GET"
         }).done(function(history) {
-            $(id + " input[name='props.complaints']").val(history.props.complaints);
+            if(history.props.complaints !== undefined) {
+                $(id + " input[name='props.complaints']").val(history.props.complaints);
+            }
             if(history.props.gepatit === true) {
                 $(id + " input[name='props.gepatit']").attr("checked", "checked");
             }

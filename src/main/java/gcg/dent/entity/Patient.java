@@ -44,7 +44,6 @@ public class Patient {
     private FindOut findOut;
 
     @OneToOne(mappedBy = "patient", fetch = FetchType.LAZY)
-    @PrimaryKeyJoinColumn
     private Card card;
 
 

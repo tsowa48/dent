@@ -57,9 +57,24 @@ public class PatientController {
         List<Document> otherDocs = docs.stream()
                 .filter(d -> "other".equals(d.getType()))
                 .collect(Collectors.toList());
+        Document actUid = docs.stream()
+                .filter(d -> "act".equals(d.getType()))
+                .findFirst()
+                .orElse(null);
+        Document cardUid = docs.stream()
+                .filter(d -> "card".equals(d.getType()))
+                .findFirst()
+                .orElse(null);
+        Document contractUid = docs.stream()
+                .filter(d -> "contract".equals(d.getType()))
+                .findFirst()
+                .orElse(null);
 
         params.put("patient", patient);
 
+        params.put("act_uid", actUid);
+        params.put("card_uid", cardUid);
+        params.put("contract_uid", contractUid);
         params.put("docs", otherDocs);
         return HttpResponse.ok(params);
     }

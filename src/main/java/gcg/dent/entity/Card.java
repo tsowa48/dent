@@ -29,7 +29,6 @@ public class Card {
 
     @JsonIgnore
     @OneToOne
-    @MapsId
     @JoinColumn(name = "pid", insertable = false, updatable = false)
     private Patient patient;
 

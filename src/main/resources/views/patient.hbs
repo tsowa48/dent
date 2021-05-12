@@ -19,7 +19,7 @@
         <a title="Расписание" class="button" href="/week/0"><i class="bi bi-calendar3"></i></a>
         <a title="Справочники" class="button" href="/reference/"><i class="bi bi-card-list"></i></a>
         <a title="Пациенты" class="button selected" href="/patient"><i class="bi bi-people"></i></a>
-        <a title="Статистика" class="button disabled" href="/statistics"><i class="bi bi-graph-up"></i></a>
+        <a title="Статистика" class="button" href="/statistics"><i class="bi bi-graph-up"></i></a>
         <a title="Swagger" class="button disabled" href="/gcg/swagger-ui"><i class="bi bi-gear"></i></a>
     </div>
     <br>
@@ -34,18 +34,18 @@
     <div class="box" id="history_list" style="padding:0">
         <div class="list-item success bold center" hid="0" onclick="history_modal(this, '#modal_history')">Добавить карту эпиданамнеза</div>
         {{#each patient.card.history}}
-            <div class="list-item center" hid="{{this.id}}" did="{{this.contract.id}}" onclick="history_modal(this, '#modal_history')">Карта эпиданамнеза от {{this.date}}г. (договор №{{this.contract.number}} от {{this.contract.date}}г.)</div>
+            <div class="list-item center" uid="{{card_uid.id}}" hid="{{this.id}}" did="{{this.contract.id}}" onclick="history_modal(this, '#modal_history')">Карта эпиданамнеза от {{this.date}}г. (договор №{{this.contract.number}} от {{this.contract.date}}г.)</div>
         {{/each}}
     </div>
     <div class="box" id="contract_list" style="padding:0">
         {{#each patient.card.history}}
-            <div class="list-item center" did="{{this.contract.id}}" >Договор №{{this.contract.number}} от {{this.contract.date}}г.</div>
+            <div class="list-item center" uid="{{contract_uid.id}}" did="{{this.contract.id}}" number="{{this.contract.number}}" date="{{this.contract.date}}" onclick="contract_modal(this, '#modal_contract')">Договор №{{this.contract.number}} от {{this.contract.date}}г.</div>
         {{/each}}
     </div>
     <div class="box" id="act_list" style="padding:0">
         {{#each patient.card.history}}
             {{#each this.contract.acts}}
-                <div class="list-item center" aid="{{this.id}}" >Акт ({{this.actType.name}}) №{{this.number}} от {{this.date}}г.</div>
+                <div class="list-item center" uid="{{act_uid.id}}" aid="{{this.id}}" >Акт ({{this.actType.name}}) №{{this.number}} от {{this.date}}г.</div>
             {{/each}}
         {{/each}}
     </div>
@@ -58,16 +58,17 @@
 </div>
 
 {{> views/part/modal_history }}
+{{> views/part/modal_contract }}
 
 <div id='document_modal' class="box modal">
     <div class="header"><span id="header_text"></span><i class="bi bi-x button danger" style="float:right;padding:0" title="Закрыть" onclick="hide_modal('.modal');"></i></div>
     <input type="hidden" name="uid"/>
-    <input type="hidden" name="params"/>
+    <input type="hidden" name="params" value="&card={{patient.card.id}}&patient={{patient.id}}"/>
     <div class="body">
 
     </div>
     <div class="footer">
-        <button class="info" onclick="download_document();"><i class="bi bi-printer"></i>&nbsp;Скачать</button>
+        <button class="info" onclick="download_document(this);"><i class="bi bi-download"></i>&nbsp;Скачать</button>
     </div>
 </div>
 
@@ -84,10 +85,30 @@
         $('main .box#' + box_id).css('display', 'block');
     }
 
-    function download_document() {
-        var uid = $('#document_modal').find("input[name='uid']").val();
-        var params = "&card={{patient.card.id}}&patient={{patient.id}}";
+    function contract_modal(e, id) {
+        $(id).css("display", "block");
+        $(id + " .header #header_text").text($(e).text());
 
+        $(id + " input[name='uid']").val(Number($(e).attr('uid')));
+        $(id + " input[name='params']").val("&patient={{patient.id}}&contract=" + $(e).attr('did'));
+        $(id + " input[name='did']").val($(e).attr('did'));
+
+        $(id + " input[name='number']").val($(e).attr('number'));
+        var day = $(e).attr('date').substr(0, 2);
+        var month = $(e).attr('date').substr(3, 2);
+        var date = $(e).attr('date').substr(6, 4) + "-" + (month) + "-" + (day);
+        $(id + " input[name='date']").val(date);
+
+        $(id + " input:first").focus();
+        $(id).center();
+        var cover = $("<div class='cover' onclick=\"hide_modal('.modal');\"></div>");
+        $(id).before(cover);
+    }
+
+    function download_document(t) {
+        var uid = $(t).parent().parent().find("input[name='uid']").val();
+        var params = $(t).parent().parent().find("input[name='params']").val();
+        hide_modal('.modal');
         window.location = "/api/document/download?uid=" + uid + params;
     }
 </script>

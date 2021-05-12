@@ -33,7 +33,7 @@ public class Act implements Serializable {
     @JoinColumn(name = "did", nullable = false)
     private Contract contract;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "atid", nullable = false)
     private ActType actType;
 

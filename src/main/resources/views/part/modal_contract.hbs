@@ -1,0 +1,16 @@
+<div id="modal_contract" class="box modal">
+    <div class="header"><span id="header_text"></span><i class="bi bi-x button danger" style="float:right;padding:0" title="Закрыть" onclick="hide_modal('.modal');"></i></div>
+    <input type="hidden" name="uid"/>
+    <input type="hidden" name="params"/>
+    <input type="hidden" name="did"/>
+    Номер:<br>
+    <input type="numeric" class="text" name="number"/>
+    <br>
+    Дата:<br>
+    <input type="date" class="text" name="date"/>
+    <br>
+    <div class="footer">
+        <button class="info" onclick="download_document(this);"><i class="bi bi-download"></i>&nbsp;Скачать</button>
+        <!--button class="success" onclick="save_contract();">Сохранить</button-->
+    </div>
+</div>
