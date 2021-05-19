@@ -43,9 +43,10 @@
         {{/each}}
     </div>
     <div class="box" id="act_list" style="padding:0">
+        <div class="list-item center success bold" uid="{{act_uid.id}}" aid="0" onclick="act_modal(this, '#modal_act')">Добавить акт</div>
         {{#each patient.card.history}}
             {{#each this.contract.acts}}
-                <div class="list-item center" uid="{{act_uid.id}}" aid="{{this.id}}" >Акт ({{this.actType.name}}) №{{this.number}} от {{this.date}}г.</div>
+                <div class="list-item center" uid="{{act_uid.id}}" aid="{{this.id}}" onclick="act_modal(this, '#modal_act')">Акт ({{this.actType.name}}) №{{this.number}} от {{this.date}}г.</div>
             {{/each}}
         {{/each}}
     </div>
@@ -59,11 +60,12 @@
 
 {{> views/part/modal_history }}
 {{> views/part/modal_contract }}
+{{> views/part/modal_act }}
 
 <div id='document_modal' class="box modal">
     <div class="header"><span id="header_text"></span><i class="bi bi-x button danger" style="float:right;padding:0" title="Закрыть" onclick="hide_modal('.modal');"></i></div>
     <input type="hidden" name="uid"/>
-    <input type="hidden" name="params" value="&card={{patient.card.id}}&patient={{patient.id}}"/>
+    <input type="hidden" name="params"/>
     <div class="body">
 
     </div>
@@ -85,6 +87,41 @@
         $('main .box#' + box_id).css('display', 'block');
     }
 
+    function show_modal(e, id) {
+        $(id).css("display", "block");
+        $(id + " .header #header_text").text($(e).text());
+        var uid = Number($(e).attr("uid"));
+        $(id + " input[name='uid']").val(uid);
+        $(id + " input[name='params']").val("&card={{patient.card.id}}&patient={{patient.id}}");
+
+        $(id).center();
+        var cover = $("<div class='cover' onclick=\"hide_modal('.modal');\"></div>");
+        $(id).before(cover);
+    }
+
+    function act_modal(e, id) {
+        $(id).css("display", "block");
+        $(id + " .header #header_text").text($(e).text());
+
+        $(id + " input[name='uid']").val(Number($(e).attr('uid')));
+        $(id + " input[name='params']").val("&patient={{patient.id}}&act=" + $(e).attr('aid'));
+        $(id + " input[name='aid']").val($(e).attr('aid'));
+
+
+        $(id + " input:first").focus();
+        $(id).center();
+        var cover = $("<div class='cover' onclick=\"hide_modal('.modal');\"></div>");
+        $(id).before(cover);
+    }
+
+    function download_document(t) {
+        var uid = $(t).parent().parent().find("input[name='uid']").val();
+        var params = $(t).parent().parent().find("input[name='params']").val();
+        console.warn("uid=" + uid + params);
+        hide_modal('.modal');
+        window.open("/api/document/download?uid=" + uid + params);
+    }
+
     function contract_modal(e, id) {
         $(id).css("display", "block");
         $(id + " .header #header_text").text($(e).text());
@@ -103,13 +140,6 @@
         $(id).center();
         var cover = $("<div class='cover' onclick=\"hide_modal('.modal');\"></div>");
         $(id).before(cover);
-    }
-
-    function download_document(t) {
-        var uid = $(t).parent().parent().find("input[name='uid']").val();
-        var params = $(t).parent().parent().find("input[name='params']").val();
-        hide_modal('.modal');
-        window.location = "/api/document/download?uid=" + uid + params;
     }
 </script>
 </html>

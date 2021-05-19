@@ -1,0 +1,56 @@
+<div id="modal_act" class="box modal">
+    <div class="header"><span id="header_text"></span><i class="bi bi-x button danger" style="float:right;padding:0" title="Закрыть" onclick="hide_modal('.modal');"></i></div>
+    <input type="hidden" name="uid"/>
+    <input type="hidden" name="params"/>
+    <input type="hidden" name="aid"/>
+
+    <span class="bold">Договор:</span><br>
+    <select name="did" class="text" style="width:100%;cursor:pointer;">
+        {{#each patient.card.history}}
+            <option value='{{this.contract.id}}'>№{{this.contract.number}} от {{this.contract.date}}</option>
+        {{/each}}
+    </select>
+    <br>
+    <span class="bold">Тип акта:</span><br>
+    <select name="atid" class="text" style="width:100%;cursor:pointer;">
+        {{#each act_type}}
+            <option value='{{this.id}}'>{{this.name}}</option>
+        {{/each}}
+    </select>
+    <br>
+    <span class="bold">Номер:</span><br>
+    <input type="number" class="text" name="number"/>
+    <br>
+    <span class="bold">Дата:</span><br>
+    <input type="date" class="text" name="date"/>
+    <br>
+    <span class="bold">Врач:</span><br>
+    <select name="doc" class="text" style="width:100%;cursor:pointer;">
+        {{#each employee}}
+            <option value='{{this.id}}'>{{this.fio}}</option>
+        {{/each}}
+    </select>
+    <br>
+    <span class="bold">Оказанные услуги:</span><br>
+    <table class="table" style="width:100%">
+        <tr><th>Услуга</th><th>Количество</th><th></th></tr>
+        <tr>
+            <td><select name="service" class="text" style="width:100%;cursor:pointer;">
+                todo: list of services filled by JS by selected act_type
+            </select></td>
+            <td><input type="number" class="text" name="number" min="1" step="1" value="1"/></td>
+            <td><button class="success" onclick="add_service(this);"><i class="bi bi-plus"></i>&nbsp;Добавить</button></td>
+        </tr>
+
+        <tr>
+            <td>service_1</td>
+            <td>345</td>
+            <td><button class="danger" onclick="rm_service(this);"><i class="bi bi-trash"></i>&nbsp;&nbsp;Удалить</button></td>
+        </tr>
+
+    </table>
+    <div class="footer">
+        <button class="info" onclick="download_document(this);"><i class="bi bi-download"></i>&nbsp;Скачать</button>
+        <button class="success" onclick="save_act();">Сохранить</button>
+    </div>
+</div>

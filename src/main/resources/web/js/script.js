@@ -133,8 +133,8 @@ function register(enabled) {
             $('.selected_slot').append("<div class='box pink' onclick='slot_modal(this);event.stopPropagation();' sid='" + slot.id +
                 "' doc='" + slot.doctor.id + "'></div>");
         }
-        hide_modal('.modal');
     });
+    hide_modal('.modal');
 }
 
 var currentSlot;
@@ -340,29 +340,31 @@ function history_modal(e, id) {
             url: "/api/history/" + Number($(e).attr('hid')),
             method: "GET"
         }).done(function(history) {
-            if(history.props.complaints !== undefined) {
-                $(id + " input[name='props.complaints']").val(history.props.complaints);
-            }
-            if(history.props.gepatit === true) {
-                $(id + " input[name='props.gepatit']").attr("checked", "checked");
-            }
-            if(history.props.tuber === true) {
-                $(id + " input[name='props.tuber']").attr("checked", "checked");
-            }
-            if(history.props.pedi === true) {
-                $(id + " input[name='props.pedi']").attr("checked", "checked");
-            }
-            $(id + " input[name='props.break']").val(history.props.break);
-            $(id + " input[name='props.manipulation']").val(history.props.manipulation);
-            $(id + " input[name='props.sick']").val(history.props.sick);
-            $(id + " input[name='props.visit']").val(history.props.visit);
-            $(id + " input[name='props.allergy']").val(history.props.allergy);
-            $(id + " input[name='props.outer']").val(history.props.outer);
+            if(history.props !== undefined) {
+                if (history.props.complaints !== undefined) {
+                    $(id + " input[name='props.complaints']").val(history.props.complaints);
+                }
+                if (history.props.gepatit === true) {
+                    $(id + " input[name='props.gepatit']").attr("checked", "checked");
+                }
+                if (history.props.tuber === true) {
+                    $(id + " input[name='props.tuber']").attr("checked", "checked");
+                }
+                if (history.props.pedi === true) {
+                    $(id + " input[name='props.pedi']").attr("checked", "checked");
+                }
+                $(id + " input[name='props.break']").val(history.props.break);
+                $(id + " input[name='props.manipulation']").val(history.props.manipulation);
+                $(id + " input[name='props.sick']").val(history.props.sick);
+                $(id + " input[name='props.visit']").val(history.props.visit);
+                $(id + " input[name='props.allergy']").val(history.props.allergy);
+                $(id + " input[name='props.outer']").val(history.props.outer);
 
-            $(id + " input[name='props.bite']").val(history.props.bite);
-            $(id + " input[name='props.mucous']").val(history.props.mucous);
-            $(id + " input[name='props.lab']").val(history.props.lab);
-            $(id + " input[name='props.diagnosis']").val(history.props.diagnosis);
+                $(id + " input[name='props.bite']").val(history.props.bite);
+                $(id + " input[name='props.mucous']").val(history.props.mucous);
+                $(id + " input[name='props.lab']").val(history.props.lab);
+                $(id + " input[name='props.diagnosis']").val(history.props.diagnosis);
+            }
         });
     } else {
 
@@ -742,15 +744,4 @@ function save_patient() {
             $("#unattached .list-item[cid='" + cid + "']").remove();
         }
     });
-}
-
-function show_modal(e, id) {
-    $(id).css("display", "block");
-    $(id + " .header #header_text").text($(e).text());
-    var uid = Number($(e).attr("uid"));
-    $(id + " input[name='uid']").val(uid);
-
-    $(id).center();
-    var cover = $("<div class='cover' onclick=\"hide_modal('.modal');\"></div>");
-    $(id).before(cover);
 }

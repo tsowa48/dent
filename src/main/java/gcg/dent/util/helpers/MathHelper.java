@@ -4,9 +4,9 @@ import com.github.jknack.handlebars.Helper;
 import com.github.jknack.handlebars.Options;
 
 public class MathHelper implements Helper<Object> {
-    private String action;
+    private SIGN action;
 
-    public MathHelper(String action) {
+    public MathHelper(SIGN action) {
         this.action = action;
     }
 
@@ -17,16 +17,16 @@ public class MathHelper implements Helper<Object> {
             Double param1 = Double.valueOf(context.toString());
             Double param2 = Double.valueOf(options.param(0).toString());
             switch(action) {
-                case "+":
+                case PLUS:
                 default:
                     return param1 + param2;
-                case "-":
+                case MINUS:
                     return param1 - param2;
-                case "*":
+                case MULT:
                     return param1 * param2;
-                case "/":
+                case DIV:
                     return param1 / param2;
-                case "^":
+                case POW:
                     return Math.pow(param1, param2);
             }
         } else if(context instanceof Long
@@ -36,19 +36,27 @@ public class MathHelper implements Helper<Object> {
             Long param1 = Long.valueOf(context.toString());
             Long param2 = Long.valueOf(options.param(0).toString());
             switch(action) {
-                case "+":
+                case PLUS:
                 default:
                     return param1 + param2;
-                case "-":
+                case MINUS:
                     return param1 - param2;
-                case "*":
+                case MULT:
                     return param1 * param2;
-                case "/":
+                case DIV:
                     return param1 / param2;
-                case "^":
+                case POW:
                     return Math.pow(param1, param2);
             }
         }
         return null;
+    }
+
+    public enum SIGN {
+        PLUS,
+        MINUS,
+        MULT,
+        DIV,
+        POW
     }
 }

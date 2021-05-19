@@ -1,13 +1,7 @@
 package gcg.dent.controller;
 
-import gcg.dent.entity.Client;
-import gcg.dent.entity.Document;
-import gcg.dent.entity.FindOut;
-import gcg.dent.entity.Patient;
-import gcg.dent.repository.ClientRepository;
-import gcg.dent.repository.DocumentRepository;
-import gcg.dent.repository.FindOutRepository;
-import gcg.dent.repository.PatientRepository;
+import gcg.dent.entity.*;
+import gcg.dent.repository.*;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
@@ -33,6 +27,12 @@ public class PatientController {
 
     @Inject
     DocumentRepository documentRepository;
+
+    @Inject
+    ActTypeRepository actTypeRepository;
+
+    @Inject
+    EmployeeRepository employeeRepository;
 
     @View("patients")
     @Get
@@ -70,12 +70,18 @@ public class PatientController {
                 .findFirst()
                 .orElse(null);
 
+        List<ActType> actTypes = actTypeRepository.getAll();
+        List<Employee> employee = employeeRepository.getScheduled();
+
         params.put("patient", patient);
 
         params.put("act_uid", actUid);
         params.put("card_uid", cardUid);
         params.put("contract_uid", contractUid);
         params.put("docs", otherDocs);
+
+        params.put("act_type", actTypes);
+        params.put("employee", employee);
         return HttpResponse.ok(params);
     }
 }
