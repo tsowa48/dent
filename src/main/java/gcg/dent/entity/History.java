@@ -75,4 +75,8 @@ public class History {
     public String getDate() {
         return ObjectUtils.dateFormat.format(date);
     }
+
+    public Date getDateAsDate() {
+        return this.date;
+    }
 }

@@ -22,7 +22,7 @@ public class ErrorController {
     @Error(global = true)
     public HttpResponse appError(HttpRequest<Object> request, Exception ex) {
         String stacktrace = ExceptionUtils.getStackTrace(ex);
-        logger.error("Request: {}, ExceptionWithStacktrace: {}", request, stacktrace);
-        return HttpResponse.badRequest();
+        logger.error("Request: {}, ExceptionWithStacktrace: {}", request, stacktrace, ex);
+        return HttpResponse.ok();
     }
 }
