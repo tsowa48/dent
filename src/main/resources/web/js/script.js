@@ -106,16 +106,17 @@ function register(enabled) {
     var time = $('.selected_slot').attr('time');
     var size = Number($('.selected_slot').attr('size'));
 
+    var fio = $("#new_record input[name='fio']").val();
+
     var json;
-    if(enabled) {
+    if(enabled && fio !== "") {
         var pid = Number($("#new_record input[name='pid']").val());
-        var fio = $("#new_record input[name='fio']").val();
         var phone = $("#new_record input[name='phone']").val();
         var note = $("#new_record input[name='note']").val();
         note = (note === null ? "" : note);
         json = { fio: fio, phone: phone, doc: doc, date: date, time: time, size: size, note: note, pid: pid};
     } else {
-        json = { enabled: enabled, doc: doc, date: date, time: time, size: size};
+        json = { doc: doc, date: date, time: time, size: size};
     }
     $.ajax({
         url: "/api/slot/add",
@@ -332,6 +333,8 @@ function history_modal(e, id) {
     $(id + " .header #header_text").text($(e).text());
 
     if(Number($(e).attr('hid')) > 0) {
+        $(id + " .footer .info").css('display', 'inline-flex');
+
         $(id + " input[name='uid']").val(Number($(e).attr('uid')));
         $(id + " input[name='params']").val("&history=" + $(e).attr('hid'));
         $(id + " input[name='hid']").val($(e).attr('hid'));
@@ -360,6 +363,12 @@ function history_modal(e, id) {
                 $(id + " input[name='props.allergy']").val(history.props.allergy);
                 $(id + " input[name='props.outer']").val(history.props.outer);
 
+                var dent = history.props.dent;
+                var ds = $('#dent_status');
+                dent.forEach(function(d) {
+                    ds.find("select[tr='" + d.tr + "'][td='" + d.td + "'][half='" + d.half + "']").val(d.value).change();
+                });
+
                 $(id + " input[name='props.bite']").val(history.props.bite);
                 $(id + " input[name='props.mucous']").val(history.props.mucous);
                 $(id + " input[name='props.lab']").val(history.props.lab);
@@ -367,7 +376,11 @@ function history_modal(e, id) {
             }
         });
     } else {
+        $(id + " input[name='props.gepatit']").removeAttr("checked");
+        $(id + " input[name='props.tuber']").removeAttr("checked");
+        $(id + " input[name='props.pedi']").removeAttr("checked");
 
+        $(id + " .footer .info").css('display', 'none');
     }
     $(id + " input:first").focus();
     $(id).center();
@@ -659,45 +672,6 @@ function save_document() {
             hide_modal('.modal');
         });
     };
-}
-
-function save_history() {
-    var hid = Number($("#modal_history input[name='hid']").val());
-    var complaints = $("#modal_history input[name='props.complaints']").val();
-    var _break = $("#modal_history input[name='props.break']").val();
-    var manipulation = $("#modal_history input[name='props.manipulation']").val();
-    var sick = $("#modal_history input[name='props.sick']").val();
-    var visit = $("#modal_history input[name='props.visit']").val();
-    var allergy = $("#modal_history input[name='props.allergy']").val();
-    var outer = $("#modal_history input[name='props.outer']").val();
-    var gepatit = $("#modal_history input[name='props.gepatit']").prop('checked') !== false;
-    var tuber = $("#modal_history input[name='props.tuber']").prop('checked') !== false;
-    var pedi = $("#modal_history input[name='props.pedi']").prop('checked') !== false;
-    var bite = $("#modal_history input[name='props.bite']").val();
-    var mucous = $("#modal_history input[name='props.mucous']").val();
-    var lab = $("#modal_history input[name='props.lab']").val();
-    var diagnosis = $("#modal_history input[name='props.diagnosis']").val();
-
-    var json = { id: hid, props: {
-            complaints: complaints, break: _break, manipulation: manipulation, sick: sick, visit: visit, allergy: allergy, outer: outer,
-            gepatit: gepatit, tuber: tuber, pedi: pedi, bite: bite, mucous: mucous, lab: lab, diagnosis: diagnosis
-        }
-    };
-    var method = (hid > 0 ? "PUT" : "POST");
-    $.ajax({
-        url: "/api/history/",
-        method: method,
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        data: JSON.stringify(json)
-    }).done(function(history) {
-        if(method === "POST") {
-            $('#history_list').append("<div class='list-item center' hid=" + history.id + " onclick=\"history_modal(this, '#modal_history')\"></div>");
-        }
-        $("#history_list .list-item[hid='" + history.id + "']").attr("did", history.contract.id);
-        $("#history_list .list-item[hid='" + history.id + "']").text("Карта эпиданамнеза от " + history.date + "г. (договор №" + history.contract.number + " от " + history.contract.date + "г.)");
-        hide_modal('.modal');
-    });
 }
 
 function save_patient() {

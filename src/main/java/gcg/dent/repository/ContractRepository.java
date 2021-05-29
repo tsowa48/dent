@@ -14,14 +14,12 @@ public class ContractRepository {
     private EntityManager entityManager;
 
     @Transactional
-    public Contract addContract(Contract contract) {
+    public Contract makeContract() {
         return (Contract)entityManager
-                .createNativeQuery("insert into contract(number, date, props) " +
-                        "select coalesce(max(C.number), 0) + 1, (:date), (:props) " +
+                .createNativeQuery("insert into contract(number, date) " +
+                        "select coalesce(max(C.number), 0) + 1, now() " +
                         "from contract C where extract(year from C.date) = extract(year from now()) " +
                         "returning *", Contract.class)
-                .setParameter("date", contract.getDate())
-                .setParameter("props", contract.getProps())
                 .getSingleResult();
     }
 }

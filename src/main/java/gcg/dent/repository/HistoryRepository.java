@@ -1,5 +1,6 @@
 package gcg.dent.repository;
 
+import gcg.dent.entity.Card;
 import gcg.dent.entity.Contract;
 import gcg.dent.entity.History;
 import gcg.dent.entity.Patient;
@@ -45,12 +46,12 @@ public class HistoryRepository {
     @Transactional
     public History addHistory(History history) {
         history.setId(null);
+        history.setDate(new Date());
 
-        Contract contract = new Contract();
-        contract.setId(null);
-        contract.setDate(history.getDateAsDate());
-        contract = contractRepository.addContract(contract);
+        Card card = entityManager.find(Card.class, history.getCid());
+        Contract contract = contractRepository.makeContract();
 
+        history.setCard(card);
         history.setContract(contract);
         entityManager.persist(history);
         return history;
@@ -58,7 +59,9 @@ public class HistoryRepository {
 
     @Transactional
     public History update(History history) {
-        entityManager.merge(history);
-        return history;
+        History originalHistory = findById(history.getId());
+        originalHistory.setProps(history.getProps());
+        entityManager.flush();
+        return originalHistory;
     }
 }

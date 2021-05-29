@@ -1,12 +1,14 @@
 package gcg.dent.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import gcg.dent.util.ObjectUtils;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.util.Date;
 
 @Entity
@@ -35,6 +37,10 @@ public class History {
     @Column(name = "date", nullable = false)
     private Date date;
 
+    @Transient
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private Long cid;
+
 
     public Long getId() {
         return id;
@@ -50,6 +56,10 @@ public class History {
 
     public void setCard(Card card) {
         this.card = card;
+    }
+
+    public Long getCid() {
+        return cid;
     }
 
     public void setProps(JsonNode props) {
