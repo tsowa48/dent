@@ -67,7 +67,13 @@
     <input type="hidden" name="uid"/>
     <input type="hidden" name="params"/>
     <div class="body">
-
+        <span class="bold">Договор:</span><br>
+        <select class="text" name="contract" >
+            <option value="0" selected disabled></option>
+            {{#each patient.card.history}}
+                <option value="{{this.contract.id}}">№{{this.contract.number}} от {{this.contract.date}}г.</option>
+            {{/each}}
+        </select>
     </div>
     <div class="footer">
         <button class="info" onclick="download_document(this);"><i class="bi bi-download"></i>&nbsp;Скачать</button>
@@ -117,6 +123,8 @@
     function download_document(t) {
         var uid = $(t).parent().parent().find("input[name='uid']").val();
         var params = $(t).parent().parent().find("input[name='params']").val();
+        var contract = Number($(t).parent().parent().find("select[name='contract']").val());
+        params = params + (contract > 0 ? "&contract=" + contract : "");
         console.warn("uid=" + uid + params);
         hide_modal('.modal');
         window.open("/api/document/download?uid=" + uid + params);

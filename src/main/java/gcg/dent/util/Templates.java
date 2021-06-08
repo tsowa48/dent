@@ -38,6 +38,7 @@ public class Templates {
         handlebars.registerHelper("date", new DateHelper(new SimpleDateFormat("«dd» MMMM yyyy г.")));
         handlebars.registerHelper("lower", new ToCaseHelper(ToCaseHelper.CASE.LOWER));
         handlebars.registerHelper("upper", new ToCaseHelper(ToCaseHelper.CASE.UPPER));
+        handlebars.registerHelper("in_words", new InWordsHelper());
     }
 
     @PersistenceContext
@@ -73,6 +74,7 @@ public class Templates {
         Act act = null;
 
         Double fullSumm = 0.00;
+        final StringBuilder actServiceTable = new StringBuilder();
 
         if (params.get("employee") != null) {
             doctor = entityManager.find(Employee.class, params.get("employee"));
@@ -149,6 +151,27 @@ public class Templates {
             filledParams.put("tblManipulationRows", tblManipulationRows);
         }
 
+        if(vars.contains("act_service_table")) {
+            List<String[]> rows = entityManager
+                    .createNativeQuery("select T.name, string_agg(S.name||' - '||A_S.amount||'шт', ', ') from act A " +
+                        "join act_type t on A.atid = t.id " +
+                        "left join act_service A_S on A.id = A_S.aid " +
+                        "left join service s on A_S.sid = s.id " +
+                        "where A.did = (:did) " +
+                        "group by A.id, T.name;")
+                    .setParameter("did", contract.getId())
+                    .getResultList();
+            final String tblHeader = "<w:tbl><w:tblPr><w:tblW w:w=\"0\" w:type=\"auto\"/><w:tblInd w:w=\"720\" w:type=\"dxa\"/><w:tblBorders><w:top w:val=\"single\" w:sz=\"4\" wx:bdrwidth=\"10\" w:space=\"0\" w:color=\"auto\"/><w:left w:val=\"single\" w:sz=\"4\" wx:bdrwidth=\"10\" w:space=\"0\" w:color=\"auto\"/><w:bottom w:val=\"single\" w:sz=\"4\" wx:bdrwidth=\"10\" w:space=\"0\" w:color=\"auto\"/><w:right w:val=\"single\" w:sz=\"4\" wx:bdrwidth=\"10\" w:space=\"0\" w:color=\"auto\"/><w:insideH w:val=\"single\" w:sz=\"4\" wx:bdrwidth=\"10\" w:space=\"0\" w:color=\"auto\"/><w:insideV w:val=\"single\" w:sz=\"4\" wx:bdrwidth=\"10\" w:space=\"0\" w:color=\"auto\"/></w:tblBorders><w:tblLook w:val=\"04A0\"/></w:tblPr><w:tblGrid><w:gridCol w:w=\"4779\"/><w:gridCol w:w=\"4696\"/></w:tblGrid>";
+            actServiceTable.append(tblHeader);
+            rows.forEach(r -> {
+            String tblRow = "<w:tr wsp:rsidR=\"00AB6F6F\" wsp:rsidRPr=\"00FA29E9\" wsp:rsidTr=\"00FA29E9\"><w:tc><w:tcPr><w:tcW w:w=\"5097\" w:type=\"dxa\"/><w:shd w:val=\"clear\" w:color=\"auto\" w:fill=\"auto\"/></w:tcPr><w:p wsp:rsidR=\"00AB6F6F\" wsp:rsidRPr=\"00FA29E9\" wsp:rsidRDefault=\"00AB6F6F\" wsp:rsidP=\"00FA29E9\"><w:pPr><w:pStyle w:val=\"a4\"/><w:spacing w:after=\"0\" w:line=\"240\" w:line-rule=\"auto\"/><w:ind w:left=\"0\"/><w:jc w:val=\"both\"/></w:pPr><w:r wsp:rsidRPr=\"00FA29E9\">" +
+                    "<w:t>" + r[0] + "</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w=\"5098\" w:type=\"dxa\"/><w:shd w:val=\"clear\" w:color=\"auto\" w:fill=\"auto\"/></w:tcPr><w:p wsp:rsidR=\"00AB6F6F\" wsp:rsidRPr=\"00FA29E9\" wsp:rsidRDefault=\"00AB6F6F\" wsp:rsidP=\"00FA29E9\"><w:pPr><w:pStyle w:val=\"a4\"/><w:spacing w:after=\"0\" w:line=\"240\" w:line-rule=\"auto\"/><w:ind w:left=\"0\"/><w:jc w:val=\"both\"/></w:pPr><w:r wsp:rsidRPr=\"00FA29E9\">" +
+                    "<w:t>" + r[1] + "</w:t></w:r></w:p></w:tc></w:tr>";
+                actServiceTable.append(tblRow);
+            });
+            actServiceTable.append("</w:tbl>");
+        }
+
         filledParams.put("company", company);
         filledParams.put("patient", patient);
         filledParams.put("employee", doctor);
@@ -158,6 +181,7 @@ public class Templates {
         filledParams.put("act", act);
 
         filledParams.put("full_summ", String.format("%.2f", fullSumm));
+        filledParams.put("act_service_table", actServiceTable.toString());
 
         logger.info("VARS={}, PARAMS={}", vars, params);
         return filledParams;
