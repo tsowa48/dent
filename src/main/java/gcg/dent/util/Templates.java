@@ -1,11 +1,11 @@
 package gcg.dent.util;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.TagType;
 import com.github.jknack.handlebars.Template;
 import gcg.dent.entity.*;
-import gcg.dent.repository.CompanyRepository;
-import gcg.dent.repository.PatientRepository;
+import gcg.dent.repository.*;
 import gcg.dent.util.helpers.*;
 import gcg.word.JustifyContent;
 import gcg.word.Paragraph;
@@ -39,13 +39,27 @@ public class Templates {
         handlebars.registerHelper("lower", new ToCaseHelper(ToCaseHelper.CASE.LOWER));
         handlebars.registerHelper("upper", new ToCaseHelper(ToCaseHelper.CASE.UPPER));
         handlebars.registerHelper("in_words", new InWordsHelper());
+        handlebars.registerHelper("yesno", new YesNoHelper());
+        handlebars.registerHelper("empty", new EmptyHelper());
     }
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Inject
+    CardRepository cardRepository;
+
+    @Inject
     CompanyRepository companyRepository;
+
+    @Inject
+    ContractRepository contractRepository;
+
+    @Inject
+    EmployeeRepository employeeRepository;
+
+    @Inject
+    HistoryRepository historyRepository;
 
     @Inject
     PatientRepository patientRepository;
@@ -54,6 +68,7 @@ public class Templates {
         try {
             Template template = handlebars.compileInline(templateDocument.getTemplate());
             List<String> variables = template.collect(TagType.VAR);
+            variables.addAll(template.collect(TagType.TRIPLE_VAR));
             return template.apply(variablesToParams(variables, params));
         } catch (IOException iex) {
             logger.error("Can't compile raw template '{}'", templateDocument.getName(), iex);
@@ -77,11 +92,58 @@ public class Templates {
         final StringBuilder actServiceTable = new StringBuilder();
 
         if (params.get("employee") != null) {
-            doctor = entityManager.find(Employee.class, params.get("employee"));
+            doctor = employeeRepository.findById((Long) params.get("employee"));
         }
         if (params.get("patient") != null) {
             patient = patientRepository.findById((Long) params.get("patient"));
-            doctor = (Employee)entityManager
+        }
+        if (params.get("card") != null) {
+            card = cardRepository.findById((Long) params.get("card"));
+        }
+        if (params.get("contract") != null) {
+            contract = contractRepository.findById((Long) params.get("contract"));
+            fullSumm = (Double) entityManager
+                    .createNativeQuery("select coalesce(sum(s.price * c.amount), 0)::::double precision " +
+                            "from act a " +
+                            "join act_service c on a.id = c.aid " +
+                            "join service s on c.sid = s.id " +
+                            "where a.atid = s.atid and a.did = (:did)")
+                    .setParameter("did", contract.getId())
+                    .getSingleResult();
+        }
+        if (params.get("history") != null) {
+            history = historyRepository.findById((Long) params.get("history"));
+            if (params.get("card") == null) {
+                card = cardRepository.findById(history.getCard().getId());
+            }
+            patient = patientRepository.findById(card.getPid());
+            JsonNode props = history.getProps();
+            Iterator<JsonNode> dent = props.get("dent").elements();
+            dent.forEachRemaining(d -> {
+                int tr = d.get("tr").asInt();
+                int td = d.get("td").asInt();
+                String half = d.get("half").asText();
+                String value = d.get("value").asText();
+                String key = half.substring(0, 1) + (tr > 0 ? ("u" + tr) : ("d" + (-tr))) + td;
+                filledParams.put(key, value);
+            });
+            filledParams.put("diagnosis", props.get("diagnosis").asText());
+            filledParams.put("complaints", props.get("complaints").asText());
+            filledParams.put("gepatit", props.get("gepatit").asBoolean());
+            filledParams.put("tuber", props.get("tuber").asBoolean());
+            filledParams.put("pedi", props.get("pedi").asBoolean());
+            filledParams.put("break", props.get("break").asText());
+            filledParams.put("manipulation", props.get("manipulation").asText());
+            filledParams.put("sick", props.get("sick").asText());
+            filledParams.put("visit", props.get("visit").asText());
+            filledParams.put("allergy", props.get("allergy").asText());
+            filledParams.put("outer", props.get("outer").asText());
+            filledParams.put("bite", props.get("bite").asText());
+            filledParams.put("mucous", props.get("mucous").asText());
+            filledParams.put("lab", props.get("lab").asText());
+        }
+        if (doctor == null && patient != null) {
+            doctor = (Employee) entityManager
                     .createNativeQuery("select D.* from employee D " +
                             "join slot S on S.doc = D.id " +
                             "left join client C on C.id = S.cid " +
@@ -91,23 +153,6 @@ public class Templates {
                     .setParameter("id", patient.getId())
                     .setMaxResults(1)
                     .getSingleResult();
-        }
-        if (params.get("card") != null) {
-            card = entityManager.find(Card.class, params.get("card"));
-        }
-        if (params.get("contract") != null) {
-            contract = entityManager.find(Contract.class, params.get("contract"));
-            fullSumm = (Double)entityManager
-                    .createNativeQuery("select sum(s.price * c.amount) " +
-                            "from act a " +
-                            "join act_service c on a.id = c.aid " +
-                            "join service s on c.sid = s.id " +
-                            "where a.atid = s.atid and a.did = (:did)")
-                    .setParameter("did", contract.getId())
-                    .getSingleResult();
-        }
-        if (params.get("history") != null) {
-            history = entityManager.find(History.class, params.get("history"));
         }
         if (params.get("act") != null) {
             act = entityManager.find(Act.class, params.get("act"));
@@ -151,22 +196,22 @@ public class Templates {
             filledParams.put("tblManipulationRows", tblManipulationRows);
         }
 
-        if(vars.contains("act_service_table")) {
-            List<String[]> rows = entityManager
+        if (vars.contains("act_service_table")) {
+            List<Object[]> rows = entityManager
                     .createNativeQuery("select T.name, string_agg(S.name||' - '||A_S.amount||'шт', ', ') from act A " +
-                        "join act_type t on A.atid = t.id " +
-                        "left join act_service A_S on A.id = A_S.aid " +
-                        "left join service s on A_S.sid = s.id " +
-                        "where A.did = (:did) " +
-                        "group by A.id, T.name;")
+                            "join act_type t on A.atid = t.id " +
+                            "left join act_service A_S on A.id = A_S.aid " +
+                            "left join service s on A_S.sid = s.id " +
+                            "where A.did = (:did) " +
+                            "group by A.id, T.name;")
                     .setParameter("did", contract.getId())
                     .getResultList();
             final String tblHeader = "<w:tbl><w:tblPr><w:tblW w:w=\"0\" w:type=\"auto\"/><w:tblInd w:w=\"720\" w:type=\"dxa\"/><w:tblBorders><w:top w:val=\"single\" w:sz=\"4\" wx:bdrwidth=\"10\" w:space=\"0\" w:color=\"auto\"/><w:left w:val=\"single\" w:sz=\"4\" wx:bdrwidth=\"10\" w:space=\"0\" w:color=\"auto\"/><w:bottom w:val=\"single\" w:sz=\"4\" wx:bdrwidth=\"10\" w:space=\"0\" w:color=\"auto\"/><w:right w:val=\"single\" w:sz=\"4\" wx:bdrwidth=\"10\" w:space=\"0\" w:color=\"auto\"/><w:insideH w:val=\"single\" w:sz=\"4\" wx:bdrwidth=\"10\" w:space=\"0\" w:color=\"auto\"/><w:insideV w:val=\"single\" w:sz=\"4\" wx:bdrwidth=\"10\" w:space=\"0\" w:color=\"auto\"/></w:tblBorders><w:tblLook w:val=\"04A0\"/></w:tblPr><w:tblGrid><w:gridCol w:w=\"4779\"/><w:gridCol w:w=\"4696\"/></w:tblGrid>";
             actServiceTable.append(tblHeader);
             rows.forEach(r -> {
-            String tblRow = "<w:tr wsp:rsidR=\"00AB6F6F\" wsp:rsidRPr=\"00FA29E9\" wsp:rsidTr=\"00FA29E9\"><w:tc><w:tcPr><w:tcW w:w=\"5097\" w:type=\"dxa\"/><w:shd w:val=\"clear\" w:color=\"auto\" w:fill=\"auto\"/></w:tcPr><w:p wsp:rsidR=\"00AB6F6F\" wsp:rsidRPr=\"00FA29E9\" wsp:rsidRDefault=\"00AB6F6F\" wsp:rsidP=\"00FA29E9\"><w:pPr><w:pStyle w:val=\"a4\"/><w:spacing w:after=\"0\" w:line=\"240\" w:line-rule=\"auto\"/><w:ind w:left=\"0\"/><w:jc w:val=\"both\"/></w:pPr><w:r wsp:rsidRPr=\"00FA29E9\">" +
-                    "<w:t>" + r[0] + "</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w=\"5098\" w:type=\"dxa\"/><w:shd w:val=\"clear\" w:color=\"auto\" w:fill=\"auto\"/></w:tcPr><w:p wsp:rsidR=\"00AB6F6F\" wsp:rsidRPr=\"00FA29E9\" wsp:rsidRDefault=\"00AB6F6F\" wsp:rsidP=\"00FA29E9\"><w:pPr><w:pStyle w:val=\"a4\"/><w:spacing w:after=\"0\" w:line=\"240\" w:line-rule=\"auto\"/><w:ind w:left=\"0\"/><w:jc w:val=\"both\"/></w:pPr><w:r wsp:rsidRPr=\"00FA29E9\">" +
-                    "<w:t>" + r[1] + "</w:t></w:r></w:p></w:tc></w:tr>";
+                String tblRow = "<w:tr wsp:rsidR=\"00AB6F6F\" wsp:rsidRPr=\"00FA29E9\" wsp:rsidTr=\"00FA29E9\"><w:tc><w:tcPr><w:tcW w:w=\"5097\" w:type=\"dxa\"/><w:shd w:val=\"clear\" w:color=\"auto\" w:fill=\"auto\"/></w:tcPr><w:p wsp:rsidR=\"00AB6F6F\" wsp:rsidRPr=\"00FA29E9\" wsp:rsidRDefault=\"00AB6F6F\" wsp:rsidP=\"00FA29E9\"><w:pPr><w:pStyle w:val=\"a4\"/><w:spacing w:after=\"0\" w:line=\"240\" w:line-rule=\"auto\"/><w:ind w:left=\"0\"/><w:jc w:val=\"both\"/></w:pPr><w:r wsp:rsidRPr=\"00FA29E9\">" +
+                        "<w:t>" + r[0].toString() + "</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w=\"5098\" w:type=\"dxa\"/><w:shd w:val=\"clear\" w:color=\"auto\" w:fill=\"auto\"/></w:tcPr><w:p wsp:rsidR=\"00AB6F6F\" wsp:rsidRPr=\"00FA29E9\" wsp:rsidRDefault=\"00AB6F6F\" wsp:rsidP=\"00FA29E9\"><w:pPr><w:pStyle w:val=\"a4\"/><w:spacing w:after=\"0\" w:line=\"240\" w:line-rule=\"auto\"/><w:ind w:left=\"0\"/><w:jc w:val=\"both\"/></w:pPr><w:r wsp:rsidRPr=\"00FA29E9\">" +
+                        "<w:t>" + r[1].toString() + "</w:t></w:r></w:p></w:tc></w:tr>";
                 actServiceTable.append(tblRow);
             });
             actServiceTable.append("</w:tbl>");

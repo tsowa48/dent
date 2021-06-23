@@ -8,6 +8,6 @@ import java.io.IOException;
 public class NullableHelper implements Helper<Object> {
     @Override
     public Object apply(Object context, Options options) throws IOException {
-        return (context == null ? "не указано" : context);
+        return (context == null ? options.param(0, "не указано") : context);
     }
 }

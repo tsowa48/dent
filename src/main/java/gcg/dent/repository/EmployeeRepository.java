@@ -33,7 +33,7 @@ public class EmployeeRepository {
 
     @Transactional
     @ReadOnly
-    public Employee getById(Long id) {
+    public Employee findById(Long id) {
         return entityManager.find(Employee.class, id);
     }
 

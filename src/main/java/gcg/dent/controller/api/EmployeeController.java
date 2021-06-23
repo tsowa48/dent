@@ -17,7 +17,7 @@ public class EmployeeController {
 
     @Get(uri = "/{id}", produces = MediaType.APPLICATION_JSON)
     public Employee get(Long id) {
-        return employeeRepository.getById(id);
+        return employeeRepository.findById(id);
     }
 
     @Get(produces = MediaType.APPLICATION_JSON)

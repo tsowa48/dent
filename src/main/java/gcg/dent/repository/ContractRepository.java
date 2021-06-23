@@ -1,6 +1,7 @@
 package gcg.dent.repository;
 
 import gcg.dent.entity.Contract;
+import io.micronaut.transaction.annotation.ReadOnly;
 
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
@@ -12,6 +13,12 @@ public class ContractRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    @Transactional
+    @ReadOnly
+    public Contract findById(Long id) {
+        return entityManager.find(Contract.class, id);
+    }
 
     @Transactional
     public Contract makeContract() {

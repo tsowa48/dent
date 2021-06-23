@@ -29,6 +29,12 @@ public class CardRepository {
     }
 
     @Transactional
+    @ReadOnly
+    public Card findById(Long id) {
+        return entityManager.find(Card.class, id);
+    }
+
+    @Transactional
     public Card makeNew(Patient patient) {
         return (Card) entityManager.createNativeQuery("insert into card(number, \"date\", pid, cid) " +
                 "values ((select coalesce(max(number), 0) + 1 from card), now(), (:pid), (select id from company order by name limit 1)) " +

@@ -52,7 +52,7 @@ public class SlotController {
     @Post(uri = "/add", produces = MediaType.APPLICATION_JSON)
     public Slot add(Optional<String> fio, Optional<String> phone, Long doc, Date date, String time, Integer size, Optional<String> note, Optional<Long> pid) throws Exception {
         try {
-            Employee doctor = employeeRepository.getById(doc);
+            Employee doctor = employeeRepository.findById(doc);
             String sizeTime = String.format("%02d:%02d:00", (size / 60), size % 60);
             Slot slot = slotRepository.makeSlot(date, Time.valueOf(time + ":00"), Time.valueOf(sizeTime));
             if (fio.isPresent() && phone.isPresent()) {
