@@ -95,4 +95,8 @@ public class Act implements Serializable {
     public void setActServices(List<ActService> actServices) {
         this.actServices = actServices;
     }
+
+    public Date getDateAsDate() {
+        return this.date;
+    }
 }
