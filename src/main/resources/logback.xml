@@ -1,6 +1,7 @@
 <configuration>
   <variable name="LOG_LEVEL" value="${LOG_LEVEL:-info}" />
   <variable name="LOG_TYPE" value="${LOG_TYPE:-text}" />
+  <variable name="APP_NAME" value="${APP_NAME:-dent}" />
   <appender name="text" class="ch.qos.logback.core.ConsoleAppender">
     <withJansi>false</withJansi>
     <encoder>
@@ -9,7 +10,7 @@
   </appender>
   <appender name="json" class="ch.qos.logback.core.ConsoleAppender">
     <encoder class="co.elastic.logging.logback.EcsEncoder">
-      <serviceName>dent</serviceName>
+      <serviceName>${APP_NAME}</serviceName>
     </encoder>
   </appender>
 

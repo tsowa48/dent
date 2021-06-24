@@ -22,7 +22,7 @@ public class ScheduleService {
         return schedules.stream()
                 .filter(s -> s.getDow() == dow &&
                         time.getTime() >= s.getStart().getTime() &&
-                        time.getTime() < s.getEnd().getTime())
+                        time.getTime() < s.getFinish().getTime())
                 .count() > 0;
     }
 
@@ -36,9 +36,9 @@ public class ScheduleService {
                 .get();
         Schedule finish = schedules.stream()
                 .filter(t -> t.getDow() == dow)
-                .max(Comparator.comparingLong(t -> t.getEnd().getTime()))
+                .max(Comparator.comparingLong(t -> t.getFinish().getTime()))
                 .get();
-        return new Time[] { start.getStart(), finish.getEnd() };
+        return new Time[] { start.getStart(), finish.getFinish() };
     }
 
     public Time[] findFirstAndLast() {
@@ -50,7 +50,7 @@ public class ScheduleService {
                 .min(Comparator.comparingLong(Date::getTime))
                 .get();
         Time finish = schedules.stream()
-                .map(Schedule::getEnd)
+                .map(Schedule::getFinish)
                 .max(Comparator.comparingLong(Date::getTime))
                 .get();
         return new Time[] { start, finish };

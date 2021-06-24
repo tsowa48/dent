@@ -7,6 +7,7 @@ import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Singleton
 public class ClientRepository {
@@ -41,5 +42,12 @@ public class ClientRepository {
         } catch(Exception ex) {
             return makeClient(fio, phone);
         }
+    }
+
+    @Transactional
+    public List<Client> getUnattached() {
+        return entityManager
+                .createQuery("select C from Client C where C.patient is null order by C.fio", Client.class)
+                .getResultList();
     }
 }

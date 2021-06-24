@@ -83,12 +83,23 @@ public class CalendarService {
                 Calendar temp = (Calendar) start.clone();
                 temp.add(Calendar.DATE, dow);
                 String slotDate = String.format("%d-%02d-%02d", temp.get(Calendar.YEAR), temp.get(Calendar.MONTH) + 1, temp.get(Calendar.DATE));
-                htmlSlots.append("<div class='slot' date='" + slotDate + "' time='" + finalT.toString() + "' size='" + SLOT_SIZE + "' onclick=\"show_modal(this, '#new_record');\">");
+                htmlSlots.append("<div class='slot' date='" + slotDate + "' time='" + finalT.toString() + "' size='" + SLOT_SIZE + "' onclick=\"slot_modal(this);\">");
                 timeSlots.forEach(ts -> {
-                    Client c = ts.getClient();
-                    htmlSlots.append("<div class='box pink' onclick='event.stopPropagation();' oncontextmenu='show_menu(this);return false;' sid='" + ts.getId() +
-                            "' cid='" + c.getId() + "' doc='" + ts.getDoctor().getId() +
-                            "'><b>" + ObjectUtils.fio(c.getFio()) + "</b><br><span>" + c.getPhone() + "</span></div>");
+                    if(ts.isEnabled()) {
+                        Client c = ts.getClient();
+                        String fio = c.getPatient() != null ? c.getPatient().getFio() : c.getFio();
+                        String phone = c.getPatient() != null ? c.getPatient().getPhone() : c.getPhone();
+                        String note = ts.getNote();
+                        htmlSlots.append("<div class='box pink' onclick=\"slot_modal(this);event.stopPropagation();\" sid='" + ts.getId() +
+                                "' cid='" + c.getId() + "' doc='" + ts.getDoctor().getId() +
+                                "'><span class='fio' style='display:none;'>" + fio + "</span>" +
+                                "<b>" + ObjectUtils.fio(fio) +
+                                "</b><br><span class='phone'>" + phone + "</span>" +
+                                "<br><span class='note'>" + (note == null ? "" : note) + "</span></div>");
+                    } else {
+                        htmlSlots.append("<div class='box pink' onclick=\"slot_modal(this);event.stopPropagation();\" sid='" + ts.getId() +
+                                "' doc='" + ts.getDoctor().getId() + "'></div>");
+                    }
                 });
                 htmlSlots.append("</div>");
             }

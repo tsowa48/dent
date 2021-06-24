@@ -1,7 +1,12 @@
 package gcg.dent.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import gcg.dent.util.ObjectUtils;
+
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "card", schema = "public")
@@ -18,22 +23,21 @@ public class Card {
     @Column(name = "date", nullable = false)
     private Date date;
 
-    @Column(name = "diagnosis", nullable = false)
-    private String diagnosis;
+    @JsonIgnore
+    @Column(name = "pid", nullable = false, insertable = false, updatable = false)
+    private Long pid;
 
-    @Column(name = "complaints", nullable = false)
-    private String complaints;
-
-    @Column(name = "anamnesis", nullable = false)
-    private String anamnesis;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "doc")
-    private Employee doc;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pid")
+    @JsonIgnore
+    @OneToOne
+    @JoinColumn(name = "pid", insertable = false, updatable = false)
     private Patient patient;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cid", nullable = false)
+    private Company company;
+
+    @OneToMany(mappedBy = "card", fetch = FetchType.LAZY)
+    private List<History> history = new ArrayList<>();
 
     public void setId(Long id) {
         this.id = id;
@@ -41,22 +45,6 @@ public class Card {
 
     public Long getId() {
         return id;
-    }
-
-    public void setDiagnosis(String diagnosis) {
-        this.diagnosis = diagnosis;
-    }
-
-    public String getDiagnosis() {
-        return diagnosis;
-    }
-
-    public void setComplaints(String complaints) {
-        this.complaints = complaints;
-    }
-
-    public String getComplaints() {
-        return complaints;
     }
 
     public void setNumber(Long number) {
@@ -67,35 +55,35 @@ public class Card {
         return number;
     }
 
-    public void setAnamnesis(String anamnesis) {
-        this.anamnesis = anamnesis;
-    }
-
-    public String getAnamnesis() {
-        return anamnesis;
-    }
-
     public void setDate(Date date) {
         this.date = date;
     }
 
-    public Date getDate() {
-        return date;
+    public String getDate() {
+        return ObjectUtils.dateFormat.format(this.date);
     }
 
-    public Employee getDoc() {
-        return doc;
+    public Long getPid() {
+        return pid;
     }
 
-    public void setDoc(Employee doc) {
-        this.doc = doc;
+    public void setPid(Long pid) {
+        this.pid = pid;
     }
 
-    public void setPatient(Patient patient) {
-        this.patient = patient;
+    public Company getCompany() {
+        return company;
     }
 
-    public Patient getPatient() {
-        return patient;
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    public List<History> getHistory() {
+        return history;
+    }
+
+    public void setHistory(List<History> history) {
+        this.history = history;
     }
 }

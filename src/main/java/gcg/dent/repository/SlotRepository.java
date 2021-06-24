@@ -22,7 +22,7 @@ public class SlotRepository {
         slot.setDate(date);
         slot.setTime(time);
         slot.setSize(size);
-        slot.setEnabled(true);
+        slot.setEnabled(false);
         return slot;
     }
 

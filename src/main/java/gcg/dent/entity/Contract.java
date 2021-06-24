@@ -1,10 +1,19 @@
 package gcg.dent.entity;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import gcg.dent.util.ObjectUtils;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "contract", schema = "public")
+@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class, defaultForType = JsonNode.class)
 public class Contract {
     @Id
     @SequenceGenerator(name = "contract_id_seq", sequenceName = "public.contract_id_seq", allocationSize = 1)
@@ -18,25 +27,12 @@ public class Contract {
     @Column(name = "date", nullable = false)
     private Date date;
 
-    @Column(name = "warranty", nullable = false)
-    private String warranty;
+    @Type(type = "jsonb")
+    @Column(name = "props", columnDefinition = "jsonb")
+    private JsonNode props;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cid", nullable = false)
-    private Company company;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name ="doc", nullable = false)
-    private Employee doctor;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pid")
-    private Patient patient;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tech")
-    private Employee tech;
-
+    @OneToMany(mappedBy = "contract", fetch = FetchType.EAGER)
+    private List<Act> acts = new ArrayList<>();
 
     public void setId(Long id) {
         this.id = id;
@@ -58,47 +54,23 @@ public class Contract {
         this.date = date;
     }
 
-    public Date getDate() {
-        return date;
+    public String getDate() {
+        return ObjectUtils.dateFormat.format(this.date);
     }
 
-    public void setWarranty(String warranty) {
-        this.warranty = warranty;
+    public JsonNode getProps() {
+        return props;
     }
 
-    public String getWarranty() {
-        return warranty;
+    public void setProps(JsonNode props) {
+        this.props = props;
     }
 
-    public void setCompany(Company company) {
-        this.company = company;
+    public void setActs(List<Act> acts) {
+        this.acts = acts;
     }
 
-    public Company getCompany() {
-        return company;
-    }
-
-    public Employee getDoctor() {
-        return doctor;
-    }
-
-    public void setDoctor(Employee doctor) {
-        this.doctor = doctor;
-    }
-
-    public Patient getPatient() {
-        return patient;
-    }
-
-    public void setPatient(Patient patient) {
-        this.patient = patient;
-    }
-
-    public Employee getTech() {
-        return tech;
-    }
-
-    public void setTech(Employee tech) {
-        this.tech = tech;
+    public List<Act> getActs() {
+        return acts;
     }
 }

@@ -18,7 +18,16 @@ public class ServiceRepository {
     @ReadOnly
     public List<Service> getAll() {
         return entityManager
-                .createQuery("select S from Service S", Service.class)
+                .createQuery("select S from Service S order by S.actType.name, S.name", Service.class)
+                .getResultList();
+    }
+
+    @Transactional
+    @ReadOnly
+    public List<Service> getByActType(Long actType) {
+        return entityManager
+                .createQuery("select S from Service S left join fetch S.manipulations where S.actType.id = (:id) order by S.name", Service.class)
+                .setParameter("id", actType)
                 .getResultList();
     }
 

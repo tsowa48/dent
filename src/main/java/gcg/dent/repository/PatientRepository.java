@@ -3,6 +3,7 @@ package gcg.dent.repository;
 import gcg.dent.entity.Patient;
 import io.micronaut.transaction.annotation.ReadOnly;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -14,24 +15,49 @@ public class PatientRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Inject
+    CardRepository cardRepository;
+
     @Transactional
     @ReadOnly
     public List<Patient> getAll() {
         return entityManager
-                .createQuery("select P from Patient P", Patient.class)
+                .createQuery("select P from Patient P order by P.fio", Patient.class)
+                .getResultList();
+    }
+
+    @Transactional
+    @ReadOnly
+    public List<Patient> findByFio(String fioPart) {
+        return entityManager
+                .createQuery("select new Patient(P.id, P.fio, P.phone) from Patient P " +
+                        "where lower(P.fio) like (:fioPart) " +
+                        "order by P.fio", Patient.class)
+                .setParameter("fioPart", "%" + fioPart.toLowerCase() + "%")
+                .setMaxResults(10)
                 .getResultList();
     }
 
     @Transactional
     @ReadOnly
     public Patient findById(Long id) {
-        return entityManager.find(Patient.class, id);
+        return entityManager
+                .createQuery("select P from Patient P " +
+                        "left join fetch P.findOut F " +
+                        "left join fetch P.card C " +
+                        "left join fetch C.history H " +
+                        "left join fetch H.contract D " +
+                        "where P.id = :id order by D.date desc", Patient.class)
+                .setParameter("id", id)
+                .getSingleResult();
     }
 
     @Transactional
     public Patient addRecord(Patient patient) {
         patient.setId(null);
         entityManager.persist(patient);
+        entityManager.flush();
+        cardRepository.makeNew(patient);
         return patient;
     }
 

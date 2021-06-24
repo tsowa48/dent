@@ -52,4 +52,5 @@ public class Client {
     public void setPatient(Patient patient) {
         this.patient = patient;
     }
+
 }

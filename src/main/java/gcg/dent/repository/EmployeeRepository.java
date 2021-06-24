@@ -19,7 +19,7 @@ public class EmployeeRepository {
     @ReadOnly
     public List<Employee> getScheduled() {
         return entityManager
-                .createQuery("select E from Employee E where E.isScheduled = true and E.isDisabled = false order by E.fio", Employee.class)
+                .createQuery("select E from Employee E where E.isScheduled = true and E.faired = false order by E.fio", Employee.class)
                 .getResultList();
     }
 
@@ -27,13 +27,13 @@ public class EmployeeRepository {
     @ReadOnly
     public List<Employee> getAll() {
         return entityManager
-                .createQuery("select E from Employee E order by E.isDisabled, E.fio")
+                .createQuery("select E from Employee E order by E.faired, E.fio")
                 .getResultList();
     }
 
     @Transactional
     @ReadOnly
-    public Employee getById(Long id) {
+    public Employee findById(Long id) {
         return entityManager.find(Employee.class, id);
     }
 

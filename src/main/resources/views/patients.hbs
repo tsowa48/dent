@@ -1,0 +1,89 @@
+<html>
+<head>
+    <title>Пациенты</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css?"/>
+    <link rel="stylesheet" href="/css/dent.css?"/>
+    <link rel="stylesheet" href="/css/bootstrap-icons.css">
+    <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="/js/script.js"></script>
+    <style>
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <nav>
+        <div id="menu" class="group">
+            <a title="Расписание" class="button" href="/week/0"><i class="bi bi-calendar3"></i></a>
+            <a title="Справочники" class="button" href="/reference/"><i class="bi bi-card-list"></i></a>
+            <a title="Пациенты" class="button selected" href="/patient"><i class="bi bi-people"></i></a>
+            <a title="Статистика" class="button" href="/statistics"><i class="bi bi-graph-up"></i></a>
+            <a title="Swagger" class="button disabled" href="/gcg/swagger-ui"><i class="bi bi-gear"></i></a>
+        </div>
+        <br>
+        <div class="center">Несвязанные клиенты:</div>
+        <br>
+        <div id="unattached" style="overflow-y: auto;">
+            {{#each clients}}
+                <div class="list-item" cid='{{this.id}}' onclick='patient_modal(this, "#modal_patient")'>
+                    <span style="display:none;" class="fio">{{this.fio}}</span>
+                    <span style="display:none;" class="phone">{{this.phone}}</span>
+                    <b>{{this.fio}}</b> ({{this.phone}})</div>
+            {{/each}}
+        </div>
+    </nav>
+    <main class="reference" id="patients">
+        <div class="list-item success bold" pid='0' onclick='patient_modal(this, "#modal_patient")'>Добавить пациента</div>
+        {{#each patients}}
+            <div class="list-item" pid='{{this.id}}' onclick='patient_modal(this, "#modal_patient")'>
+                <span style="display:none;" class="fio">{{this.fio}}</span>
+                <span style="display:none;" class="phone">{{this.phone}}</span>
+                <span style="display:none;" class="address">{{this.address}}</span>
+                <span style="display:none;" class="sex">{{this.male}}</span>
+                <span style="display:none;" class="birth">{{this.birth}}</span>
+                <span style="display:none;" class="find_out">{{this.findOut.id}}</span>
+                <b>{{this.fio}}</b> ({{this.phone}}) {{this.address}}</div>
+        {{/each}}
+    </main>
+</div>
+<div id="modal_patient" class="box modal">
+    <div class="header"><span id="header_text"></span><i class="bi bi-x button danger" style="float:right;padding:0" title="Закрыть" onclick="hide_modal('#modal_patient');"></i></div>
+    <input type="hidden" name="pid"/>
+    <input type="hidden" name="cid"/>
+    <span class="bold">Фамилия Имя Отчество:</span><br>
+    <input type="text" class="text" name="fio"/>
+    <br>
+    <span class="bold">Дата рождения:</span><br>
+    <input type="date" class="text" name="birth"/>
+    <br>
+    <span class="bold">Пол:</span><br>
+    <select class="text" name="sex">
+        <option value="1" selected>Мужской</option>
+        <option value="0">Женский</option>
+    </select>
+    <br>
+    <span class="bold">Контактный телефон:</span><br>
+    <input type="tel" class="text" name="phone"/>
+    <br>
+    <span class="bold">Адрес проживания:</span><br>
+    <textarea name="address" rows="4"></textarea>
+
+    <br>
+    <span class="bold">Откуда узнал о компании:</span><br>
+    <select class="text" name="find_out">
+    {{#each findOut}}
+        <option value="{{this.id}}">{{this.name}}</option>
+    {{/each}}
+    </select>
+    <div class="footer">
+        <button class="info" onclick="location.href='/patient/'+$('#modal_patient input[name=\'pid\']').val()">Мед.карта</button>
+        <button class="success" onclick="save_patient();">Сохранить</button>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+
+</script>
+</html>

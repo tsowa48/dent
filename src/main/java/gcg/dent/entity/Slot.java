@@ -14,7 +14,7 @@ public class Slot {
     private Long id;
 
     @Column(name = "enabled", nullable = false)
-    private Boolean enabled;
+    private boolean enabled;
 
     @Column(name = "date", nullable = false)
     private Date date;
@@ -24,6 +24,9 @@ public class Slot {
 
     @Column(name = "size", nullable = false)
     private Time size;
+
+    @Column(name = "note")
+    private String note;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cid")
@@ -42,11 +45,11 @@ public class Slot {
         this.id = id;
     }
 
-    public Boolean getEnabled() {
+    public boolean isEnabled() {
         return enabled;
     }
 
-    public void setEnabled(Boolean enabled) {
+    public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 
@@ -88,5 +91,13 @@ public class Slot {
 
     public void setDoctor(Employee doctor) {
         this.doctor = doctor;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 }

@@ -19,25 +19,15 @@ public class ScheduleRepository {
     @ReadOnly
     public List<Schedule> getAll() {
         return entityManager
-                .createQuery("select S from Schedule S order by S.dow", Schedule.class)
+                .createQuery("select S from Schedule S order by S.dow, S.start", Schedule.class)
                 .getResultList();
-    }
-
-    @Transactional
-    @ReadOnly
-    public Boolean isEmpty() {
-        return entityManager
-                .createQuery("select S from Schedule S")
-                .setMaxResults(1)
-                .getResultList()
-                .isEmpty();
     }
 
     @Transactional
     @ReadOnly
     public List<Schedule> getByDow(Integer dow){
         return entityManager
-                .createQuery("select S from Schedule S where S.dow = :dow")
+                .createQuery("select S from Schedule S where S.dow = :dow", Schedule.class)
                 .setParameter("dow", dow)
                 .getResultList();
     }

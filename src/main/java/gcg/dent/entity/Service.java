@@ -1,10 +1,13 @@
 package gcg.dent.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "service", schema = "public")
-public class Service {
+public class Service implements Serializable {
     @Id
     @SequenceGenerator(name = "service_id_seq", sequenceName = "public.service_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "service_id_seq")
@@ -16,6 +19,13 @@ public class Service {
 
     @Column(name = "price", nullable = false)
     private Double price;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "atid", nullable = false)
+    private ActType actType;
+
+    @OneToMany(mappedBy = "service", fetch = FetchType.LAZY)
+    private List<Manipulation> manipulations = new ArrayList<>();
 
     public void setId(Long id) {
         this.id = id;
@@ -39,5 +49,21 @@ public class Service {
 
     public Double getPrice() {
         return price;
+    }
+
+    public ActType getActType() {
+        return actType;
+    }
+
+    public void setActType(ActType actType) {
+        this.actType = actType;
+    }
+
+    public List<Manipulation> getManipulations() {
+        return manipulations;
+    }
+
+    public void setManipulations(List<Manipulation> manipulations) {
+        this.manipulations = manipulations;
     }
 }
