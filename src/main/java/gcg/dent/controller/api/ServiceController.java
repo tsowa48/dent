@@ -41,4 +41,8 @@ public class ServiceController {
         return HttpResponse.ok();
     }
 
+    @Get(uri = "/type/{actType}", produces = MediaType.APPLICATION_JSON)
+    public List<Service> getByActType(Long actType) {
+        return serviceRepository.getByActType(actType);
+    }
 }

@@ -46,7 +46,7 @@
         <div class="list-item center success bold" uid="{{act_uid.id}}" aid="0" onclick="act_modal(this, '#modal_act')">Добавить акт</div>
         {{#each patient.card.history}}
             {{#each this.contract.acts}}
-                <div class="list-item center" uid="{{act_uid.id}}" aid="{{this.id}}" onclick="act_modal(this, '#modal_act')">Акт ({{this.actType.name}}) №{{this.number}} от {{this.date}}г.</div>
+                <div class="list-item center" uid="{{act_uid.id}}" aid="{{this.id}}" number="{{this.number}}" date="{{this.date}}" did="{{this.contract.id}}" atid="{{this.actType.id}}" doc="{{this.doctor.id}}" onclick="act_modal(this, '#modal_act')">Акт ({{this.actType.name}}) №{{this.number}} от {{this.date}}г.</div>
             {{/each}}
         {{/each}}
     </div>
@@ -85,6 +85,25 @@
     $('main .box').css('display', 'none');
     $('main .box#history_list').css('display', 'block');
 
+    $("#modal_act select[name='atid']").change(function() {
+        fill_services("#modal_act");
+    });
+
+    fill_services("#modal_act");
+
+    function fill_services(id) {
+        $(id + " select[name='service']").empty();
+        $.ajax({
+            url: "/api/service/type/" + Number($(id + " select[name='atid']").val()),
+            method: "GET"
+        }).done(function(service) {
+            service.forEach(function(s) {
+                $(id + " select[name='service']").append("<option value='" + s.id + "'>" + s.name + "</option>");
+            });
+            $(id).center();
+        });
+    }
+
     function show_box(base) {
         $('#menu2 .list-item').removeClass('selected');
         $(base).addClass('selected');
@@ -113,9 +132,21 @@
         $(id + " input[name='params']").val("&patient={{patient.id}}&act=" + $(e).attr('aid'));
         $(id + " input[name='aid']").val($(e).attr('aid'));
 
+        if(Number($(e).attr('aid')) > 0) {
+            fill_services(id);
+            $(id + " input[name='number']").val($(e).attr('number'));
+            var day = $(e).attr('date').substr(0, 2);
+            var month = $(e).attr('date').substr(3, 2);
+            var date = $(e).attr('date').substr(6, 4) + "-" + (month) + "-" + (day);
+            $(id + " input[name='date']").val(date);
+            $(id + " select[name='did']").val($(e).attr('did')).change();
+            $(id + " select[name='atid']").val($(e).attr('atid')).change();
+            $(id + " select[name='doc']").val($(e).attr('doc')).change();
+        } else {
+            $(id).center();
+        }
 
         $(id + " input:first").focus();
-        $(id).center();
         var cover = $("<div class='cover' onclick=\"hide_modal('.modal');\"></div>");
         $(id).before(cover);
     }
@@ -201,6 +232,38 @@
             $("#history_list .list-item[hid='" + history.id + "']").text("Карта эпиданамнеза от " + history.date + "г. (договор №" + history.contract.number + " от " + history.contract.date + "г.)");
         });
         hide_modal('.modal');
+    }
+
+    function save_act() {
+        var aid = Number($("#modal_act input[name='aid']").val());
+        var did = Number($("#modal_act select[name='did']").val());
+        var atid = Number($("#modal_act select[name='atid']").val());
+        var doc = Number($("#modal_act select[name='doc']").val());
+        var number = Number($("#modal_act input[name='number']").val());
+        var date = $("#modal_act input[name='date']").val();
+
+        var services = [];
+        $("#services_list").find("tr[sid!='0']").each(function() {
+            var sid = Number($(this).attr("sid"));
+            var count = Number($(this).attr("count"));
+            if(sid > 0 && count > 0) {
+                services.push({sid: sid, count: count});
+            }
+        });
+
+        var json = { aid: aid, did: did, atid: atid, doc: doc, number: number, date: date, services: services };
+        hide_modal('.modal');
+        $.ajax({
+            url: "/api/act",
+            method: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(json)
+        }).done(function(act) {
+            $("#act_list").append("<div class=\"list-item center\" uid=\"{{act_uid.id}}\" aid=\"" + act.id + "\" number=\"" + act.number +
+                    "\" date=\"" + act.date + "\" did=\"" + act.contract.id + "\" atid=\"" + act.actType.id + "\" doc=\"" + act.doctor.id +
+                    "\" onclick=\"act_modal(this, '#modal_act')\">Акт (" + act.actType.name + ") №" + act.number + " от " + act.date + "г.</div>");
+        });
     }
 </script>
 </html>
