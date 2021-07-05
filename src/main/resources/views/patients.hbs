@@ -20,18 +20,6 @@
             <a title="Справочники" class="button" href="/reference/"><i class="bi bi-card-list"></i></a>
             <a title="Пациенты" class="button selected" href="/patient"><i class="bi bi-people"></i></a>
             <a title="Статистика" class="button" href="/statistics"><i class="bi bi-graph-up"></i></a>
-            <a title="Swagger" class="button disabled" href="/gcg/swagger-ui"><i class="bi bi-gear"></i></a>
-        </div>
-        <br>
-        <div class="center">Несвязанные клиенты:</div>
-        <br>
-        <div id="unattached" style="overflow-y: auto;">
-            {{#each clients}}
-                <div class="list-item" cid='{{this.id}}' onclick='patient_modal(this, "#modal_patient")'>
-                    <span style="display:none;" class="fio">{{this.fio}}</span>
-                    <span style="display:none;" class="phone">{{this.phone}}</span>
-                    <b>{{this.fio}}</b> ({{this.phone}})</div>
-            {{/each}}
         </div>
     </nav>
     <main class="reference" id="patients">

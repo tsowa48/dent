@@ -38,6 +38,8 @@ function slot_modal(e) {
     var cover = $("<div class='cover' onclick=\"hide_modal('.modal');\"></div>");
     $("#new_record").before(cover);
     $("#new_record input").removeAttr("disabled");
+    $("#new_record select").removeAttr("disabled");
+    $("#new_record textarea").removeAttr("disabled");
     if(sid === undefined) {
         if (Number(sessionStorage.getItem("currentDoc")) === 0) {
             hide_modal('.modal');
@@ -55,15 +57,24 @@ function slot_modal(e) {
         $("#new_record .footer .register_free").css("display", "none");
         $("#new_record .footer .unregister").css("display", "inline-flex");
         $("#new_record input").prop('disabled', true);
-        if($(e).attr("cid") === undefined) {
+        $("#new_record select").prop('disabled', true);
+        $("#new_record textarea").prop('disabled', true);
+        if($(e).attr("pid") === undefined) {
             //$("#new_record input").prop('disabled', true);
         } else {
             //$("#new_record input").prop('disabled', false);
             //$("#new_record input:first").focus();
             $("#new_record input[name='fio']").val($(e).find(".fio").text());
             $("#new_record input[name='phone']").val($(e).find(".phone").text());
+            $("#new_record textarea[name='address']").val($(e).find(".address").text());
+            $("#new_record select[name='sex']").val($(e).find(".sex").text());
+            $("#new_record select[name='find_out']").val($(e).find(".findOut").text());
+            var day = $(e).find(".birth").text().substr(0, 2);
+            var month = $(e).find(".birth").text().substr(3, 2);
+            var birth = $(e).find(".birth").text().substr(6, 4) + "-" + (month) + "-" + (day);
+            $("#new_record input[name='birth']").val(birth);
             var note = $(e).find(".note").text();
-            $("#new_record input[name='note']").val(note === undefined || note === null ? "" : note);
+            $("#new_record textarea[name='note']").val(note === undefined || note === null ? "" : note);
             //$("#new_record .footer .register").css("display", "inline-flex");
         }
     }
@@ -106,15 +117,19 @@ function register(enabled) {
     var time = $('.selected_slot').attr('time');
     var size = Number($('.selected_slot').attr('size'));
 
-    var fio = $("#new_record input[name='fio']").val();
-
     var json;
-    if(enabled && fio !== "") {
+    if(enabled) {
         var pid = Number($("#new_record input[name='pid']").val());
+        var fio = $("#new_record input[name='fio']").val();
         var phone = $("#new_record input[name='phone']").val();
-        var note = $("#new_record input[name='note']").val();
-        note = (note === null ? "" : note);
-        json = { fio: fio, phone: phone, doc: doc, date: date, time: time, size: size, note: note, pid: pid};
+        var address = $("#new_record textarea[name='address']").val();
+        var birth = $("#new_record input[name='birth']").val();
+        var sex = Number($("#new_record select[name='sex']").val());
+        var find_out = Number($("#new_record select[name='find_out']").val());
+        var note = $("#new_record textarea[name='note']").val();
+
+        json = { doc: doc, date: date, time: time, size: size, note: note,
+            patient: {id: pid, fio: fio, phone: phone, address: address, birth: birth, male: (sex === 1), findOut: { id: find_out} }};
     } else {
         json = { doc: doc, date: date, time: time, size: size};
     }
@@ -127,15 +142,20 @@ function register(enabled) {
     }).done(function(slot) {
         if(slot.enabled) {
             $('.selected_slot').append("<div class='box pink' onclick='slot_modal(this);event.stopPropagation();' sid='" + slot.id +
-                "' cid='" + slot.client.id + "' doc='" + slot.doctor.id + "'><span class='fio' style='display:none;'>" + slot.client.fio +
-                "</span><b>" + trim_fio(slot.client.fio) + "</b><br><span class='phone'>" + slot.client.phone + "</span>" +
+                "' pid='" + slot.patient.id + "' doc='" + slot.doctor.id + "'>" +
+                "<span class='fio' style='display:none;'>" + slot.patient.fio + "</span>" +
+                "<span class='address' style='display:none;'>" + slot.patient.address + "</span>" +
+                "<span class='sex' style='display:none;'>" + (slot.patient.male ? "1":"0") + "</span>" +
+                "<span class='findOut' style='display:none;'>" + slot.patient.findOut.id + "</span>" +
+                "<span class='birth' style='display:none;'>" + slot.patient.birth + "</span>" +
+                "<b>" + trim_fio(slot.patient.fio) + "</b><br><span class='phone'>" + slot.patient.phone + "</span>" +
                 "<br><span class='note'>" + (slot.note === undefined ? "": slot.note) + "</span></div>");
         } else {
             $('.selected_slot').append("<div class='box pink' onclick='slot_modal(this);event.stopPropagation();' sid='" + slot.id +
                 "' doc='" + slot.doctor.id + "'></div>");
         }
+        hide_modal('.modal');
     });
-    hide_modal('.modal');
 }
 
 var currentSlot;
@@ -675,7 +695,6 @@ function save_document() {
 }
 
 function save_patient() {
-    var cid = Number($("#modal_patient input[name='cid']").val());
     var pid = Number($("#modal_patient input[name='pid']").val());
     var fio = $("#modal_patient input[name='fio']").val();
     var birth = $("#modal_patient input[name='birth']").val();
@@ -706,16 +725,5 @@ function save_patient() {
             "<span style='display:none;' class='find_out'>" + patient.findOut.id + "</span>" +
             "<b>" + patient.fio + "</b> (" + patient.phone + ") " + patient.address);
         hide_modal('.modal');
-        if(cid !== 0) {
-            var json = {sql: "update client set pid = :pid where id = :cid", params: [{ "pid": patient.id}, {"cid": cid}]};
-            $.ajax({
-                url: "/api/sql/",
-                method: "PUT",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                data: JSON.stringify(json)
-            }).done(function(data) { });
-            $("#unattached .list-item[cid='" + cid + "']").remove();
-        }
     });
 }

@@ -10,16 +10,10 @@ micronaut:
       static:
         paths: classpath:/web
         mapping: /**
-      swagger:
-        paths: classpath:META-INF/swagger
-        mapping: /gcg/swagger/**
-      swagger-ui:
-        paths: classpath:META-INF/swagger/views/swagger-ui
-        mapping: /gcg/swagger-ui/**
   executors:
     io:
       type: fixed
-      nThreads: 16
+      nThreads: 8
 #    scheduled:
 #      type: scheduled
 #      core-pool-size: 30

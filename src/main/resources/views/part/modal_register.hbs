@@ -1,0 +1,95 @@
+<div class="box modal" id="new_record">
+    <div class="header">Регистрация<i class="bi bi-x button danger" style="float:right;padding:0" title="Закрыть" onclick="hide_modal('.modal');"></i></div>
+
+    <input type="hidden" name="pid"/>
+    <span class="bold">Фамилия Имя Отчество:</span><br>
+    <input type="text" class="text" name="fio"/>
+    <br>
+    <span class="bold">Дата рождения:</span><br>
+    <input type="date" class="text" name="birth"/>
+    <br>
+    <span class="bold">Пол:</span><br>
+    <select class="text" name="sex">
+        <option value="1" selected>Мужской</option>
+        <option value="0">Женский</option>
+    </select>
+    <br>
+    <span class="bold">Контактный телефон:</span><br>
+    <input type="tel" class="text" name="phone"/>
+    <br>
+    <span class="bold">Адрес проживания:</span><br>
+    <textarea name="address" rows="4"></textarea>
+    <br>
+    <span class="bold">Откуда узнал о компании:</span><br>
+    <select class="text" name="find_out">
+        {{#each findOut}}
+            <option value="{{this.id}}">{{this.name}}</option>
+        {{/each}}
+    </select>
+    <br>
+    <span class="bold">Примечание:</span>
+    <br>
+    <textarea name="note" rows="3"></textarea>
+
+    <div class="footer">
+        <button class="success register" onclick="register(true);"><i class="bi bi-pencil-square success"></i>&nbsp;Записать</button>
+        <button class="info register_free" onclick="register(false);"><i class="bi bi-flag info"></i> Не занимать</button>
+        <button class="danger unregister" onclick="unregister();"><i class="bi bi-trash danger"></i>&nbsp;Освободить</button>
+    </div>
+
+    <div id="patient_list" style="display:none;position:fixed;background-color:rgb(243,243,243);">
+
+    </div>
+
+    <script type="text/javascript">
+        $("#new_record input[name='fio']").on('input', function() {
+            if($(this).val().length > 1) {
+                $("#patient_list").empty();
+                var inp = $(this);
+                var json = { fio: inp.val() };
+                $.ajax({
+                    url: "/api/patient/find",
+                    method: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify(json)
+                }).done(function(patient) {
+                    $("#patient_list").empty();
+                    if(patient.length > 0) {
+                        var x = inp.offset().left;
+                        var y = inp.offset().top + inp.height() + 1;
+                        $('#patient_list').css('display', 'block');
+                        $('#patient_list').css("left", x);
+                        $('#patient_list').css("top", y);
+                        $('#patient_list').css("width", inp.width());
+                        patient.forEach((p) => {
+                            $("#patient_list").append("<div class='list-item' onclick='set_patient(this)' style='margin:0' pid='" + p.id + "'><b>" +
+                                p.fio + "</b> (" + p.birth + ")" +
+                                "<span style='display:none' class='patient_phone'>" + p.phone + "</span>" +
+                                "<span style='display:none' class='patient_fio'>" + p.fio + "</span>" +
+                                "<span style='display:none' class='patient_address'>" + p.address + "</span>" +
+                                "<span style='display:none' class='patient_birth'>" + p.birth + "</span>" +
+                                "<span style='display:none' class='patient_find_out'>" + p.findOut.id + "</span>" +
+                                "<span style='display:none' class='patient_male'>" + p.male + "</span>" +
+                                "</div>");
+                    });
+                    }
+                });
+            }
+        });
+
+        function set_patient(t) {
+            $("#new_record input[name='pid']").val($(t).attr('pid'));
+            $("#new_record input[name='fio']").val($(t).find('.patient_fio').text());
+            $("#new_record input[name='phone']").val($(t).find('.patient_phone').text());
+            $("#new_record textarea[name='address']").val($(t).find('.patient_address').text());
+            $("#new_record select[name='find_out']").val($(t).find('.patient_find_out').text());
+            $("#new_record select[name='sex']").val($(t).find('.patient_male').text() == "true" ? 1 : 0);
+            var day = $(t).find('.patient_birth').text().substr(0, 2);
+            var month = $(t).find('.patient_birth').text().substr(3, 2);
+            var birth = $(t).find('.patient_birth').text().substr(6, 4) + "-" + (month) + "-" + (day);
+            $("#new_record input[name='birth']").val(birth);
+            $('#patient_list').css('display', 'none');
+        }
+    </script>
+</div>

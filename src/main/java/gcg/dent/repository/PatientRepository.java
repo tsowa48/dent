@@ -30,7 +30,7 @@ public class PatientRepository {
     @ReadOnly
     public List<Patient> findByFio(String fioPart) {
         return entityManager
-                .createQuery("select new Patient(P.id, P.fio, P.phone) from Patient P " +
+                .createQuery("select new Patient(P.id, P.fio, P.phone, P.address, P.birth, P.isMale, P.findOut) from Patient P " +
                         "where lower(P.fio) like (:fioPart) " +
                         "order by P.fio", Patient.class)
                 .setParameter("fioPart", "%" + fioPart.toLowerCase() + "%")

@@ -20,9 +20,6 @@ public class PatientController {
     PatientRepository patientRepository;
 
     @Inject
-    ClientRepository clientRepository;
-
-    @Inject
     FindOutRepository findOutRepository;
 
     @Inject
@@ -39,10 +36,8 @@ public class PatientController {
     public HttpResponse<Map<String, Object>> getAllPatient() {
         Map<String, Object> params = new HashMap<>();
         List<Patient> allPatients = patientRepository.getAll();
-        List<Client> unattachedClients = clientRepository.getUnattached();
         List<FindOut> allFindOut = findOutRepository.getAll();
         params.put("patients", allPatients);
-        params.put("clients", unattachedClients);
         params.put("findOut", allFindOut);
         return HttpResponse.ok(params);
     }

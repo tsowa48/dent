@@ -1,22 +1,15 @@
 package gcg.dent.controller.api;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import gcg.dent.entity.Document;
 import gcg.dent.repository.DocumentRepository;
 import gcg.dent.util.Templates;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;
-import io.micronaut.http.server.types.files.StreamedFile;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
-import java.io.OutputStreamWriter;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,11 +22,6 @@ public class DocumentController {
 
     @Inject
     Templates templates;
-
-    /*@Get(uri = "/{id}", produces = MediaType.APPLICATION_JSON)
-    public Document get(Long id) {
-        return documentRepository.findById(id);
-    }*/
 
     @Get(produces = MediaType.APPLICATION_JSON)
     public List<Document> getAll() {
@@ -60,7 +48,6 @@ public class DocumentController {
     public HttpResponse<byte[]> download(Long uid,
                                          @Nullable Long act,
                                          @Nullable Long card,
-                                         @Nullable Long client,
                                          @Nullable Long contract,
                                          @Nullable Long employee,
                                          @Nullable Long history,
@@ -72,7 +59,6 @@ public class DocumentController {
         Map<String, Object> params = new HashMap<>();
         params.put("act", act);
         params.put("card", card);
-        params.put("client", client);
         params.put("contract", contract);
         params.put("employee", employee);
         params.put("history", history);

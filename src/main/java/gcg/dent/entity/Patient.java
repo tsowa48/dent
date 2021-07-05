@@ -33,7 +33,7 @@ public class Patient {
     private Date birth;
 
     @Column(name = "sex", nullable = false)
-    private boolean isMale;
+    private Boolean isMale;
 
     @Type(type = "jsonb")
     @Column(name = "props", columnDefinition = "jsonb")
@@ -50,11 +50,14 @@ public class Patient {
     public Patient() {
     }
 
-    public Patient(Long id, String fio, String phone) {
+    public Patient(Long id, String fio, String phone, String address, Date birth, boolean isMale, FindOut findOut) {
         this.id = id;
         this.fio = fio;
         this.phone = phone;
-        this.birth = new Date();
+        this.address = address;
+        this.birth = birth;
+        this.isMale = isMale;
+        this.findOut = findOut;
     }
 
     public Long getId() {
@@ -97,12 +100,12 @@ public class Patient {
         this.birth = birth;
     }
 
-    public boolean isMale() {
+    public Boolean isMale() {
         return isMale;
     }
 
-    public void setMale(boolean male) {
-        isMale = male;
+    public void setMale(Boolean isMale) {
+        this.isMale = isMale;
     }
 
     @JsonProperty(value = "sex", access = JsonProperty.Access.READ_ONLY)

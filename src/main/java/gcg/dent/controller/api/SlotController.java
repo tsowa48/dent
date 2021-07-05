@@ -1,9 +1,9 @@
 package gcg.dent.controller.api;
 
-import gcg.dent.entity.Client;
+import com.github.jknack.handlebars.internal.lang3.StringUtils;
+import gcg.dent.entity.Patient;
 import gcg.dent.entity.Employee;
 import gcg.dent.entity.Slot;
-import gcg.dent.repository.ClientRepository;
 import gcg.dent.repository.EmployeeRepository;
 import gcg.dent.repository.PatientRepository;
 import gcg.dent.repository.SlotRepository;
@@ -32,9 +32,6 @@ public class SlotController {
     SlotRepository slotRepository;
 
     @Inject
-    ClientRepository clientRepository;
-
-    @Inject
     EmployeeRepository employeeRepository;
 
     @Inject
@@ -50,21 +47,20 @@ public class SlotController {
 
     @Transactional
     @Post(uri = "/add", produces = MediaType.APPLICATION_JSON)
-    public Slot add(Optional<String> fio, Optional<String> phone, Long doc, Date date, String time, Integer size, Optional<String> note, Optional<Long> pid) throws Exception {
+    public Slot add(Long doc, Date date, String time, Integer size, Optional<String> note, Patient patient) throws Exception {
         try {
             Employee doctor = employeeRepository.findById(doc);
             String sizeTime = String.format("%02d:%02d:00", (size / 60), size % 60);
             Slot slot = slotRepository.makeSlot(date, Time.valueOf(time + ":00"), Time.valueOf(sizeTime));
-            if (fio.isPresent() && phone.isPresent()) {
-                Client client = clientRepository.find(fio.get(), phone.get());
-                if (pid.isPresent() && pid.get() > 0) {
-                    client.setPatient(patientRepository.findById(pid.get()));
+            slot.setDoctor(doctor);
+            if (StringUtils.isNotBlank(patient.getFio())) {
+                if(patient.getId() == null || patient.getId() == 0) {
+                    patient = patientRepository.addRecord(patient);
                 }
-                slot.setNote(note.get());
-                slot.setClient(client);
+                slot.setNote(note.orElse(""));
+                slot.setPatient(patient);
                 slot.setEnabled(true);
             }
-            slot.setDoctor(doctor);
             entityManager.persist(slot);
             return slot;
         } catch(Exception ex) {

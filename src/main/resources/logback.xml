@@ -13,6 +13,7 @@
       <serviceName>${APP_NAME}</serviceName>
     </encoder>
   </appender>
+  <logger name="io.micronaut.http.server.netty.RoutingInBoundHandler" level="OFF"/>
 
   <root level="${LOG_LEVEL}">
     <appender-ref ref="${LOG_TYPE}" />

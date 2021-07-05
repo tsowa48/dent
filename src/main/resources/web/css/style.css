@@ -240,7 +240,7 @@ header, .header {
 .disabled, *:disabled, *:hover:disabled {
     background-color: rgb(235, 235, 235);
     border-color: rgb(221, 221, 221);
-    color: rgb(187, 187, 187);
+    color: black;/*rgb(187, 187, 187);*/
     cursor: not-allowed;
 }
 

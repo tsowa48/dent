@@ -1,6 +1,6 @@
 package gcg.dent.service;
 
-import gcg.dent.entity.Client;
+import gcg.dent.entity.Patient;
 import gcg.dent.entity.Slot;
 import gcg.dent.repository.SlotRepository;
 import gcg.dent.util.ObjectUtils;
@@ -86,13 +86,17 @@ public class CalendarService {
                 htmlSlots.append("<div class='slot' date='" + slotDate + "' time='" + finalT.toString() + "' size='" + SLOT_SIZE + "' onclick=\"slot_modal(this);\">");
                 timeSlots.forEach(ts -> {
                     if(ts.isEnabled()) {
-                        Client c = ts.getClient();
-                        String fio = c.getPatient() != null ? c.getPatient().getFio() : c.getFio();
-                        String phone = c.getPatient() != null ? c.getPatient().getPhone() : c.getPhone();
+                        Patient p = ts.getPatient();
+                        String fio = p.getFio();
+                        String phone = p.getPhone();
                         String note = ts.getNote();
                         htmlSlots.append("<div class='box pink' onclick=\"slot_modal(this);event.stopPropagation();\" sid='" + ts.getId() +
-                                "' cid='" + c.getId() + "' doc='" + ts.getDoctor().getId() +
+                                "' pid='" + p.getId() + "' doc='" + ts.getDoctor().getId() +
                                 "'><span class='fio' style='display:none;'>" + fio + "</span>" +
+                                "<span class='address' style='display:none;'>" + p.getAddress() + "</span>" +
+                                "<span class='sex' style='display:none;'>" + (p.isMale()? "1":"0") + "</span>" +
+                                "<span class='findOut' style='display:none;'>" + p.getFindOut().getId() + "</span>" +
+                                "<span class='birth' style='display:none;'>" + p.getBirth() + "</span>" +
                                 "<b>" + ObjectUtils.fio(fio) +
                                 "</b><br><span class='phone'>" + phone + "</span>" +
                                 "<br><span class='note'>" + (note == null ? "" : note) + "</span></div>");

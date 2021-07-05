@@ -2,6 +2,7 @@ package gcg.dent.controller;
 
 import gcg.dent.entity.Employee;
 import gcg.dent.repository.EmployeeRepository;
+import gcg.dent.repository.FindOutRepository;
 import gcg.dent.repository.ReferenceRepository;
 import gcg.dent.service.CalendarService;
 import io.micronaut.http.HttpResponse;
@@ -26,6 +27,9 @@ public class CalendarController {
     @Inject
     ReferenceRepository referenceRepository;
 
+    @Inject
+    FindOutRepository findOutRepository;
+
     @View("calendar")
     @Get
     public HttpResponse<HashMap<String, Object>> calendar() throws URISyntaxException {
@@ -47,6 +51,8 @@ public class CalendarController {
 
         List<Employee> employee = employeeRepository.getScheduled();
         params.put("doctors", employee);
+
+        params.put("findOut", findOutRepository.getAll());
 
         params.put("prev", week - 1);
         params.put("next", week + 1);

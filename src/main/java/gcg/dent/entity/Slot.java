@@ -30,7 +30,7 @@ public class Slot {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cid")
-    private Client client;
+    private Patient patient;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doc", nullable = false)
@@ -61,12 +61,12 @@ public class Slot {
         this.time = time;
     }
 
-    public Client getClient() {
-        return client;
+    public Patient getPatient() {
+        return patient;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 
     public Date getDate() {
