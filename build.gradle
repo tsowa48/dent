@@ -4,11 +4,10 @@ plugins {
 }
 
 group 'gcg.dent'
-version '0.3'
+version '0.3.1'
 
 repositories {
     mavenCentral()
-    maven { url "https://jcenter.bintray.com" }
 }
 
 configurations {
@@ -60,6 +59,11 @@ dependencies {
 
     //Cache
     implementation("io.micronaut.cache:micronaut-cache-caffeine")
+
+    //Jasper
+    implementation("net.sf.jasperreports:jasperreports:6.16.0") {
+        exclude module: 'itext'
+    }
 }
 
 /*tasks.withType(JavaCompile) {

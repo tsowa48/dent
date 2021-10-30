@@ -26,13 +26,13 @@ public class Patient {
     @Column(name = "phone", nullable = false)
     private String phone;
 
-    @Column(name = "address", nullable = false)
+    @Column(name = "address")
     private String address;
 
-    @Column(name = "birth", nullable = false)
+    @Column(name = "birth")
     private Date birth;
 
-    @Column(name = "sex", nullable = false)
+    @Column(name = "sex")
     private Boolean isMale;
 
     @Type(type = "jsonb")
@@ -93,6 +93,9 @@ public class Patient {
     }
 
     public String getBirth() {
+        if(birth == null) {
+            return "";
+        }
         return ObjectUtils.dateFormat.format(birth);
     }
 

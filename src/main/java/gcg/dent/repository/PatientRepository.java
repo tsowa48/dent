@@ -22,7 +22,7 @@ public class PatientRepository {
     @ReadOnly
     public List<Patient> getAll() {
         return entityManager
-                .createQuery("select P from Patient P order by P.fio", Patient.class)
+                .createQuery("select P from Patient P left join fetch P.card C order by P.fio", Patient.class)
                 .getResultList();
     }
 

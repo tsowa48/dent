@@ -31,6 +31,7 @@ datasources:
     username: ${JDBC_USER:dent}
     password: ${JDBC_PASSWORD:dent}
     driverClassName: ${JDBC_DRIVER:org.postgresql.Driver}
+    maximumPoolSize: 4
 jpa:
   default:
     packages-to-scan:

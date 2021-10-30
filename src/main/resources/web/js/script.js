@@ -7,6 +7,10 @@ jQuery.fn.center = function () {
     return this;
 };
 
+RegExp.escape = function( value ) {
+    return value.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, "\\$&");
+}
+
 $(document).keyup(function(e) {
     if(e.key === "Escape") {
         if($('#patient_list').css('display') === 'none') {
@@ -40,6 +44,7 @@ function slot_modal(e) {
     $("#new_record input").removeAttr("disabled");
     $("#new_record select").removeAttr("disabled");
     $("#new_record textarea").removeAttr("disabled");
+    $("#new_record select[name='find_out']").val(1);
     if(sid === undefined) {
         if (Number(sessionStorage.getItem("currentDoc")) === 0) {
             hide_modal('.modal');
@@ -130,6 +135,15 @@ function register(enabled) {
 
         json = { doc: doc, date: date, time: time, size: size, note: note,
             patient: {id: pid, fio: fio, phone: phone, address: address, birth: birth, male: (sex === 1), findOut: { id: find_out} }};
+
+        if(fio === "") {
+            alert("Фамилия и Имя обязательны для заполнения");
+            return;
+        }
+        if(phone === "") {
+            alert("Контактный телефон обязателен для заполнения");
+            return;
+        }
     } else {
         json = { doc: doc, date: date, time: time, size: size};
     }

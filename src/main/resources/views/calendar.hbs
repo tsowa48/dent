@@ -37,13 +37,15 @@
         <main>
             <div class="dates" id="dates">
                 {{#each dates}}
-                    {{{this}}}
+                    <div class="date" {{#if this.today}}style='background: rgb(202, 227, 242);'{{/if}}>{{this.dayOfWeek}}<br>
+                        <font style='font-weight:bold;font-size:16px;'>{{this.day}}</font>
+                    </div>
                 {{/each}}
             </div>
             <div class="calendar" id="calendar">
                 <div id="times" class="times">
                     {{#each times}}
-                        {{{this}}}
+                        <div class="time">{{this}}</div>
                     {{/each}}
                 </div>
                 {{{slots}}}

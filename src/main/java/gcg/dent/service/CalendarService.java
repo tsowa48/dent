@@ -1,5 +1,6 @@
 package gcg.dent.service;
 
+import gcg.dent.dto.CalendarDates;
 import gcg.dent.entity.Patient;
 import gcg.dent.entity.Slot;
 import gcg.dent.repository.SlotRepository;
@@ -42,23 +43,21 @@ public class CalendarService {
 
         List<Slot> slots = slotRepository.findByPeriod(start.getTime(), finish.getTime());
 
-        List<String> dates = new ArrayList<>();
+        List<CalendarDates> dates = new ArrayList<>();
         finish.add(Calendar.DAY_OF_WEEK, 1);
         for (Calendar c = (Calendar) start.clone(); c.before(finish); c.add(Calendar.DAY_OF_WEEK, 1)) {
             String format = dateFormat.format(c.getTime()).toLowerCase();
-            dates.add("<div class=\"date\" " +
-                    (ObjectUtils.compareDates(c.getTime(), new Date()) ? "style='background: rgb(202, 227, 242);'" : "") +
-                    ">" + ObjectUtils.dow2str(c.getTime()) +
-                    "<br><font style='font-weight:bold;font-size:16px;'>" +
-                    format + "</font></div>");
+            Boolean today = ObjectUtils.compareDates(c.getTime(), new Date());
+            String dayOfWeek = ObjectUtils.dow2str(c.getTime());
+            dates.add(new CalendarDates(today, dayOfWeek, format));
         }
         params.put("dates", dates);
 
         Time[] globalSchedule = scheduleService.findFirstAndLast();
         List<String> times = new ArrayList<>();
         for (LocalTime t = globalSchedule[0].toLocalTime(); t.isBefore(globalSchedule[1].toLocalTime()); t = t.plusMinutes(SLOT_SIZE)) {
-            times.add("<div class=\"time\">" + String.format("%02d", t.getHour()) + ":" +
-                    String.format("%02d", t.getMinute()) + "</div>");
+            times.add(String.format("%02d", t.getHour()) + ":" +
+                    String.format("%02d", t.getMinute()));
         }
         params.put("times", times);
         params.put("times_size", times.size());
@@ -74,7 +73,7 @@ public class CalendarService {
                 final LocalTime finalT = t;
                 boolean isWork = scheduleService.isWork(Time.valueOf(finalT), finalDow);
                 if (!isWork) {
-                    htmlSlots.append("<div class='slot disabled'>" + "</div>");
+                    htmlSlots.append("<div class='slot disabled'></div>");
                     continue;
                 }
                 List<Slot> timeSlots = daySlots.stream()
