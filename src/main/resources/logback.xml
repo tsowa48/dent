@@ -1,7 +1,8 @@
 <configuration>
   <variable name="LOG_LEVEL" value="${LOG_LEVEL:-info}" />
-  <variable name="LOG_TYPE" value="${LOG_TYPE:-text}" />
+  <variable name="LOG_TYPE" value="${LOG_TYPE:-file}" />
   <variable name="APP_NAME" value="${APP_NAME:-dent}" />
+
   <appender name="text" class="ch.qos.logback.core.ConsoleAppender">
     <withJansi>false</withJansi>
     <encoder>
@@ -13,6 +14,17 @@
       <serviceName>${APP_NAME}</serviceName>
     </encoder>
   </appender>
+
+  <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>log/dent-%d{yyyy-MM-dd}.log</fileNamePattern>
+      <maxHistory>40</maxHistory>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
   <logger name="io.micronaut.http.server.netty.RoutingInBoundHandler" level="OFF"/>
 
   <root level="${LOG_LEVEL}">

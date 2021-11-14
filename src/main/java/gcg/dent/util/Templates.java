@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+@Deprecated
 @Singleton
 public class Templates {
     private static final Logger logger = LoggerFactory.getLogger(Templates.class);
@@ -143,15 +144,18 @@ public class Templates {
             filledParams.put("lab", props.get("lab").asText());
         }
         if (doctor == null && patient != null) {
-            doctor = (Employee) entityManager
-                    .createNativeQuery("select D.* from employee D " +
-                            "join slot S on S.doc = D.id " +
-                            "left join patient P on P.id = S.cid " +
-                            "where P.id = :id " +
-                            "order by S.date desc, S.time desc", Employee.class)
-                    .setParameter("id", patient.getId())
-                    .setMaxResults(1)
-                    .getSingleResult();
+            try {
+                doctor = (Employee) entityManager
+                        .createNativeQuery("select D.* from employee D " +
+                                "join slot S on S.doc = D.id " +
+                                "where S.cid = :id " +
+                                "order by S.date desc, S.time desc", Employee.class)
+                        .setParameter("id", patient.getId())
+                        .setMaxResults(1)
+                        .getSingleResult();
+            } catch(Exception ex) {
+                logger.warn("Can't find doctor without slot", ex);
+            }
         }
         if (params.get("act") != null) {
             act = entityManager.find(Act.class, params.get("act"));

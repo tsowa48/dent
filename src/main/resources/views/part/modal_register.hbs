@@ -34,6 +34,7 @@
     <div class="footer">
         <button class="success register" onclick="register(true);"><i class="bi bi-pencil-square success"></i>&nbsp;Записать</button>
         <button class="info register_free" onclick="register(false);"><i class="bi bi-flag info"></i> Не занимать</button>
+        <button class="info unregister" onclick="location.href='/patient/'+$('#new_record input[name=\'pid\']').val()">Мед.карта</button>
         <button class="danger unregister" onclick="unregister();"><i class="bi bi-trash danger"></i>&nbsp;Освободить</button>
     </div>
 

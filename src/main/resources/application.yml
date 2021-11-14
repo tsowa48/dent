@@ -14,9 +14,6 @@ micronaut:
     io:
       type: fixed
       nThreads: 8
-#    scheduled:
-#      type: scheduled
-#      core-pool-size: 30
   http:
     client:
       read-timeout: 30s
@@ -25,13 +22,23 @@ micronaut:
       enabled: false
     rocker:
       enabled: false
+  metrics:
+    enabled: true
+    export:
+      prometheus:
+        enabled: true
+        step: PT1M
+        descriptions: true
+endpoints:
+  prometheus:
+    sensitive: false
 datasources:
   default:
     url: ${JDBC_URL:`jdbc:postgresql://localhost:5432/dent`}
     username: ${JDBC_USER:dent}
     password: ${JDBC_PASSWORD:dent}
     driverClassName: ${JDBC_DRIVER:org.postgresql.Driver}
-    maximumPoolSize: 4
+    maximumPoolSize: 8
 jpa:
   default:
     packages-to-scan:

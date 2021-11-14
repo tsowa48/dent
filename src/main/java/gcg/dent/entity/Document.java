@@ -20,6 +20,12 @@ public class Document {
     @Column(name = "hbs", nullable = false)
     private String template;
 
+    @Column(name = "jrxml", nullable = false)
+    private String jrxml;
+
+    @Column(name = "code", nullable = false, unique = true)
+    private String code;
+
 
     public Long getId() {
         return id;
@@ -51,5 +57,21 @@ public class Document {
 
     public void setTemplate(String template) {
         this.template = template;
+    }
+
+    public String getJrxml() {
+        return jrxml;
+    }
+
+    public void setJrxml(String jrxml) {
+        this.jrxml = jrxml;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

@@ -2,6 +2,7 @@ package gcg.dent.controller.api;
 
 import gcg.dent.entity.Document;
 import gcg.dent.repository.DocumentRepository;
+import gcg.dent.service.ReportService;
 import gcg.dent.util.Templates;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
@@ -22,6 +23,9 @@ public class DocumentController {
 
     @Inject
     Templates templates;
+
+    @Inject
+    ReportService reportService;
 
     @Get(produces = MediaType.APPLICATION_JSON)
     public List<Document> getAll() {
@@ -54,7 +58,6 @@ public class DocumentController {
                                          @Nullable Long patient)
             throws Exception {
         Document document = documentRepository.findById(uid);
-        String fileName = URLEncoder.encode(document.getName(), "UTF-8").replace("+", "%20") + ".doc";
 
         Map<String, Object> params = new HashMap<>();
         params.put("act", act);
@@ -64,9 +67,17 @@ public class DocumentController {
         params.put("history", history);
         params.put("patient", patient);
 
-        String content = templates.load(document, params);
-
-        return HttpResponse.ok(content.getBytes())
+        String fileName = URLEncoder.encode(document.getName(), "UTF-8").replace("+", "%20") + ".docx";
+        byte[] content;
+        switch (document.getCode()) {
+            case "sopd":
+                content = reportService.getReport(document, "docx", params).getValue();
+                break;
+            default:
+                fileName = URLEncoder.encode(document.getName(), "UTF-8").replace("+", "%20") + ".doc";
+                content = templates.load(document, params).getBytes();
+        }
+        return HttpResponse.ok(content)
                 .header("Content-type", "application/octet-stream")
                 .header("Content-disposition", "attachment; filename=\"" + fileName + "\"");
     }

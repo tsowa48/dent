@@ -39,40 +39,9 @@
         {{/each}}
     </main>
 </div>
-<div id="modal_patient" class="box modal">
-    <div class="header"><span id="header_text"></span><i class="bi bi-x button danger" style="float:right;padding:0" title="Закрыть" onclick="hide_modal('#modal_patient');"></i></div>
-    <input type="hidden" name="pid"/>
-    <input type="hidden" name="cid"/>
-    <span class="bold">Фамилия Имя Отчество:</span><br>
-    <input type="text" class="text" name="fio"/>
-    <br>
-    <span class="bold">Дата рождения:</span><br>
-    <input type="date" class="text" name="birth"/>
-    <br>
-    <span class="bold">Пол:</span><br>
-    <select class="text" name="sex">
-        <option value="1" selected>Мужской</option>
-        <option value="0">Женский</option>
-    </select>
-    <br>
-    <span class="bold">Контактный телефон:</span><br>
-    <input type="tel" class="text" name="phone"/>
-    <br>
-    <span class="bold">Адрес проживания:</span><br>
-    <textarea name="address" rows="4"></textarea>
 
-    <br>
-    <span class="bold">Откуда узнал о компании:</span><br>
-    <select class="text" name="find_out">
-    {{#each findOut}}
-        <option value="{{this.id}}">{{this.name}}</option>
-    {{/each}}
-    </select>
-    <div class="footer">
-        <button class="info" onclick="location.href='/patient/'+$('#modal_patient input[name=\'pid\']').val()">Мед.карта</button>
-        <button class="success" onclick="save_patient();">Сохранить</button>
-    </div>
-</div>
+{{> views/part/modal_patient }}
+
 </body>
 <script type="text/javascript">
     $("input[name='search']").on('input', function() {

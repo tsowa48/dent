@@ -69,6 +69,7 @@ function slot_modal(e) {
         } else {
             //$("#new_record input").prop('disabled', false);
             //$("#new_record input:first").focus();
+            $("#new_record input[name='pid']").val($(e).attr("pid"));
             $("#new_record input[name='fio']").val($(e).find(".fio").text());
             $("#new_record input[name='phone']").val($(e).find(".phone").text());
             $("#new_record textarea[name='address']").val($(e).find(".address").text());

@@ -64,6 +64,12 @@ dependencies {
     implementation("net.sf.jasperreports:jasperreports:6.16.0") {
         exclude module: 'itext'
     }
+
+    // Metrics
+    implementation "io.micronaut.micrometer:micronaut-micrometer-core"
+    implementation "io.micronaut.micrometer:micronaut-micrometer-registry-statsd"
+    implementation "io.micronaut:micronaut-management"
+    implementation "io.micronaut.micrometer:micronaut-micrometer-registry-prometheus"
 }
 
 /*tasks.withType(JavaCompile) {

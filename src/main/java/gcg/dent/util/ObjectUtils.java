@@ -35,7 +35,9 @@ public class ObjectUtils {
     public static String fio(String fio) {
         String[] f = fio.split(" ");
         for(int i = 1; i < f.length; i++) {
-            f[i] = f[i].substring(0, 1) + ".";
+            if(f[i].length() > 0) {
+                f[i] = f[i].substring(0, 1) + ".";
+            }
         }
         return String.join(" ", f);
     }
