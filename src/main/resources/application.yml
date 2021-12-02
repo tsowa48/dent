@@ -3,8 +3,8 @@ micronaut:
     name: dent
   server:
     default-charset: UTF-8
-    idle-timeout: 50m
-    port: 8090
+    idle-timeout: 12h
+    port: 8001
   router:
     static-resources:
       static:
@@ -13,7 +13,7 @@ micronaut:
   executors:
     io:
       type: fixed
-      nThreads: 8
+      nThreads: 4
   http:
     client:
       read-timeout: 30s
@@ -38,7 +38,7 @@ datasources:
     username: ${JDBC_USER:dent}
     password: ${JDBC_PASSWORD:dent}
     driverClassName: ${JDBC_DRIVER:org.postgresql.Driver}
-    maximumPoolSize: 8
+    maximumPoolSize: 4
 jpa:
   default:
     packages-to-scan:
@@ -48,5 +48,7 @@ jpa:
         enable_lazy_load_no_trans: true
         hbm2ddl:
           auto: none
-        show_sql: true
-#env PGPASSWORD="dent" pg_dump -h localhost -p 5432 -U dent -v -b -Fp dent > dent_full.sql
+        show_sql: false
+user:
+  language: ru
+  country: RU

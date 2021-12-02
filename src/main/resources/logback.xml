@@ -17,7 +17,7 @@
 
   <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <fileNamePattern>log/dent-%d{yyyy-MM-dd}.log</fileNamePattern>
+      <fileNamePattern>/var/log/${APP_NAME}/${APP_NAME}-%d{yyyy-MM-dd}.log</fileNamePattern>
       <maxHistory>40</maxHistory>
     </rollingPolicy>
     <encoder>

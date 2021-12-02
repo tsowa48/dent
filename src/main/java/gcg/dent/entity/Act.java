@@ -1,6 +1,7 @@
 package gcg.dent.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import gcg.dent.util.ObjectUtils;
 
 import javax.persistence.*;
@@ -46,6 +47,11 @@ public class Act implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @JsonProperty(value = "did",access = JsonProperty.Access.READ_ONLY)
+    public Long getDid() {
+        return contract.getId();
     }
 
     public Long getNumber() {

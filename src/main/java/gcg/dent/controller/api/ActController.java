@@ -5,6 +5,7 @@ import gcg.dent.entity.*;
 import gcg.dent.repository.*;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
+import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
 
 import javax.inject.Inject;
@@ -72,5 +73,10 @@ public class ActController {
         });
         actRepository.batchUpdate(actServices);
         return result;
+    }
+
+    @Get("/{id}")
+    public Act get(Long id) {
+        return actRepository.get(id);
     }
 }

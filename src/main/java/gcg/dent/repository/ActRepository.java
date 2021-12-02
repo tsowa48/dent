@@ -2,6 +2,7 @@ package gcg.dent.repository;
 
 import gcg.dent.entity.Act;
 import gcg.dent.entity.ActService;
+import io.micronaut.transaction.annotation.ReadOnly;
 
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
@@ -41,5 +42,11 @@ public class ActRepository {
         });
         entityManager.flush();
         return true;
+    }
+
+    @Transactional
+    @ReadOnly
+    public Act get(Long id) {
+        return entityManager.find(Act.class, id);
     }
 }
