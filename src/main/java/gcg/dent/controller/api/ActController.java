@@ -5,6 +5,7 @@ import gcg.dent.entity.*;
 import gcg.dent.repository.*;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
+import io.micronaut.http.annotation.Delete;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
 
@@ -78,5 +79,10 @@ public class ActController {
     @Get("/{id}")
     public Act get(Long id) {
         return actRepository.get(id);
+    }
+
+    @Delete("/{id}")
+    public boolean delete(Long id) {
+        return actRepository.delete(id);
     }
 }

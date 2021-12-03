@@ -147,9 +147,11 @@
                 method: "GET"
             }).done(function(act) {
                 $(id + " #services_list").filter(function(index) {return index > 0;}).remove();
-                act.actServices.forEach(function (as) {
-                    $(id + " #services_list").append("<tr sid=\"" + as.service.id + "\" count=\"" + as.amount + "\"><td>" + as.service.name + "</td><td>" + as.amount + "</td><td><button class=\"danger\" onclick=\"rm_service(" + as.service.id + ");\"><i class=\"bi bi-trash\"></i>&nbsp;&nbsp;Удалить</button></td></tr>");
-                });
+                if(act["actServices"] !== undefined) {
+                    act.actServices.forEach(function (as) {
+                        $(id + " #services_list").append("<tr sid=\"" + as.service.id + "\" count=\"" + as.amount + "\"><td>" + as.service.name + "</td><td>" + as.amount + "</td><td><button class=\"danger\" onclick=\"rm_service(" + as.service.id + ");\"><i class=\"bi bi-trash\"></i>&nbsp;&nbsp;Удалить</button></td></tr>");
+                    });
+                }
             });
 
         } else {
@@ -274,6 +276,17 @@
             $("#act_list").append("<div class=\"list-item center\" uid=\"{{act_uid.id}}\" aid=\"" + act.id + "\" number=\"" + act.number +
                     "\" date=\"" + act.date + "\" did=\"" + act.did + "\" atid=\"" + act.actType.id + "\" doc=\"" + act.doctor.id +
                     "\" onclick=\"act_modal(this, '#modal_act')\">Акт (" + act.actType.name + ") №" + act.number + " от " + act.date + "г.</div>");
+        });
+    }
+
+    function remove_act() {
+        var aid = Number($("#modal_act input[name='aid']").val());
+        hide_modal('.modal');
+        $.ajax({
+            url: "/api/act/" + aid,
+            method: "DELETE"
+        }).done(function(ret) {
+            $("#act_list").find("div[aid='" + aid + "'").remove();
         });
     }
 </script>

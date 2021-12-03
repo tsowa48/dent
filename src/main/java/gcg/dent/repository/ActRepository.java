@@ -49,4 +49,22 @@ public class ActRepository {
     public Act get(Long id) {
         return entityManager.find(Act.class, id);
     }
+
+    @Transactional
+    public boolean delete(Long id) {
+        try {
+            entityManager
+                    .createNativeQuery("delete from act_service where aid = (:aid)")
+                    .setParameter("aid", id)
+                    .executeUpdate();
+            entityManager
+                    .createNativeQuery("delete from act where id = (:aid)")
+                    .setParameter("aid", id)
+                    .executeUpdate();
+            return true;
+        } catch(Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
 }
