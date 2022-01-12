@@ -1,7 +1,7 @@
 <configuration>
   <variable name="LOG_LEVEL" value="${LOG_LEVEL:-info}" />
-  <variable name="LOG_TYPE" value="${LOG_TYPE:-file}" />
-  <variable name="APP_NAME" value="${APP_NAME:-dent}" />
+  <variable name="LOG_TYPE" value="${LOG_TYPE:-db}" />
+  <property scope="context" name="application.name" value="${APP_NAME:-dent}"/>
 
   <appender name="text" class="ch.qos.logback.core.ConsoleAppender">
     <withJansi>false</withJansi>
@@ -11,13 +11,28 @@
   </appender>
   <appender name="json" class="ch.qos.logback.core.ConsoleAppender">
     <encoder class="co.elastic.logging.logback.EcsEncoder">
-      <serviceName>${APP_NAME}</serviceName>
+      <serviceName>${application.name}</serviceName>
     </encoder>
+  </appender>
+
+
+  <appender name="db" class="ch.qos.logback.classic.db.DBAppender">
+    <connectionSource class="ch.qos.logback.core.db.DriverManagerConnectionSource">
+      <driverClass>org.postgresql.Driver</driverClass>
+      <url>jdbc:postgresql://localhost:5432/log</url>
+      <user>log</user>
+      <password>log</password>
+    </connectionSource>
+  </appender>
+
+  <appender name="async_db" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="db" />
+    <includeCallerData>true</includeCallerData>
   </appender>
 
   <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <fileNamePattern>/var/log/${APP_NAME}/${APP_NAME}-%d{yyyy-MM-dd}.log</fileNamePattern>
+      <fileNamePattern>/var/log/${application.name}/${application.name}-%d{yyyy-MM-dd}.log</fileNamePattern>
       <maxHistory>40</maxHistory>
     </rollingPolicy>
     <encoder>

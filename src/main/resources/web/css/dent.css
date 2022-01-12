@@ -231,7 +231,7 @@ main {
     font-weight: bold;
 }
 
-table, tr, td {
+table, tr, td, th {
     border: 1px solid rgb(221, 221, 221);
     border-collapse: collapse;
     padding: 0;

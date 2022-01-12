@@ -67,7 +67,7 @@ public class Templates {
 
     public String load(Document templateDocument, Map<String, Object> params) {
         try {
-            Template template = handlebars.compileInline(templateDocument.getTemplate());
+            Template template = handlebars.compileInline(templateDocument.getHbs());
             List<String> variables = template.collect(TagType.VAR);
             variables.addAll(template.collect(TagType.TRIPLE_VAR));
             return template.apply(variablesToParams(variables, params));
@@ -108,7 +108,7 @@ public class Templates {
                             "from act a " +
                             "join act_service c on a.id = c.aid " +
                             "join service s on c.sid = s.id " +
-                            "where a.atid = s.atid and a.did = (:did)")
+                            "where a.did = (:did)")
                     .setParameter("did", contract.getId())
                     .getSingleResult();
         }
@@ -164,7 +164,7 @@ public class Templates {
                             "from act a " +
                             "join act_service c on a.id = c.aid " +
                             "join service s on c.sid = s.id " +
-                            "where a.atid = s.atid and a.id = (:aid)")
+                            "where a.id = (:aid)")
                     .setParameter("aid", act.getId())
                     .getSingleResult();
 

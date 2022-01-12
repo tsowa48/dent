@@ -1,4 +1,4 @@
-<html>
+<html lang="ru">
 <head>
     <title>Статистика</title>
     <meta charset="UTF-8">
@@ -8,24 +8,128 @@
     <link rel="stylesheet" href="/css/bootstrap-icons.css">
     <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" src="/js/script.js"></script>
+    <style>
+        table {
+            width: 50%;
+            background-color: white;
+        }
+        .print {
+            display: none;
+        }
+
+        @media print {
+            @page { margin: 0; }
+            body { margin: 1.6cm; }
+            nav {
+                display: none;
+            }
+            .print {
+                display: inline;
+                width: 100%;
+            }
+            table {
+                width: 100%;
+            }
+            table, tr, td, th {
+                color: black;
+                border-width: 1px;
+            }
+            th {
+                padding: 5px;
+            }
+            td {
+                padding: 3px;
+            }
+        }
+    </style>
 </head>
 <body oncontextmenu="return false;">
 <div class="container">
-    <nav id="statistics_menu">
+    <nav id="statistics_menu" style="border-right: 1px dashed lightgray">
         <div id="menu" class="group">
             <a title="Расписание" class="button" href="/week/0" style="font-size: 14px;"><i class="bi bi-calendar3"></i></a>
             <a title="Справочники" class="button" href="/reference/" style="font-size: 14px;"><i class="bi bi-card-list"></i></a>
             <a title="Пациенты" class="button" href="/patient" style="font-size: 14px"><i class="bi bi-people"></i></a>
             <a title="Статистика" class="button selected" href="/statistics" style="font-size: 14px"><i class="bi bi-graph-up"></i></a>
         </div>
+        <br>
+        <span class="bold">Фильтр по дате:</span><br>
+        <input type="date" class="text" name="date" onchange="getStat()"/>
     </nav>
-    <main id="main">
-
+    <main id="main" style="align-items: center">
+        <br>
+        <table num="first">
+            <thead>
+                <tr><th colspan="3">1. Количество посещений клиники</th></tr>
+                <tr><th>День</th><th>Месяц</th><th>Год</th></tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <br>
+        <table num="second">
+            <thead>
+                <tr><th colspan="3">2. Количество первичных пациентов клиники</th></tr>
+                <tr><th>День</th><th>Месяц</th><th>Год</th></tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <br>
+        <table num="third">
+            <thead>
+                <tr><th colspan="3">3. Количество повторных пациентов клиники</th></tr>
+                <tr><th>День</th><th>Месяц</th><th>Год</th></tr>
+            <thead>
+            <tbody></tbody>
+        </table>
+        <br>
+        <table num="fourth">
+            <thead>
+                <tr><th colspan="4">4. Количество пациентов по видам услуг</th></tr>
+                <tr><th>Тип услуги</th><th>День</th><th>Месяц</th><th>Год</th></tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <br>
+        <table num="fifth">
+            <thead>
+                <tr><th colspan="4">5. Сумма оплаты</th></tr>
+                <tr><th>Врач</th><th>День</th><th>Месяц</th><th>Год</th></tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <div class="print"><br><br>По состоянию на <span id="filtered_date"></span></div>
     </main>
-
 </div>
 <script type="text/javascript">
+    $("input[name='date']").val(new Date().toISOString().split('T')[0]);
+    getStat();
 
+    function getStat() {
+        var d = $("input[name='date']").val();
+        $('#filtered_date').text(d);
+
+        $.ajax({
+            url: "/api/stat/" + d,
+            method: 'GET',
+            contentType: "application/json; charset=utf-8"
+        }).done(function(stat) {
+            for(var item in stat) {
+                $("table[num='" + item + "'] tbody").empty();
+                for(var row in stat[item]) {
+                    var r = stat[item][row];
+                    var c = '<tr>';
+                    if(r.doctor !== undefined) {
+                        c += '<td>' + r.doctor + '</td>';
+                    }
+                    c += '<td>' + (r.day === undefined ? '-' : r.day) + '</td>';
+                    c += '<td>' + (r.month === undefined ? '-' : r.month) + '</td>';
+                    c += '<td>' + (r.year === undefined ? '-' : r.year) + '</td>';
+                    c += '</tr>';
+                    $("table[num='" + item + "'] tbody").append(c);
+                }
+            }
+        });
+    }
 </script>
 </body>
 </html>

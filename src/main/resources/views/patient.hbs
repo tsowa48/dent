@@ -1,4 +1,4 @@
-<html>
+<html lang="ru">
 <head>
     <title>Пациент</title>
     <meta charset="UTF-8">
@@ -131,6 +131,8 @@
         $(id + " input[name='params']").val("&patient={{patient.id}}&act=" + $(e).attr('aid'));
         $(id + " input[name='aid']").val($(e).attr('aid'));
 
+        $(id + " #services_list").find("tr[sid!='0']").remove();
+
         if(Number($(e).attr('aid')) > 0) {
             fill_services(id);
             $(id + " input[name='number']").val($(e).attr('number'));
@@ -156,7 +158,6 @@
 
         } else {
             $(id).center();
-            $(id + " #services_list").filter(function(index) {return index > 0;}).remove();
         }
 
         $(id + " input:first").focus();

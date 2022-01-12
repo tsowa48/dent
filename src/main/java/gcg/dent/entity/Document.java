@@ -17,10 +17,10 @@ public class Document {
     @Column(name = "type", nullable = false)
     private String type;
 
-    @Column(name = "hbs", nullable = false)
-    private String template;
+    @Column(name = "hbs")
+    private String hbs;
 
-    @Column(name = "jrxml", nullable = false)
+    @Column(name = "jrxml")
     private String jrxml;
 
     @Column(name = "code", nullable = false, unique = true)
@@ -51,14 +51,6 @@ public class Document {
         this.type = type;
     }
 
-    public String getTemplate() {
-        return template;
-    }
-
-    public void setTemplate(String template) {
-        this.template = template;
-    }
-
     public String getJrxml() {
         return jrxml;
     }
@@ -73,5 +65,13 @@ public class Document {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getHbs() {
+        return hbs;
+    }
+
+    public void setHbs(String hbs) {
+        this.hbs = hbs;
     }
 }

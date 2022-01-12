@@ -3,7 +3,7 @@ micronaut:
     name: dent
   server:
     default-charset: UTF-8
-    idle-timeout: 12h
+    idle-timeout: 4h
     port: 8001
   router:
     static-resources:
@@ -34,7 +34,7 @@ endpoints:
     sensitive: false
 datasources:
   default:
-    url: ${JDBC_URL:`jdbc:postgresql://localhost:5432/dent`}
+    url: ${JDBC_URL:`jdbc:postgresql://localhost:5432/dent`}?ApplicationName=${micronaut.application.name}
     username: ${JDBC_USER:dent}
     password: ${JDBC_PASSWORD:dent}
     driverClassName: ${JDBC_DRIVER:org.postgresql.Driver}
@@ -52,3 +52,5 @@ jpa:
 user:
   language: ru
   country: RU
+tracer:
+  enabled: false

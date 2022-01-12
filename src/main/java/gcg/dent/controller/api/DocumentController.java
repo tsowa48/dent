@@ -67,15 +67,14 @@ public class DocumentController {
         params.put("history", history);
         params.put("patient", patient);
 
-        String fileName = URLEncoder.encode(document.getName(), "UTF-8").replace("+", "%20") + ".docx";
+        String fileName;
         byte[] content;
-        switch (document.getCode()) {
-            case "sopd":
-                content = reportService.getReport(document, "docx", params).getValue();
-                break;
-            default:
-                fileName = URLEncoder.encode(document.getName(), "UTF-8").replace("+", "%20") + ".doc";
-                content = templates.load(document, params).getBytes();
+        if(document.getJrxml() != null) {
+            fileName = URLEncoder.encode(document.getName(), "UTF-8").replace("+", "%20") + ".docx";
+            content = reportService.getReport(document, "docx", params).getValue();
+        } else {
+            fileName = URLEncoder.encode(document.getName(), "UTF-8").replace("+", "%20") + ".doc";
+            content = templates.load(document, params).getBytes();
         }
         return HttpResponse.ok(content)
                 .header("Content-type", "application/octet-stream")

@@ -7,6 +7,7 @@ import io.micronaut.http.annotation.Get;
 import io.micronaut.views.View;
 
 import javax.inject.Inject;
+import java.util.HashMap;
 import java.util.Map;
 
 @Controller("/statistics")
@@ -18,8 +19,7 @@ public class StatisticsController {
     @View("statistics")
     @Get
     public HttpResponse<Map<String, Object>> getStatistics() {
-        //Map<String, Object> params = statisticsRepository.getAll();
-
-        return HttpResponse.ok();//return HttpResponse.ok(params);
+        Map<String, Object> params = new HashMap<>();
+        return HttpResponse.ok(params);
     }
 }
